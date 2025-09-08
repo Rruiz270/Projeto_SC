@@ -45,13 +45,6 @@ document.querySelectorAll('.nav-btn').forEach(btn => {
         // Atualizar seções
         document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
         document.getElementById(section).classList.add('active');
-        
-        // Atualizar gráficos se necessário
-        if (section === 'investimento') {
-            updateInvestmentChart();
-        } else if (section === 'kpis') {
-            updateKPICharts();
-        }
     });
 });
 
@@ -162,75 +155,48 @@ function calculateInvestment() {
         slideInvestment.textContent = 'R$ ' + totalFirstYear.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
     
-    updateInvestmentChart();
+    updateSimpleChart();
 }
 
-// Gráfico de investimento
-let investmentChart = null;
-
-function updateInvestmentChart() {
-    const ctx = document.getElementById('investmentChart');
-    if (!ctx) return;
+// Gráfico simples em CSS
+function updateSimpleChart() {
+    const fundamentalValue = state.students.fundamental * state.budget.fundamental * 12;
+    const medioValue = state.students.medio * state.budget.medio * 12;
+    const tecnicoValue = state.students.tecnico * state.budget.tecnico * 12;
+    const teachersValue = state.teachers * (state.budget.teacherAI + state.budget.teacherEnglish);
     
-    if (investmentChart) {
-        investmentChart.destroy();
+    // Encontrar o máximo para escalar as barras
+    const maxValue = Math.max(fundamentalValue, medioValue, tecnicoValue, teachersValue);
+    
+    // Atualizar valores
+    const chartFundamental = document.getElementById('chart-fundamental');
+    const chartMedio = document.getElementById('chart-medio');
+    const chartTecnico = document.getElementById('chart-tecnico');
+    const chartTeachers = document.getElementById('chart-teachers');
+    
+    if (chartFundamental) {
+        chartFundamental.textContent = 'R$ ' + (fundamentalValue / 1000000).toFixed(1) + 'M';
+        const bar = chartFundamental.parentElement.querySelector('.bar-fill');
+        if (bar) bar.style.height = Math.max(20, (fundamentalValue / maxValue) * 100) + '%';
     }
     
-    const monthlyStudents = 
-        (state.students.fundamental * state.budget.fundamental) +
-        (state.students.medio * state.budget.medio) +
-        (state.students.tecnico * state.budget.tecnico);
+    if (chartMedio) {
+        chartMedio.textContent = 'R$ ' + (medioValue / 1000000).toFixed(1) + 'M';
+        const bar = chartMedio.parentElement.querySelector('.bar-fill');
+        if (bar) bar.style.height = Math.max(20, (medioValue / maxValue) * 100) + '%';
+    }
     
-    const data = {
-        labels: ['Ensino Fundamental', 'Ensino Médio', 'Ensino Técnico', 'Formação Professores'],
-        datasets: [{
-            label: 'Investimento (R$)',
-            data: [
-                state.students.fundamental * state.budget.fundamental * 12,
-                state.students.medio * state.budget.medio * 12,
-                state.students.tecnico * state.budget.tecnico * 12,
-                state.teachers * (state.budget.teacherAI + state.budget.teacherEnglish)
-            ],
-            backgroundColor: [
-                'rgba(37, 99, 235, 0.8)',
-                'rgba(16, 185, 129, 0.8)',
-                'rgba(245, 158, 11, 0.8)',
-                'rgba(239, 68, 68, 0.8)'
-            ],
-            borderWidth: 0
-        }]
-    };
+    if (chartTecnico) {
+        chartTecnico.textContent = 'R$ ' + (tecnicoValue / 1000000).toFixed(1) + 'M';
+        const bar = chartTecnico.parentElement.querySelector('.bar-fill');
+        if (bar) bar.style.height = Math.max(20, (tecnicoValue / maxValue) * 100) + '%';
+    }
     
-    investmentChart = new Chart(ctx, {
-        type: 'bar',
-        data: data,
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: false
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            return 'R$ ' + context.raw.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
-                        }
-                    }
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        callback: function(value) {
-                            return 'R$ ' + (value / 1000000).toFixed(1) + 'M';
-                        }
-                    }
-                }
-            }
-        }
-    });
+    if (chartTeachers) {
+        chartTeachers.textContent = 'R$ ' + (teachersValue / 1000000).toFixed(1) + 'M';
+        const bar = chartTeachers.parentElement.querySelector('.bar-fill');
+        if (bar) bar.style.height = Math.max(20, (teachersValue / maxValue) * 100) + '%';
+    }
 }
 
 // Controle de produtos
@@ -321,7 +287,7 @@ function setupKPIControls() {
                     valueSpan.textContent = (control.id === 'ideb-improvement' || control.id === 'salary-increase' ? '+' : '') + 
                                           this.value + control.suffix;
                 }
-                updateKPICharts();
+                updateEmploymentVisual();
             });
         }
     });
@@ -339,151 +305,22 @@ function setupKPIControls() {
     }
 }
 
-// Gráficos KPI
-let academicChart = null;
-let employabilityChart = null;
-let projectionChart = null;
-
-function updateKPICharts() {
-    // Gráfico Acadêmico
-    const academicCtx = document.getElementById('academicChart');
-    if (academicCtx) {
-        if (academicChart) academicChart.destroy();
-        
-        academicChart = new Chart(academicCtx, {
-            type: 'line',
-            data: {
-                labels: ['Atual', '6 meses', '1 ano', '2 anos', '3 anos'],
-                datasets: [{
-                    label: 'Melhoria IDEB (%)',
-                    data: [0, 
-                           state.kpis.idebImprovement * 0.3, 
-                           state.kpis.idebImprovement * 0.6, 
-                           state.kpis.idebImprovement * 0.85, 
-                           state.kpis.idebImprovement],
-                    borderColor: 'rgb(37, 99, 235)',
-                    backgroundColor: 'rgba(37, 99, 235, 0.1)',
-                    tension: 0.4
-                }, {
-                    label: 'Taxa de Aprovação (%)',
-                    data: [75, 
-                           75 + (state.kpis.approvalRate - 75) * 0.3,
-                           75 + (state.kpis.approvalRate - 75) * 0.6,
-                           75 + (state.kpis.approvalRate - 75) * 0.85,
-                           state.kpis.approvalRate],
-                    borderColor: 'rgb(16, 185, 129)',
-                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                    tension: 0.4
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom'
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 100
-                    }
-                }
-            }
-        });
+// Atualizar visualizações simples
+function updateEmploymentVisual() {
+    const employmentFill = document.querySelector('.employment-fill');
+    const employmentPercentage = document.querySelector('.employment-text .percentage');
+    const salaryValue = document.querySelector('.employment-stats .stat:first-child .value');
+    
+    if (employmentFill) {
+        employmentFill.style.setProperty('--percentage', state.kpis.jobPlacement);
     }
     
-    // Gráfico Empregabilidade
-    const employCtx = document.getElementById('employabilityChart');
-    if (employCtx) {
-        if (employabilityChart) employabilityChart.destroy();
-        
-        employabilityChart = new Chart(employCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Empregados', 'Em busca'],
-                datasets: [{
-                    data: [state.kpis.jobPlacement, 100 - state.kpis.jobPlacement],
-                    backgroundColor: [
-                        'rgba(16, 185, 129, 0.8)',
-                        'rgba(229, 231, 235, 0.8)'
-                    ],
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom'
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return context.label + ': ' + context.parsed + '%';
-                            }
-                        }
-                    }
-                }
-            }
-        });
+    if (employmentPercentage) {
+        employmentPercentage.textContent = state.kpis.jobPlacement + '%';
     }
     
-    // Gráfico de Projeção
-    const projCtx = document.getElementById('projectionChart');
-    if (projCtx) {
-        if (projectionChart) projectionChart.destroy();
-        
-        projectionChart = new Chart(projCtx, {
-            type: 'bar',
-            data: {
-                labels: ['2025', '2026', '2027', '2028', '2029'],
-                datasets: [{
-                    label: 'Alunos com Certificação',
-                    data: [
-                        state.pilotStudents,
-                        state.students.tecnico * 0.8,
-                        (state.students.tecnico + state.students.medio * 0.3) * 0.8,
-                        (state.students.tecnico + state.students.medio * 0.5) * 0.8,
-                        (state.students.tecnico + state.students.medio * 0.7) * 0.8
-                    ],
-                    backgroundColor: 'rgba(37, 99, 235, 0.8)',
-                    borderWidth: 0
-                }, {
-                    label: 'Professores Capacitados',
-                    data: [
-                        state.teachers * 0.2,
-                        state.teachers * 0.5,
-                        state.teachers * 0.75,
-                        state.teachers * 0.9,
-                        state.teachers
-                    ],
-                    backgroundColor: 'rgba(16, 185, 129, 0.8)',
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom'
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            callback: function(value) {
-                                return (value / 1000).toFixed(0) + 'k';
-                            }
-                        }
-                    }
-                }
-            }
-        });
+    if (salaryValue) {
+        salaryValue.textContent = '+' + state.kpis.salaryIncrease + '%';
     }
 }
 
@@ -532,7 +369,6 @@ function updateSlide() {
 function setupTimelineControls() {
     document.getElementById('piloto-alunos').addEventListener('input', function() {
         state.pilotStudents = parseInt(this.value);
-        updateKPICharts();
     });
 }
 
@@ -559,15 +395,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Calcular valores iniciais
     updateTotalStudents();
     calculateInvestment();
-    updateKPICharts();
-    
-    // Atualizar gráficos quando a janela for redimensionada
-    window.addEventListener('resize', function() {
-        if (investmentChart) investmentChart.resize();
-        if (academicChart) academicChart.resize();
-        if (employabilityChart) employabilityChart.resize();
-        if (projectionChart) projectionChart.resize();
-    });
+    updateEmploymentVisual();
 });
 
 // Função para exportar/imprimir

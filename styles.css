@@ -993,6 +993,289 @@ input[type="month"] {
     }
 }
 
+/* Gráficos CSS Leves */
+.investment-chart {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: var(--light-color);
+    border-radius: 8px;
+}
+
+.chart-title {
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: var(--dark-color);
+}
+
+.chart-bars {
+    display: flex;
+    justify-content: space-around;
+    align-items: end;
+    height: 200px;
+    gap: 20px;
+}
+
+.chart-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    max-width: 80px;
+}
+
+.bar-fill {
+    width: 100%;
+    min-height: 20px;
+    border-radius: 4px 4px 0 0;
+    transition: height 0.5s ease;
+    margin-bottom: 10px;
+}
+
+.bar-fill.fundamental {
+    background-color: var(--primary-color);
+}
+
+.bar-fill.medio {
+    background-color: var(--secondary-color);
+}
+
+.bar-fill.tecnico {
+    background-color: var(--accent-color);
+}
+
+.bar-fill.teachers {
+    background-color: var(--danger-color);
+}
+
+.bar-label {
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.bar-value {
+    font-size: 0.7rem;
+    color: #6b7280;
+    text-align: center;
+}
+
+.simple-chart {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: var(--light-color);
+    border-radius: 8px;
+}
+
+.metric-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+
+.metric-item {
+    text-align: center;
+}
+
+.metric-label {
+    display: block;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    color: #6b7280;
+}
+
+.progress-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: var(--danger-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.progress-circle.success {
+    background-color: var(--secondary-color);
+}
+
+.progress-text {
+    color: var(--white);
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.arrow {
+    font-size: 2rem;
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.employment-visual {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.employment-circle {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-color: #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.employment-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: conic-gradient(var(--secondary-color) 0deg, var(--secondary-color) calc(var(--percentage) * 3.6deg), transparent calc(var(--percentage) * 3.6deg));
+}
+
+.employment-text {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+}
+
+.employment-text .percentage {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--dark-color);
+}
+
+.employment-text .label {
+    font-size: 0.8rem;
+    color: #6b7280;
+}
+
+.employment-stats {
+    flex: 1;
+}
+
+.employment-stats .stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: var(--white);
+    border-radius: 6px;
+    box-shadow: var(--shadow);
+}
+
+.employment-stats .value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.employment-stats .desc {
+    font-size: 0.9rem;
+    color: #6b7280;
+}
+
+.projection-timeline {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.timeline-year {
+    text-align: center;
+    padding: 20px 10px;
+    background-color: var(--white);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+}
+
+.timeline-year .year {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.progress-bar-container {
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 15px;
+}
+
+.progress-bar-fill {
+    height: 25px;
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+.progress-bar-fill.students {
+    background-color: var(--primary-color);
+}
+
+.progress-bar-fill.teachers {
+    background-color: var(--secondary-color);
+}
+
+.year-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.year-stats span {
+    font-size: 0.8rem;
+    color: #6b7280;
+}
+
+.year-stats span:first-child {
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.year-stats span:last-child {
+    color: var(--secondary-color);
+    font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    .chart-bars {
+        height: 150px;
+        gap: 10px;
+    }
+    
+    .metric-display {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .employment-visual {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .projection-timeline {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .timeline-year {
+        padding: 15px;
+    }
+}
+
 @media print {
     .main-nav,
     .slide-controls {

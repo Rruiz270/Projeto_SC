@@ -6,7 +6,6 @@
     <title>Projeto Educacional Santa Catarina - Better Tech & Alumni</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="container">
@@ -253,7 +252,31 @@
                             <span class="summary-value" id="total-investment">R$ 0</span>
                         </div>
                     </div>
-                    <canvas id="investmentChart" width="400" height="200"></canvas>
+                    <div class="investment-chart">
+                        <div class="chart-title">Distribuição do Investimento</div>
+                        <div class="chart-bars">
+                            <div class="chart-bar">
+                                <div class="bar-fill fundamental" style="height: 45%;"></div>
+                                <span class="bar-label">Fund.</span>
+                                <span class="bar-value" id="chart-fundamental">R$ 0</span>
+                            </div>
+                            <div class="chart-bar">
+                                <div class="bar-fill medio" style="height: 38%;"></div>
+                                <span class="bar-label">Médio</span>
+                                <span class="bar-value" id="chart-medio">R$ 0</span>
+                            </div>
+                            <div class="chart-bar">
+                                <div class="bar-fill tecnico" style="height: 25%;"></div>
+                                <span class="bar-label">Técnico</span>
+                                <span class="bar-value" id="chart-tecnico">R$ 0</span>
+                            </div>
+                            <div class="chart-bar">
+                                <div class="bar-fill teachers" style="height: 60%;"></div>
+                                <span class="bar-label">Professores</span>
+                                <span class="bar-value" id="chart-teachers">R$ 0</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -438,7 +461,23 @@
                                 <span class="kpi-value">92%</span>
                             </div>
                         </div>
-                        <canvas id="academicChart" width="400" height="200"></canvas>
+                        <div class="simple-chart">
+                            <div class="metric-display">
+                                <div class="metric-item">
+                                    <span class="metric-label">IDEB Atual</span>
+                                    <div class="progress-circle">
+                                        <div class="progress-text">10º</div>
+                                    </div>
+                                </div>
+                                <div class="arrow">→</div>
+                                <div class="metric-item">
+                                    <span class="metric-label">IDEB Meta</span>
+                                    <div class="progress-circle success">
+                                        <div class="progress-text">5º</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="kpi-card">
@@ -498,7 +537,25 @@
                                 <span class="kpi-value">+35%</span>
                             </div>
                         </div>
-                        <canvas id="employabilityChart" width="400" height="200"></canvas>
+                        <div class="employment-visual">
+                            <div class="employment-circle">
+                                <div class="employment-fill" style="--percentage: 82"></div>
+                                <div class="employment-text">
+                                    <span class="percentage">82%</span>
+                                    <span class="label">Empregados</span>
+                                </div>
+                            </div>
+                            <div class="employment-stats">
+                                <div class="stat">
+                                    <span class="value">+35%</span>
+                                    <span class="desc">Aumento Salarial</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="value">30k</span>
+                                    <span class="desc">Alunos Técnicos</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="kpi-card full-width">
@@ -533,8 +590,64 @@
                     </div>
 
                     <div class="kpi-card full-width">
-                        <h3>Projeção de Resultados</h3>
-                        <canvas id="projectionChart" width="800" height="300"></canvas>
+                        <h3>Projeção de Resultados 2025-2029</h3>
+                        <div class="projection-timeline">
+                            <div class="timeline-year">
+                                <div class="year">2025</div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar-fill students" style="width: 20%;"></div>
+                                    <div class="progress-bar-fill teachers" style="width: 15%;"></div>
+                                </div>
+                                <div class="year-stats">
+                                    <span>50k alunos</span>
+                                    <span>10k professores</span>
+                                </div>
+                            </div>
+                            <div class="timeline-year">
+                                <div class="year">2026</div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar-fill students" style="width: 40%;"></div>
+                                    <div class="progress-bar-fill teachers" style="width: 35%;"></div>
+                                </div>
+                                <div class="year-stats">
+                                    <span>150k alunos</span>
+                                    <span>25k professores</span>
+                                </div>
+                            </div>
+                            <div class="timeline-year">
+                                <div class="year">2027</div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar-fill students" style="width: 70%;"></div>
+                                    <div class="progress-bar-fill teachers" style="width: 60%;"></div>
+                                </div>
+                                <div class="year-stats">
+                                    <span>300k alunos</span>
+                                    <span>40k professores</span>
+                                </div>
+                            </div>
+                            <div class="timeline-year">
+                                <div class="year">2028</div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar-fill students" style="width: 90%;"></div>
+                                    <div class="progress-bar-fill teachers" style="width: 85%;"></div>
+                                </div>
+                                <div class="year-stats">
+                                    <span>450k alunos</span>
+                                    <span>45k professores</span>
+                                </div>
+                            </div>
+                            <div class="timeline-year">
+                                <div class="year">2029</div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar-fill students" style="width: 100%;"></div>
+                                    <div class="progress-bar-fill teachers" style="width: 100%;"></div>
+                                </div>
+                                <div class="year-stats">
+                                    <span>520k alunos</span>
+                                    <span>51k professores</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
