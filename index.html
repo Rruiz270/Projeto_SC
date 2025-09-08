@@ -8,6 +8,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Botão de Salvar Flutuante -->
+    <button class="save-button" id="saveButton">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"></path>
+            <polyline points="17 21 17 13 7 13 7 21"></polyline>
+            <polyline points="7 3 7 8 15 8"></polyline>
+        </svg>
+        Salvar Configurações
+    </button>
+
     <div class="container">
         <header>
             <div class="header-content">
@@ -36,6 +46,7 @@
             <button class="nav-btn active" data-section="planejamento">Planejamento</button>
             <button class="nav-btn" data-section="investimento">Investimento</button>
             <button class="nav-btn" data-section="produtos">Produtos & Serviços</button>
+            <button class="nav-btn" data-section="avaliacoes">Avaliações & Testes</button>
             <button class="nav-btn" data-section="kpis">KPIs & Resultados</button>
             <button class="nav-btn" data-section="apresentacao">Apresentação Executiva</button>
         </nav>
@@ -433,6 +444,232 @@
                                 <div class="service-config">
                                     <input type="number" value="50000" min="20000" max="200000" step="10000">
                                     <span>R$/mês</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção Avaliações -->
+            <section id="avaliacoes" class="content-section">
+                <h2>Sistema de Avaliação e Certificação</h2>
+                
+                <div class="assessment-grid">
+                    <div class="assessment-card">
+                        <h3>Testes de Proficiência</h3>
+                        <div class="test-items">
+                            <div class="test-item">
+                                <div class="test-header">
+                                    <h4>Inglês - Teste Alumni</h4>
+                                    <span class="certification-badge">Certificado Embaixada EUA</span>
+                                </div>
+                                <div class="test-details">
+                                    <p>Avaliação completa de proficiência reconhecida internacionalmente</p>
+                                    <div class="test-controls">
+                                        <label>
+                                            <input type="checkbox" id="test-ingles" checked>
+                                            <span>Aplicar teste anualmente</span>
+                                        </label>
+                                        <div class="test-price">
+                                            <label>Custo por teste:</label>
+                                            <div class="currency-input">
+                                                <span>R$</span>
+                                                <input type="number" id="price-test-ingles" value="10" min="5" max="100" step="5">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="test-targets">
+                                        <label>
+                                            <input type="checkbox" checked> Professores de Inglês
+                                        </label>
+                                        <label>
+                                            <input type="checkbox" checked> Alunos de Inglês
+                                        </label>
+                                        <label>
+                                            <input type="checkbox" checked> Alunos Ensino Técnico
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="test-item">
+                                <div class="test-header">
+                                    <h4>Espanhol - Teste Alumni</h4>
+                                    <span class="certification-badge">Certificado Alumni</span>
+                                </div>
+                                <div class="test-details">
+                                    <p>Avaliação de proficiência em espanhol com metodologia própria</p>
+                                    <div class="test-controls">
+                                        <label>
+                                            <input type="checkbox" id="test-espanhol">
+                                            <span>Aplicar teste anualmente</span>
+                                        </label>
+                                        <div class="test-price">
+                                            <label>Custo por teste:</label>
+                                            <div class="currency-input">
+                                                <span>R$</span>
+                                                <input type="number" id="price-test-espanhol" value="10" min="5" max="100" step="5">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="test-targets">
+                                        <label>
+                                            <input type="checkbox"> Alunos de Espanhol
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="test-item">
+                                <div class="test-header">
+                                    <h4>Programação - TOFAS</h4>
+                                    <span class="certification-badge">Certificado Sprix</span>
+                                </div>
+                                <div class="test-details">
+                                    <p>Teste de lógica e programação reconhecido pelo mercado</p>
+                                    <div class="test-controls">
+                                        <label>
+                                            <input type="checkbox" id="test-coding" checked>
+                                            <span>Aplicar teste anualmente</span>
+                                        </label>
+                                        <div class="test-price">
+                                            <label>Custo por teste:</label>
+                                            <div class="currency-input">
+                                                <span>R$</span>
+                                                <input type="number" id="price-test-coding" value="10" min="5" max="100" step="5">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="test-targets">
+                                        <label>
+                                            <input type="checkbox" checked> Alunos de Coding
+                                        </label>
+                                        <label>
+                                            <input type="checkbox"> Alunos Ensino Técnico (TI)
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="test-item">
+                                <div class="test-header">
+                                    <h4>Inteligência Artificial</h4>
+                                    <span class="certification-badge">A Definir</span>
+                                </div>
+                                <div class="test-details">
+                                    <p>Avaliação de competências em IA (certificação em definição)</p>
+                                    <div class="test-controls">
+                                        <label>
+                                            <input type="checkbox" id="test-ia" checked>
+                                            <span>Aplicar teste anualmente</span>
+                                        </label>
+                                        <div class="test-price">
+                                            <label>Custo por teste:</label>
+                                            <div class="currency-input">
+                                                <span>R$</span>
+                                                <input type="number" id="price-test-ia" value="10" min="5" max="100" step="5">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="test-targets">
+                                        <label>
+                                            <input type="checkbox" checked> Todos os Professores
+                                        </label>
+                                        <label>
+                                            <input type="checkbox" checked> Alunos de IA
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="assessment-card">
+                        <h3>Cronograma de Avaliações</h3>
+                        <div class="assessment-timeline">
+                            <div class="assessment-phase">
+                                <h4>Avaliação Diagnóstica</h4>
+                                <p>Início do programa - Baseline</p>
+                                <div class="phase-config">
+                                    <label>Mês:</label>
+                                    <input type="month" value="2025-10">
+                                </div>
+                            </div>
+                            <div class="assessment-phase">
+                                <h4>1ª Avaliação Anual</h4>
+                                <p>Medição de progresso</p>
+                                <div class="phase-config">
+                                    <label>Mês:</label>
+                                    <input type="month" value="2026-10">
+                                </div>
+                            </div>
+                            <div class="assessment-phase">
+                                <h4>2ª Avaliação Anual</h4>
+                                <p>Certificação intermediária</p>
+                                <div class="phase-config">
+                                    <label>Mês:</label>
+                                    <input type="month" value="2027-10">
+                                </div>
+                            </div>
+                            <div class="assessment-phase">
+                                <h4>Avaliação Final</h4>
+                                <p>Certificação completa</p>
+                                <div class="phase-config">
+                                    <label>Mês:</label>
+                                    <input type="month" value="2028-10">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="assessment-card full-width">
+                        <h3>Resumo de Custos com Avaliações</h3>
+                        <div class="assessment-summary">
+                            <div class="summary-row">
+                                <span class="summary-label">Total de Testes por Ano:</span>
+                                <span class="summary-value" id="total-tests">0</span>
+                            </div>
+                            <div class="summary-row">
+                                <span class="summary-label">Custo Médio por Teste:</span>
+                                <span class="summary-value" id="avg-test-cost">R$ 10</span>
+                            </div>
+                            <div class="summary-row highlight">
+                                <span class="summary-label">Investimento Anual em Avaliações:</span>
+                                <span class="summary-value" id="annual-test-cost">R$ 0</span>
+                            </div>
+                        </div>
+                        
+                        <div class="test-distribution">
+                            <h4>Distribuição de Testes por Categoria</h4>
+                            <div class="distribution-bars">
+                                <div class="dist-bar">
+                                    <div class="dist-label">Inglês</div>
+                                    <div class="dist-progress">
+                                        <div class="dist-fill ingles" style="width: 40%;"></div>
+                                        <span class="dist-value" id="dist-ingles">0</span>
+                                    </div>
+                                </div>
+                                <div class="dist-bar">
+                                    <div class="dist-label">Espanhol</div>
+                                    <div class="dist-progress">
+                                        <div class="dist-fill espanhol" style="width: 10%;"></div>
+                                        <span class="dist-value" id="dist-espanhol">0</span>
+                                    </div>
+                                </div>
+                                <div class="dist-bar">
+                                    <div class="dist-label">Coding</div>
+                                    <div class="dist-progress">
+                                        <div class="dist-fill coding" style="width: 25%;"></div>
+                                        <span class="dist-value" id="dist-coding">0</span>
+                                    </div>
+                                </div>
+                                <div class="dist-bar">
+                                    <div class="dist-label">IA</div>
+                                    <div class="dist-progress">
+                                        <div class="dist-fill ia" style="width: 25%;"></div>
+                                        <span class="dist-value" id="dist-ia">0</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>

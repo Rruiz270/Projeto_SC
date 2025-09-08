@@ -1,5 +1,5 @@
 // Estado global da aplicação
-const state = {
+const state = loadState() || {
     students: {
         fundamental: 280000,
         medio: 240000,
@@ -30,6 +30,12 @@ const state = {
         teacherFluency: 85,
         jobPlacement: 82,
         salaryIncrease: 35
+    },
+    tests: {
+        ingles: { active: true, price: 10, students: 0 },
+        espanhol: { active: false, price: 10, students: 0 },
+        coding: { active: true, price: 10, students: 0 },
+        ia: { active: true, price: 10, students: 0 }
     }
 };
 
@@ -133,8 +139,39 @@ function calculateInvestment() {
     // Calcular investimento em professores
     const teacherInvestment = state.teachers * (state.budget.teacherAI + state.budget.teacherEnglish);
     
+    // Calcular custo dos testes
+    let testsCost = 0;
+    if (state.tests) {
+        // Recalcular custos dos testes se necessário
+        let totalTestsCost = 0;
+        
+        if (state.tests.ingles.active) {
+            const englishTeachers = Math.round(state.teachers * 0.2);
+            const englishStudents = Math.round((state.students.fundamental + state.students.medio) * 0.3);
+            const technicalStudents = state.students.tecnico;
+            totalTestsCost += (englishTeachers + englishStudents + technicalStudents) * state.tests.ingles.price;
+        }
+        
+        if (state.tests.espanhol.active) {
+            const spanishStudents = Math.round((state.students.fundamental + state.students.medio) * 0.1);
+            totalTestsCost += spanishStudents * state.tests.espanhol.price;
+        }
+        
+        if (state.tests.coding.active) {
+            const codingStudents = Math.round((state.students.medio + state.students.tecnico) * 0.2);
+            totalTestsCost += codingStudents * state.tests.coding.price;
+        }
+        
+        if (state.tests.ia.active) {
+            const iaStudents = Math.round((state.students.medio + state.students.tecnico) * 0.15);
+            totalTestsCost += (state.teachers + iaStudents) * state.tests.ia.price;
+        }
+        
+        testsCost = totalTestsCost;
+    }
+    
     // Total do primeiro ano
-    const totalFirstYear = yearlyStudents + teacherInvestment;
+    const totalFirstYear = yearlyStudents + teacherInvestment + testsCost;
     
     // Atualizar interface
     document.getElementById('monthly-investment').textContent = 
@@ -391,12 +428,255 @@ document.addEventListener('DOMContentLoaded', function() {
     setupPresentationControls();
     setupTimelineControls();
     setupRegionalControls();
+    setupSaveButton();
+    setupTestControls();
+    
+    // Restaurar valores salvos se existirem
+    if (loadState()) {
+        restoreFormValues();
+    }
     
     // Calcular valores iniciais
     updateTotalStudents();
     calculateInvestment();
     updateEmploymentVisual();
+    calculateTestsCosts();
 });
+
+// Restaurar valores do formulário a partir do estado
+function restoreFormValues() {
+    // Alunos
+    document.getElementById('fundamental').value = state.students.fundamental;
+    document.getElementById('fundamental-number').value = state.students.fundamental;
+    document.getElementById('medio').value = state.students.medio;
+    document.getElementById('medio-number').value = state.students.medio;
+    document.getElementById('tecnico').value = state.students.tecnico;
+    document.getElementById('tecnico-number').value = state.students.tecnico;
+    
+    // Orçamentos
+    document.getElementById('budget-fundamental').value = state.budget.fundamental;
+    document.getElementById('budget-medio').value = state.budget.medio;
+    document.getElementById('budget-tecnico').value = state.budget.tecnico;
+    document.getElementById('teacher-ai').value = state.budget.teacherAI;
+    document.getElementById('teacher-english').value = state.budget.teacherEnglish;
+    document.getElementById('teachers-count').value = state.teachers;
+    
+    // Produtos
+    document.getElementById('ingles-geral').checked = state.products.inglesGeral.active;
+    document.getElementById('ingles-carreiras').checked = state.products.inglesCarreiras.active;
+    document.getElementById('espanhol').checked = state.products.espanhol.active;
+    document.getElementById('ia').checked = state.products.ia.active;
+    document.getElementById('coding').checked = state.products.coding.active;
+    
+    // KPIs
+    document.getElementById('ideb-improvement').value = state.kpis.idebImprovement;
+    document.getElementById('approval-rate').value = state.kpis.approvalRate;
+    document.getElementById('english-cert').value = state.kpis.englishCert;
+    document.getElementById('teacher-fluency').value = state.kpis.teacherFluency;
+    document.getElementById('job-placement').value = state.kpis.jobPlacement;
+    document.getElementById('salary-increase').value = state.kpis.salaryIncrease;
+    
+    // Testes
+    if (state.tests) {
+        document.getElementById('test-ingles').checked = state.tests.ingles.active;
+        document.getElementById('test-espanhol').checked = state.tests.espanhol.active;
+        document.getElementById('test-coding').checked = state.tests.coding.active;
+        document.getElementById('test-ia').checked = state.tests.ia.active;
+        
+        document.getElementById('price-test-ingles').value = state.tests.ingles.price;
+        document.getElementById('price-test-espanhol').value = state.tests.espanhol.price;
+        document.getElementById('price-test-coding').value = state.tests.coding.price;
+        document.getElementById('price-test-ia').value = state.tests.ia.price;
+    }
+}
+
+// Sistema de salvamento
+function saveState() {
+    localStorage.setItem('projetoEducacaoSC', JSON.stringify(state));
+    
+    // Feedback visual
+    const saveBtn = document.getElementById('saveButton');
+    if (saveBtn) {
+        saveBtn.classList.add('saved');
+        saveBtn.innerHTML = `
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            Salvo!
+        `;
+        
+        setTimeout(() => {
+            saveBtn.classList.remove('saved');
+            saveBtn.innerHTML = `
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"></path>
+                    <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                    <polyline points="7 3 7 8 15 8"></polyline>
+                </svg>
+                Salvar Configurações
+            `;
+        }, 2000);
+    }
+}
+
+function loadState() {
+    const saved = localStorage.getItem('projetoEducacaoSC');
+    return saved ? JSON.parse(saved) : null;
+}
+
+// Controle do botão de salvar
+function setupSaveButton() {
+    const saveBtn = document.getElementById('saveButton');
+    if (saveBtn) {
+        saveBtn.addEventListener('click', saveState);
+    }
+}
+
+// Controles de testes e avaliações
+function setupTestControls() {
+    // Checkbox dos testes
+    document.getElementById('test-ingles').addEventListener('change', function() {
+        state.tests.ingles.active = this.checked;
+        calculateTestsCosts();
+    });
+    
+    document.getElementById('test-espanhol').addEventListener('change', function() {
+        state.tests.espanhol.active = this.checked;
+        calculateTestsCosts();
+    });
+    
+    document.getElementById('test-coding').addEventListener('change', function() {
+        state.tests.coding.active = this.checked;
+        calculateTestsCosts();
+    });
+    
+    document.getElementById('test-ia').addEventListener('change', function() {
+        state.tests.ia.active = this.checked;
+        calculateTestsCosts();
+    });
+    
+    // Preços dos testes
+    document.getElementById('price-test-ingles').addEventListener('input', function() {
+        state.tests.ingles.price = parseFloat(this.value);
+        calculateTestsCosts();
+    });
+    
+    document.getElementById('price-test-espanhol').addEventListener('input', function() {
+        state.tests.espanhol.price = parseFloat(this.value);
+        calculateTestsCosts();
+    });
+    
+    document.getElementById('price-test-coding').addEventListener('input', function() {
+        state.tests.coding.price = parseFloat(this.value);
+        calculateTestsCosts();
+    });
+    
+    document.getElementById('price-test-ia').addEventListener('input', function() {
+        state.tests.ia.price = parseFloat(this.value);
+        calculateTestsCosts();
+    });
+}
+
+// Calcular custos dos testes
+function calculateTestsCosts() {
+    let totalTests = 0;
+    let totalCost = 0;
+    let testsByType = {
+        ingles: 0,
+        espanhol: 0,
+        coding: 0,
+        ia: 0
+    };
+    
+    // Calcular testes de Inglês
+    if (state.tests.ingles.active) {
+        // Professores de inglês (estimativa 20% dos 51k)
+        const englishTeachers = Math.round(state.teachers * 0.2);
+        // Alunos no curso de inglês (estimativa)
+        const englishStudents = Math.round((state.students.fundamental + state.students.medio) * 0.3);
+        // Todos os alunos técnicos
+        const technicalStudents = state.students.tecnico;
+        
+        testsByType.ingles = englishTeachers + englishStudents + technicalStudents;
+        totalTests += testsByType.ingles;
+        totalCost += testsByType.ingles * state.tests.ingles.price;
+    }
+    
+    // Calcular testes de Espanhol
+    if (state.tests.espanhol.active) {
+        // Estimativa de alunos de espanhol
+        const spanishStudents = Math.round((state.students.fundamental + state.students.medio) * 0.1);
+        testsByType.espanhol = spanishStudents;
+        totalTests += testsByType.espanhol;
+        totalCost += testsByType.espanhol * state.tests.espanhol.price;
+    }
+    
+    // Calcular testes de Coding
+    if (state.tests.coding.active) {
+        // Alunos no curso de coding
+        const codingStudents = Math.round((state.students.medio + state.students.tecnico) * 0.2);
+        testsByType.coding = codingStudents;
+        totalTests += testsByType.coding;
+        totalCost += testsByType.coding * state.tests.coding.price;
+    }
+    
+    // Calcular testes de IA
+    if (state.tests.ia.active) {
+        // Todos os professores + alunos de IA
+        const iaStudents = Math.round((state.students.medio + state.students.tecnico) * 0.15);
+        testsByType.ia = state.teachers + iaStudents;
+        totalTests += testsByType.ia;
+        totalCost += testsByType.ia * state.tests.ia.price;
+    }
+    
+    // Atualizar interface
+    document.getElementById('total-tests').textContent = totalTests.toLocaleString('pt-BR');
+    
+    const avgCost = totalTests > 0 ? totalCost / totalTests : 0;
+    document.getElementById('avg-test-cost').textContent = 'R$ ' + avgCost.toFixed(2);
+    
+    document.getElementById('annual-test-cost').textContent = 
+        'R$ ' + totalCost.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    
+    // Atualizar distribuição
+    updateTestDistribution(testsByType, totalTests);
+    
+    // Atualizar investimento total incluindo testes
+    calculateInvestment();
+}
+
+// Atualizar visualização da distribuição de testes
+function updateTestDistribution(testsByType, totalTests) {
+    const maxTests = Math.max(...Object.values(testsByType));
+    
+    // Inglês
+    document.getElementById('dist-ingles').textContent = testsByType.ingles.toLocaleString('pt-BR');
+    const inglesBar = document.querySelector('.dist-fill.ingles');
+    if (inglesBar && maxTests > 0) {
+        inglesBar.style.width = (testsByType.ingles / maxTests * 100) + '%';
+    }
+    
+    // Espanhol
+    document.getElementById('dist-espanhol').textContent = testsByType.espanhol.toLocaleString('pt-BR');
+    const espanholBar = document.querySelector('.dist-fill.espanhol');
+    if (espanholBar && maxTests > 0) {
+        espanholBar.style.width = (testsByType.espanhol / maxTests * 100) + '%';
+    }
+    
+    // Coding
+    document.getElementById('dist-coding').textContent = testsByType.coding.toLocaleString('pt-BR');
+    const codingBar = document.querySelector('.dist-fill.coding');
+    if (codingBar && maxTests > 0) {
+        codingBar.style.width = (testsByType.coding / maxTests * 100) + '%';
+    }
+    
+    // IA
+    document.getElementById('dist-ia').textContent = testsByType.ia.toLocaleString('pt-BR');
+    const iaBar = document.querySelector('.dist-fill.ia');
+    if (iaBar && maxTests > 0) {
+        iaBar.style.width = (testsByType.ia / maxTests * 100) + '%';
+    }
+}
 
 // Função para exportar/imprimir
 window.print = function() {
