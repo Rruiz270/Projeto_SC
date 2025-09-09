@@ -1,0 +1,1799 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeto Educacional Santa Catarina - Better Tech & Alumni</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Botão de Salvar Flutuante -->
+    <button class="save-button" id="saveButton">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"></path>
+            <polyline points="17 21 17 13 7 13 7 21"></polyline>
+            <polyline points="7 3 7 8 15 8"></polyline>
+        </svg>
+        Salvar Configurações
+    </button>
+
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="logo-section">
+                    <h1>Projeto Educação SC</h1>
+                    <p class="subtitle">Better Tech & Alumni + Secretaria de Educação</p>
+                </div>
+                <div class="header-stats">
+                    <div class="stat-card">
+                        <span class="stat-value">520.000</span>
+                        <span class="stat-label">Alunos Total</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value">51.000</span>
+                        <span class="stat-label">Professores</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value">1.000+</span>
+                        <span class="stat-label">Escolas</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <nav class="main-nav">
+            <button class="nav-btn active" data-section="planejamento">Planejamento</button>
+            <button class="nav-btn" data-section="produtos">Produtos & Serviços</button>
+            <button class="nav-btn" data-section="avaliacoes">Avaliações & Testes</button>
+            <button class="nav-btn" data-section="investimento">Investimento</button>
+            <button class="nav-btn" data-section="kpis">KPIs & Resultados</button>
+            <button class="nav-btn" data-section="apresentacao">Apresentação Executiva</button>
+        </nav>
+
+        <main>
+            <!-- Seção Planejamento -->
+            <section id="planejamento" class="content-section active">
+                <h2>Planejamento de Implementação</h2>
+                
+                <div class="planning-grid">
+                    <div class="planning-card">
+                        <h3>Distribuição de Alunos</h3>
+                        <div class="student-controls">
+                            <div class="control-group">
+                                <label>Ensino Fundamental 1 e 2</label>
+                                <div class="input-group">
+                                    <input type="range" id="fundamental" min="0" max="400000" value="280000" step="1000">
+                                    <input type="number" id="fundamental-number" value="280000" min="0" max="400000" step="1000">
+                                    <span class="unit">alunos</span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label>Ensino Médio</label>
+                                <div class="input-group">
+                                    <input type="range" id="medio" min="0" max="400000" value="240000" step="1000">
+                                    <input type="number" id="medio-number" value="240000" min="0" max="400000" step="1000">
+                                    <span class="unit">alunos</span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label>Ensino Técnico</label>
+                                <div class="input-group">
+                                    <input type="range" id="tecnico" min="0" max="100000" value="30000" step="1000">
+                                    <input type="number" id="tecnico-number" value="30000" min="0" max="100000" step="1000">
+                                    <span class="unit">alunos</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="total-display">
+                            <span>Total de Alunos:</span>
+                            <span id="total-alunos" class="total-value">520.000</span>
+                        </div>
+                    </div>
+
+                    <div class="planning-card">
+                        <h3>Cronograma de Implementação</h3>
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-date">
+                                    <input type="month" id="fase1-data" value="2025-10">
+                                </div>
+                                <div class="timeline-content">
+                                    <h4>Fase 1 - Piloto</h4>
+                                    <div class="input-group">
+                                        <label>Alunos no Piloto:</label>
+                                        <input type="number" id="piloto-alunos" value="50000" min="1000" max="100000" step="1000">
+                                    </div>
+                                    <p>Início do programa piloto com contraturno</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">
+                                    <input type="month" id="fase2-data" value="2026-02">
+                                </div>
+                                <div class="timeline-content">
+                                    <h4>Fase 2 - Expansão Regional</h4>
+                                    <div class="input-group">
+                                        <label>% de Escolas:</label>
+                                        <input type="number" id="fase2-percent" value="30" min="10" max="100" step="5">
+                                        <span>%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">
+                                    <input type="month" id="fase3-data" value="2026-08">
+                                </div>
+                                <div class="timeline-content">
+                                    <h4>Fase 3 - Implementação Total</h4>
+                                    <div class="input-group">
+                                        <label>% de Cobertura:</label>
+                                        <input type="number" id="fase3-percent" value="100" min="50" max="100" step="5">
+                                        <span>%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="planning-card full-width">
+                    <h3>Mapa de Implementação Regional - Cidades de Santa Catarina</h3>
+                    <div class="region-grid">
+                        <div class="region-card">
+                            <h4>Florianópolis</h4>
+                            <div class="region-controls">
+                                <label>Escolas: <input type="number" value="80" min="0" max="300" class="schools-count"></label>
+                                <label>Alunos: <input type="number" value="25000" min="0" max="100000" step="100" class="students-count"></label>
+                                <label>Professores: <input type="number" value="2500" min="0" max="10000" step="10" class="teachers-count"></label>
+                                <label>Segmento: 
+                                    <select class="segment-type">
+                                        <option value="todos">Todos</option>
+                                        <option value="fundamental1">Fundamental 1</option>
+                                        <option value="fundamental2">Fundamental 2</option>
+                                        <option value="medio">Ensino Médio</option>
+                                        <option value="fund12">Fund 1 e 2</option>
+                                        <option value="fundmedio">Fund e Médio</option>
+                                    </select>
+                                </label>
+                                <label>Início: <input type="month" value="2025-10" class="start-date"></label>
+                            </div>
+                        </div>
+                        <div class="region-card">
+                            <h4>Joinville</h4>
+                            <div class="region-controls">
+                                <label>Escolas: <input type="number" value="120" min="0" max="300" class="schools-count"></label>
+                                <label>Alunos: <input type="number" value="38000" min="0" max="100000" step="100" class="students-count"></label>
+                                <label>Professores: <input type="number" value="3800" min="0" max="10000" step="10" class="teachers-count"></label>
+                                <label>Segmento: 
+                                    <select class="segment-type">
+                                        <option value="todos">Todos</option>
+                                        <option value="fundamental1">Fundamental 1</option>
+                                        <option value="fundamental2">Fundamental 2</option>
+                                        <option value="medio">Ensino Médio</option>
+                                        <option value="fund12">Fund 1 e 2</option>
+                                        <option value="fundmedio">Fund e Médio</option>
+                                    </select>
+                                </label>
+                                <label>Início: <input type="month" value="2025-10" class="start-date"></label>
+                            </div>
+                        </div>
+                        <div class="region-card">
+                            <h4>Blumenau</h4>
+                            <div class="region-controls">
+                                <label>Escolas: <input type="number" value="90" min="0" max="300" class="schools-count"></label>
+                                <label>Alunos: <input type="number" value="28000" min="0" max="100000" step="100" class="students-count"></label>
+                                <label>Professores: <input type="number" value="2800" min="0" max="10000" step="10" class="teachers-count"></label>
+                                <label>Segmento: 
+                                    <select class="segment-type">
+                                        <option value="todos">Todos</option>
+                                        <option value="fundamental1">Fundamental 1</option>
+                                        <option value="fundamental2">Fundamental 2</option>
+                                        <option value="medio">Ensino Médio</option>
+                                        <option value="fund12">Fund 1 e 2</option>
+                                        <option value="fundmedio">Fund e Médio</option>
+                                    </select>
+                                </label>
+                                <label>Início: <input type="month" value="2025-11" class="start-date"></label>
+                            </div>
+                        </div>
+                        <div class="region-card">
+                            <h4>Chapecó</h4>
+                            <div class="region-controls">
+                                <label>Escolas: <input type="number" value="70" min="0" max="300" class="schools-count"></label>
+                                <label>Alunos: <input type="number" value="22000" min="0" max="100000" step="100" class="students-count"></label>
+                                <label>Professores: <input type="number" value="2200" min="0" max="10000" step="10" class="teachers-count"></label>
+                                <label>Segmento: 
+                                    <select class="segment-type">
+                                        <option value="todos">Todos</option>
+                                        <option value="fundamental1">Fundamental 1</option>
+                                        <option value="fundamental2">Fundamental 2</option>
+                                        <option value="medio">Ensino Médio</option>
+                                        <option value="fund12">Fund 1 e 2</option>
+                                        <option value="fundmedio">Fund e Médio</option>
+                                    </select>
+                                </label>
+                                <label>Início: <input type="month" value="2025-11" class="start-date"></label>
+                            </div>
+                        </div>
+                        <div class="region-card">
+                            <h4>São José</h4>
+                            <div class="region-controls">
+                                <label>Escolas: <input type="number" value="50" min="0" max="300" class="schools-count"></label>
+                                <label>Alunos: <input type="number" value="16000" min="0" max="100000" step="100" class="students-count"></label>
+                                <label>Professores: <input type="number" value="1600" min="0" max="10000" step="10" class="teachers-count"></label>
+                                <label>Segmento: 
+                                    <select class="segment-type">
+                                        <option value="todos">Todos</option>
+                                        <option value="fundamental1">Fundamental 1</option>
+                                        <option value="fundamental2">Fundamental 2</option>
+                                        <option value="medio">Ensino Médio</option>
+                                        <option value="fund12">Fund 1 e 2</option>
+                                        <option value="fundmedio">Fund e Médio</option>
+                                    </select>
+                                </label>
+                                <label>Início: <input type="month" value="2025-12" class="start-date"></label>
+                            </div>
+                        </div>
+                        <div class="region-card">
+                            <h4>Criciúma</h4>
+                            <div class="region-controls">
+                                <label>Escolas: <input type="number" value="60" min="0" max="300" class="schools-count"></label>
+                                <label>Alunos: <input type="number" value="19000" min="0" max="100000" step="100" class="students-count"></label>
+                                <label>Professores: <input type="number" value="1900" min="0" max="10000" step="10" class="teachers-count"></label>
+                                <label>Segmento: 
+                                    <select class="segment-type">
+                                        <option value="todos">Todos</option>
+                                        <option value="fundamental1">Fundamental 1</option>
+                                        <option value="fundamental2">Fundamental 2</option>
+                                        <option value="medio">Ensino Médio</option>
+                                        <option value="fund12">Fund 1 e 2</option>
+                                        <option value="fundmedio">Fund e Médio</option>
+                                    </select>
+                                </label>
+                                <label>Início: <input type="month" value="2025-12" class="start-date"></label>
+                            </div>
+                        </div>
+                        <div class="region-card">
+                            <h4>Jaraguá do Sul</h4>
+                            <div class="region-controls">
+                                <label>Escolas: <input type="number" value="45" min="0" max="300" class="schools-count"></label>
+                                <label>Alunos: <input type="number" value="14000" min="0" max="100000" step="100" class="students-count"></label>
+                                <label>Professores: <input type="number" value="1400" min="0" max="10000" step="10" class="teachers-count"></label>
+                                <label>Segmento: 
+                                    <select class="segment-type">
+                                        <option value="todos">Todos</option>
+                                        <option value="fundamental1">Fundamental 1</option>
+                                        <option value="fundamental2">Fundamental 2</option>
+                                        <option value="medio">Ensino Médio</option>
+                                        <option value="fund12">Fund 1 e 2</option>
+                                        <option value="fundmedio">Fund e Médio</option>
+                                    </select>
+                                </label>
+                                <label>Início: <input type="month" value="2026-01" class="start-date"></label>
+                            </div>
+                        </div>
+                        <div class="region-card">
+                            <h4>Itajaí</h4>
+                            <div class="region-controls">
+                                <label>Escolas: <input type="number" value="55" min="0" max="300" class="schools-count"></label>
+                                <label>Alunos: <input type="number" value="17000" min="0" max="100000" step="100" class="students-count"></label>
+                                <label>Professores: <input type="number" value="1700" min="0" max="10000" step="10" class="teachers-count"></label>
+                                <label>Segmento: 
+                                    <select class="segment-type">
+                                        <option value="todos">Todos</option>
+                                        <option value="fundamental1">Fundamental 1</option>
+                                        <option value="fundamental2">Fundamental 2</option>
+                                        <option value="medio">Ensino Médio</option>
+                                        <option value="fund12">Fund 1 e 2</option>
+                                        <option value="fundmedio">Fund e Médio</option>
+                                    </select>
+                                </label>
+                                <label>Início: <input type="month" value="2026-01" class="start-date"></label>
+                            </div>
+                        </div>
+                        <div class="region-card">
+                            <h4>Lages</h4>
+                            <div class="region-controls">
+                                <label>Escolas: <input type="number" value="50" min="0" max="300" class="schools-count"></label>
+                                <label>Alunos: <input type="number" value="16000" min="0" max="100000" step="100" class="students-count"></label>
+                                <label>Professores: <input type="number" value="1600" min="0" max="10000" step="10" class="teachers-count"></label>
+                                <label>Segmento: 
+                                    <select class="segment-type">
+                                        <option value="todos">Todos</option>
+                                        <option value="fundamental1">Fundamental 1</option>
+                                        <option value="fundamental2">Fundamental 2</option>
+                                        <option value="medio">Ensino Médio</option>
+                                        <option value="fund12">Fund 1 e 2</option>
+                                        <option value="fundmedio">Fund e Médio</option>
+                                    </select>
+                                </label>
+                                <label>Início: <input type="month" value="2026-02" class="start-date"></label>
+                            </div>
+                        </div>
+                        <div class="region-card">
+                            <h4>Balneário Camboriú</h4>
+                            <div class="region-controls">
+                                <label>Escolas: <input type="number" value="35" min="0" max="300" class="schools-count"></label>
+                                <label>Alunos: <input type="number" value="11000" min="0" max="100000" step="100" class="students-count"></label>
+                                <label>Professores: <input type="number" value="1100" min="0" max="10000" step="10" class="teachers-count"></label>
+                                <label>Segmento: 
+                                    <select class="segment-type">
+                                        <option value="todos">Todos</option>
+                                        <option value="fundamental1">Fundamental 1</option>
+                                        <option value="fundamental2">Fundamental 2</option>
+                                        <option value="medio">Ensino Médio</option>
+                                        <option value="fund12">Fund 1 e 2</option>
+                                        <option value="fundmedio">Fund e Médio</option>
+                                    </select>
+                                </label>
+                                <label>Início: <input type="month" value="2026-02" class="start-date"></label>
+                            </div>
+                        </div>
+                        <div class="region-card">
+                            <h4>Palhoça</h4>
+                            <div class="region-controls">
+                                <label>Escolas: <input type="number" value="40" min="0" max="300" class="schools-count"></label>
+                                <label>Alunos: <input type="number" value="13000" min="0" max="100000" step="100" class="students-count"></label>
+                                <label>Professores: <input type="number" value="1300" min="0" max="10000" step="10" class="teachers-count"></label>
+                                <label>Segmento: 
+                                    <select class="segment-type">
+                                        <option value="todos">Todos</option>
+                                        <option value="fundamental1">Fundamental 1</option>
+                                        <option value="fundamental2">Fundamental 2</option>
+                                        <option value="medio">Ensino Médio</option>
+                                        <option value="fund12">Fund 1 e 2</option>
+                                        <option value="fundmedio">Fund e Médio</option>
+                                    </select>
+                                </label>
+                                <label>Início: <input type="month" value="2026-03" class="start-date"></label>
+                            </div>
+                        </div>
+                        <div class="region-card">
+                            <h4>São Bento do Sul</h4>
+                            <div class="region-controls">
+                                <label>Escolas: <input type="number" value="30" min="0" max="300" class="schools-count"></label>
+                                <label>Alunos: <input type="number" value="9500" min="0" max="100000" step="100" class="students-count"></label>
+                                <label>Professores: <input type="number" value="950" min="0" max="10000" step="10" class="teachers-count"></label>
+                                <label>Segmento: 
+                                    <select class="segment-type">
+                                        <option value="todos">Todos</option>
+                                        <option value="fundamental1">Fundamental 1</option>
+                                        <option value="fundamental2">Fundamental 2</option>
+                                        <option value="medio">Ensino Médio</option>
+                                        <option value="fund12">Fund 1 e 2</option>
+                                        <option value="fundmedio">Fund e Médio</option>
+                                    </select>
+                                </label>
+                                <label>Início: <input type="month" value="2026-03" class="start-date"></label>
+                            </div>
+                        </div>
+                        <div class="region-card">
+                            <h4>Tubarão</h4>
+                            <div class="region-controls">
+                                <label>Escolas: <input type="number" value="35" min="0" max="300" class="schools-count"></label>
+                                <label>Alunos: <input type="number" value="11000" min="0" max="100000" step="100" class="students-count"></label>
+                                <label>Professores: <input type="number" value="1100" min="0" max="10000" step="10" class="teachers-count"></label>
+                                <label>Segmento: 
+                                    <select class="segment-type">
+                                        <option value="todos">Todos</option>
+                                        <option value="fundamental1">Fundamental 1</option>
+                                        <option value="fundamental2">Fundamental 2</option>
+                                        <option value="medio">Ensino Médio</option>
+                                        <option value="fund12">Fund 1 e 2</option>
+                                        <option value="fundmedio">Fund e Médio</option>
+                                    </select>
+                                </label>
+                                <label>Início: <input type="month" value="2026-04" class="start-date"></label>
+                            </div>
+                        </div>
+                        <div class="region-card">
+                            <h4>Brusque</h4>
+                            <div class="region-controls">
+                                <label>Escolas: <input type="number" value="30" min="0" max="300" class="schools-count"></label>
+                                <label>Alunos: <input type="number" value="9500" min="0" max="100000" step="100" class="students-count"></label>
+                                <label>Professores: <input type="number" value="950" min="0" max="10000" step="10" class="teachers-count"></label>
+                                <label>Segmento: 
+                                    <select class="segment-type">
+                                        <option value="todos">Todos</option>
+                                        <option value="fundamental1">Fundamental 1</option>
+                                        <option value="fundamental2">Fundamental 2</option>
+                                        <option value="medio">Ensino Médio</option>
+                                        <option value="fund12">Fund 1 e 2</option>
+                                        <option value="fundmedio">Fund e Médio</option>
+                                    </select>
+                                </label>
+                                <label>Início: <input type="month" value="2026-04" class="start-date"></label>
+                            </div>
+                        </div>
+                        <div class="region-card">
+                            <h4>Concórdia</h4>
+                            <div class="region-controls">
+                                <label>Escolas: <input type="number" value="25" min="0" max="300" class="schools-count"></label>
+                                <label>Alunos: <input type="number" value="8000" min="0" max="100000" step="100" class="students-count"></label>
+                                <label>Professores: <input type="number" value="800" min="0" max="10000" step="10" class="teachers-count"></label>
+                                <label>Segmento: 
+                                    <select class="segment-type">
+                                        <option value="todos">Todos</option>
+                                        <option value="fundamental1">Fundamental 1</option>
+                                        <option value="fundamental2">Fundamental 2</option>
+                                        <option value="medio">Ensino Médio</option>
+                                        <option value="fund12">Fund 1 e 2</option>
+                                        <option value="fundmedio">Fund e Médio</option>
+                                    </select>
+                                </label>
+                                <label>Início: <input type="month" value="2026-05" class="start-date"></label>
+                            </div>
+                        </div>
+                        <div class="region-card">
+                            <h4>Caçador</h4>
+                            <div class="region-controls">
+                                <label>Escolas: <input type="number" value="25" min="0" max="300" class="schools-count"></label>
+                                <label>Alunos: <input type="number" value="8000" min="0" max="100000" step="100" class="students-count"></label>
+                                <label>Professores: <input type="number" value="800" min="0" max="10000" step="10" class="teachers-count"></label>
+                                <label>Segmento: 
+                                    <select class="segment-type">
+                                        <option value="todos">Todos</option>
+                                        <option value="fundamental1">Fundamental 1</option>
+                                        <option value="fundamental2">Fundamental 2</option>
+                                        <option value="medio">Ensino Médio</option>
+                                        <option value="fund12">Fund 1 e 2</option>
+                                        <option value="fundmedio">Fund e Médio</option>
+                                    </select>
+                                </label>
+                                <label>Início: <input type="month" value="2026-05" class="start-date"></label>
+                            </div>
+                        </div>
+                        <div class="region-card">
+                            <h4>Rio do Sul</h4>
+                            <div class="region-controls">
+                                <label>Escolas: <input type="number" value="30" min="0" max="300" class="schools-count"></label>
+                                <label>Alunos: <input type="number" value="9500" min="0" max="100000" step="100" class="students-count"></label>
+                                <label>Professores: <input type="number" value="950" min="0" max="10000" step="10" class="teachers-count"></label>
+                                <label>Segmento: 
+                                    <select class="segment-type">
+                                        <option value="todos">Todos</option>
+                                        <option value="fundamental1">Fundamental 1</option>
+                                        <option value="fundamental2">Fundamental 2</option>
+                                        <option value="medio">Ensino Médio</option>
+                                        <option value="fund12">Fund 1 e 2</option>
+                                        <option value="fundmedio">Fund e Médio</option>
+                                    </select>
+                                </label>
+                                <label>Início: <input type="month" value="2026-06" class="start-date"></label>
+                            </div>
+                        </div>
+                        <div class="region-card">
+                            <h4>Araranguá</h4>
+                            <div class="region-controls">
+                                <label>Escolas: <input type="number" value="25" min="0" max="300" class="schools-count"></label>
+                                <label>Alunos: <input type="number" value="8000" min="0" max="100000" step="100" class="students-count"></label>
+                                <label>Professores: <input type="number" value="800" min="0" max="10000" step="10" class="teachers-count"></label>
+                                <label>Segmento: 
+                                    <select class="segment-type">
+                                        <option value="todos">Todos</option>
+                                        <option value="fundamental1">Fundamental 1</option>
+                                        <option value="fundamental2">Fundamental 2</option>
+                                        <option value="medio">Ensino Médio</option>
+                                        <option value="fund12">Fund 1 e 2</option>
+                                        <option value="fundmedio">Fund e Médio</option>
+                                    </select>
+                                </label>
+                                <label>Início: <input type="month" value="2026-06" class="start-date"></label>
+                            </div>
+                        </div>
+                        <div class="region-card">
+                            <h4>Canoinhas</h4>
+                            <div class="region-controls">
+                                <label>Escolas: <input type="number" value="20" min="0" max="300" class="schools-count"></label>
+                                <label>Alunos: <input type="number" value="6500" min="0" max="100000" step="100" class="students-count"></label>
+                                <label>Professores: <input type="number" value="650" min="0" max="10000" step="10" class="teachers-count"></label>
+                                <label>Segmento: 
+                                    <select class="segment-type">
+                                        <option value="todos">Todos</option>
+                                        <option value="fundamental1">Fundamental 1</option>
+                                        <option value="fundamental2">Fundamental 2</option>
+                                        <option value="medio">Ensino Médio</option>
+                                        <option value="fund12">Fund 1 e 2</option>
+                                        <option value="fundmedio">Fund e Médio</option>
+                                    </select>
+                                </label>
+                                <label>Início: <input type="month" value="2026-07" class="start-date"></label>
+                            </div>
+                        </div>
+                        <div class="region-card">
+                            <h4>Demais Cidades</h4>
+                            <div class="region-controls">
+                                <label>Escolas: <input type="number" value="100" min="0" max="300" class="schools-count"></label>
+                                <label>Alunos: <input type="number" value="115000" min="0" max="200000" step="1000" class="students-count"></label>
+                                <label>Professores: <input type="number" value="5800" min="0" max="20000" step="100" class="teachers-count"></label>
+                                <label>Segmento: 
+                                    <select class="segment-type">
+                                        <option value="todos">Todos</option>
+                                        <option value="fundamental1">Fundamental 1</option>
+                                        <option value="fundamental2">Fundamental 2</option>
+                                        <option value="medio">Ensino Médio</option>
+                                        <option value="fund12">Fund 1 e 2</option>
+                                        <option value="fundmedio">Fund e Médio</option>
+                                    </select>
+                                </label>
+                                <label>Início: <input type="month" value="2026-08" class="start-date"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção Investimento -->
+            <section id="investimento" class="content-section">
+                <h2>Resumo de Investimento</h2>
+                
+                <div class="investment-year-selector">
+                    <label>Visualizar Ano:</label>
+                    <select id="investment-year" class="year-dropdown">
+                        <option value="2025">2025</option>
+                        <option value="2026">2026</option>
+                        <option value="2027">2027</option>
+                        <option value="2028">2028</option>
+                        <option value="2029">2029</option>
+                        <option value="total">Total do Programa</option>
+                    </select>
+                </div>
+
+                <div class="investment-overview">
+                    <div class="investment-card">
+                        <h3>Resumo por Categoria</h3>
+                        <div class="investment-categories">
+                            <div class="category-item">
+                                <span class="category-icon">👥</span>
+                                <div class="category-details">
+                                    <h4>Formação de Alunos</h4>
+                                    <span class="category-value" id="inv-students">R$ 0</span>
+                                    <span class="category-desc"><span id="inv-students-count">0</span> alunos</span>
+                                </div>
+                            </div>
+                            <div class="category-item">
+                                <span class="category-icon">👩‍🏫</span>
+                                <div class="category-details">
+                                    <h4>Formação de Professores</h4>
+                                    <span class="category-value" id="inv-teachers">R$ 0</span>
+                                    <span class="category-desc"><span id="inv-teachers-count">0</span> professores</span>
+                                </div>
+                            </div>
+                            <div class="category-item">
+                                <span class="category-icon">🖥️</span>
+                                <div class="category-details">
+                                    <h4>Infraestrutura Digital</h4>
+                                    <span class="category-value" id="inv-infrastructure">R$ 0</span>
+                                    <span class="category-desc">Plataforma, tablets, etc.</span>
+                                </div>
+                            </div>
+                            <div class="category-item">
+                                <span class="category-icon">📊</span>
+                                <div class="category-details">
+                                    <h4>Avaliações e Testes</h4>
+                                    <span class="category-value" id="inv-tests">R$ 0</span>
+                                    <span class="category-desc"><span id="inv-tests-count">0</span> testes/ano</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="investment-card">
+                        <h3>Linha do Tempo de Investimento</h3>
+                        <div class="investment-timeline">
+                            <div class="timeline-bar" id="investment-timeline-chart">
+                                <!-- Será preenchido dinamicamente -->
+                            </div>
+                            <div class="timeline-legend">
+                                <div class="legend-item">
+                                    <span class="legend-color students"></span>
+                                    <span>Alunos</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color teachers"></span>
+                                    <span>Professores</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color infrastructure"></span>
+                                    <span>Infraestrutura</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color tests"></span>
+                                    <span>Avaliações</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="investment-card full-width">
+                        <h3>Detalhamento por Cidade/Região</h3>
+                        <div class="city-investment-grid" id="city-investments">
+                            <!-- Será preenchido dinamicamente com base nos dados de planejamento -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="investment-summary">
+                    <h3>Resumo do Investimento</h3>
+                    <div class="summary-grid">
+                        <div class="summary-item">
+                            <span class="summary-label">Investimento Mensal (Alunos)</span>
+                            <span class="summary-value" id="monthly-investment">R$ 0</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Investimento Anual (Alunos)</span>
+                            <span class="summary-value" id="yearly-investment">R$ 0</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Formação de Professores (Total)</span>
+                            <span class="summary-value" id="teacher-investment">R$ 0</span>
+                        </div>
+                        <div class="summary-item highlight">
+                            <span class="summary-label">Investimento Total (1º Ano)</span>
+                            <span class="summary-value" id="total-investment">R$ 0</span>
+                        </div>
+                    </div>
+                    <div class="investment-chart">
+                        <div class="chart-title">Distribuição do Investimento</div>
+                        <div class="chart-bars">
+                            <div class="chart-bar">
+                                <div class="bar-fill fundamental" style="height: 45%;"></div>
+                                <span class="bar-label">Fund.</span>
+                                <span class="bar-value" id="chart-fundamental">R$ 0</span>
+                            </div>
+                            <div class="chart-bar">
+                                <div class="bar-fill medio" style="height: 38%;"></div>
+                                <span class="bar-label">Médio</span>
+                                <span class="bar-value" id="chart-medio">R$ 0</span>
+                            </div>
+                            <div class="chart-bar">
+                                <div class="bar-fill tecnico" style="height: 25%;"></div>
+                                <span class="bar-label">Técnico</span>
+                                <span class="bar-value" id="chart-tecnico">R$ 0</span>
+                            </div>
+                            <div class="chart-bar">
+                                <div class="bar-fill teachers" style="height: 60%;"></div>
+                                <span class="bar-label">Professores</span>
+                                <span class="bar-value" id="chart-teachers">R$ 0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção Produtos -->
+            <section id="produtos" class="content-section">
+                <h2>Produtos e Serviços</h2>
+                
+                <div class="info-banner">
+                    <h3>Público-Alvo do Programa</h3>
+                    <div class="year-selector">
+                        <label>Ano de Visualização:</label>
+                        <select id="year-view" class="year-dropdown">
+                            <option value="2025">2025</option>
+                            <option value="2026">2026</option>
+                            <option value="2027">2027</option>
+                            <option value="2028">2028</option>
+                            <option value="2029">2029</option>
+                            <option value="total">Total Acumulado</option>
+                        </select>
+                    </div>
+                    <div class="target-info">
+                        <div class="info-item">
+                            <span class="info-label">Alunos Disponíveis:</span>
+                            <span class="info-value" id="products-total-students">520.000</span>
+                            <div class="progress-indicator">
+                                <div class="progress-bar" id="students-progress-bar">
+                                    <div class="progress-fill" id="students-progress-fill"></div>
+                                </div>
+                                <span class="progress-text" id="students-progress-text">0% alocado</span>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Professores Disponíveis:</span>
+                            <span class="info-value" id="products-total-teachers">51.000</span>
+                            <div class="progress-indicator">
+                                <div class="progress-bar" id="teachers-progress-bar">
+                                    <div class="progress-fill" id="teachers-progress-fill"></div>
+                                </div>
+                                <span class="progress-text" id="teachers-progress-text">0% alocado</span>
+                            </div>
+                        </div>
+                        <div class="info-item highlight">
+                            <span class="info-label">Meta de Alocação:</span>
+                            <span class="info-value">100% dos Recursos</span>
+                            <div class="allocation-status" id="allocation-status">
+                                <span>🎯 Configure as quantidades abaixo</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="products-grid">
+                    <div class="product-card">
+                        <h3>Cursos de Idiomas</h3>
+                        <div class="product-options">
+                            <div class="product-item">
+                                <label>
+                                    <input type="checkbox" id="ingles-geral" checked>
+                                    <span>Inglês Geral</span>
+                                </label>
+                                <div class="product-details">
+                                    <div class="allocation-controls">
+                                        <div class="students-count">
+                                            <label>Alunos:</label>
+                                            <input type="number" class="product-students" data-product="inglesGeral" min="0" step="100">
+                                        </div>
+                                        <div class="teachers-count">
+                                            <label>Professores:</label>
+                                            <input type="number" class="product-teachers" data-product="inglesGeral" min="0" step="10">
+                                        </div>
+                                    </div>
+                                    <div class="price-config">
+                                        <input type="number" class="product-price" value="120" min="50" max="500" step="10">
+                                        <span>R$/aluno/mês</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-item">
+                                <label>
+                                    <input type="checkbox" id="ingles-carreiras" checked>
+                                    <span>Inglês para Carreiras</span>
+                                </label>
+                                <div class="product-details">
+                                    <div class="allocation-controls">
+                                        <div class="students-count">
+                                            <label>Alunos:</label>
+                                            <input type="number" class="product-students" data-product="inglesCarreiras" min="0" step="100">
+                                        </div>
+                                        <div class="teachers-count">
+                                            <label>Professores:</label>
+                                            <input type="number" class="product-teachers" data-product="inglesCarreiras" min="0" step="10">
+                                        </div>
+                                    </div>
+                                    <div class="price-config">
+                                        <input type="number" class="product-price" value="150" min="50" max="500" step="10">
+                                        <span>R$/aluno/mês</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-item">
+                                <label>
+                                    <input type="checkbox" id="espanhol">
+                                    <span>Espanhol</span>
+                                </label>
+                                <div class="product-details">
+                                    <div class="allocation-controls">
+                                        <div class="students-count">
+                                            <label>Alunos:</label>
+                                            <input type="number" class="product-students" data-product="espanhol" min="0" step="100">
+                                        </div>
+                                        <div class="teachers-count">
+                                            <label>Professores:</label>
+                                            <input type="number" class="product-teachers" data-product="espanhol" min="0" step="10">
+                                        </div>
+                                    </div>
+                                    <div class="price-config">
+                                        <input type="number" class="product-price" value="100" min="50" max="500" step="10">
+                                        <span>R$/aluno/mês</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <h3>Tecnologia e Inovação</h3>
+                        <div class="product-options">
+                            <div class="product-item">
+                                <label>
+                                    <input type="checkbox" id="ia" checked>
+                                    <span>Inteligência Artificial</span>
+                                </label>
+                                <div class="product-details">
+                                    <div class="allocation-controls">
+                                        <div class="students-count">
+                                            <label>Alunos:</label>
+                                            <input type="number" class="product-students" data-product="ia" min="0" step="100">
+                                        </div>
+                                        <div class="teachers-count">
+                                            <label>Professores:</label>
+                                            <input type="number" class="product-teachers" data-product="ia" min="0" step="10">
+                                        </div>
+                                    </div>
+                                    <div class="price-config">
+                                        <input type="number" class="product-price" value="180" min="50" max="500" step="10">
+                                        <span>R$/aluno/mês</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-item">
+                                <label>
+                                    <input type="checkbox" id="coding" checked>
+                                    <span>Programação (Coding)</span>
+                                </label>
+                                <div class="product-details">
+                                    <div class="allocation-controls">
+                                        <div class="students-count">
+                                            <label>Alunos:</label>
+                                            <input type="number" class="product-students" data-product="coding" min="0" step="100">
+                                        </div>
+                                        <div class="teachers-count">
+                                            <label>Professores:</label>
+                                            <input type="number" class="product-teachers" data-product="coding" min="0" step="10">
+                                        </div>
+                                    </div>
+                                    <div class="price-config">
+                                        <input type="number" class="product-price" value="200" min="50" max="500" step="10">
+                                        <span>R$/aluno/mês</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card full-width">
+                        <h3>Modalidades de Ensino</h3>
+                        <div class="modalities-grid">
+                            <div class="modality-item">
+                                <h4>Presencial</h4>
+                                <div class="modality-config">
+                                    <label>
+                                        <input type="radio" name="modalidade" value="presencial">
+                                        <span>100% Presencial</span>
+                                    </label>
+                                    <div class="modality-details">
+                                        <p>Aulas em sala com professores</p>
+                                        <div class="cost-modifier">
+                                            <label>Custo adicional:</label>
+                                            <input type="number" value="20" min="0" max="100" step="5">
+                                            <span>%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modality-item">
+                                <h4>Híbrido</h4>
+                                <div class="modality-config">
+                                    <label>
+                                        <input type="radio" name="modalidade" value="hibrido" checked>
+                                        <span>Modelo Híbrido</span>
+                                    </label>
+                                    <div class="modality-details">
+                                        <p>Combinação online e presencial</p>
+                                        <div class="cost-modifier">
+                                            <label>Custo base</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modality-item">
+                                <h4>Online</h4>
+                                <div class="modality-config">
+                                    <label>
+                                        <input type="radio" name="modalidade" value="online">
+                                        <span>100% Online</span>
+                                    </label>
+                                    <div class="modality-details">
+                                        <p>Plataforma digital completa</p>
+                                        <div class="cost-modifier">
+                                            <label>Redução de custo:</label>
+                                            <input type="number" value="30" min="0" max="50" step="5">
+                                            <span>%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card full-width">
+                        <h3>Serviços Adicionais e Recursos</h3>
+                        <div class="additional-services">
+                            <div class="service-item">
+                                <label>
+                                    <input type="checkbox" id="treinamento-professores" checked>
+                                    <span>Treinamento de Professores (Escola de Formação)</span>
+                                </label>
+                                <div class="service-config">
+                                    <input type="number" value="50" min="20" max="200" step="10">
+                                    <span>R$/professor/mês</span>
+                                </div>
+                            </div>
+                            <div class="service-item">
+                                <label>
+                                    <input type="checkbox" id="plataforma-digital" checked>
+                                    <span>Plataforma Digital (Aulas)</span>
+                                </label>
+                                <div class="service-config">
+                                    <input type="number" value="20" min="10" max="100" step="5">
+                                    <span>R$/aluno/mês</span>
+                                </div>
+                            </div>
+                            <div class="service-item">
+                                <label>
+                                    <input type="checkbox" id="nivelamento-speechace" checked>
+                                    <span>Nivelamento (SpeechAce)</span>
+                                </label>
+                                <div class="service-config">
+                                    <input type="number" value="15" min="5" max="50" step="5">
+                                    <span>R$/aluno/teste</span>
+                                </div>
+                            </div>
+                            <div class="service-item">
+                                <label>
+                                    <input type="checkbox" id="certificacao" checked>
+                                    <span>Certificação Oficial</span>
+                                </label>
+                                <div class="service-config">
+                                    <input type="number" value="25" min="10" max="100" step="5">
+                                    <span>R$/certificado</span>
+                                </div>
+                            </div>
+                            <div class="service-item">
+                                <label>
+                                    <input type="checkbox" id="forum-comunidade" checked>
+                                    <span>Fórum (Especialista e Comunidade)</span>
+                                </label>
+                                <div class="service-config">
+                                    <input type="number" value="5" min="2" max="20" step="1">
+                                    <span>R$/usuário/mês</span>
+                                </div>
+                            </div>
+                            <div class="service-item">
+                                <label>
+                                    <input type="checkbox" id="helpdesk" checked>
+                                    <span>Help Desk / Atendimento</span>
+                                </label>
+                                <div class="service-config">
+                                    <input type="number" value="8" min="5" max="30" step="1">
+                                    <span>R$/aluno/mês</span>
+                                </div>
+                            </div>
+                            <div class="service-item">
+                                <label>
+                                    <input type="checkbox" id="material-didatico" checked>
+                                    <span>Material Didático Digital</span>
+                                </label>
+                                <div class="service-config">
+                                    <input type="number" value="15" min="5" max="50" step="5">
+                                    <span>R$/aluno/mês</span>
+                                </div>
+                            </div>
+                            <div class="service-item">
+                                <label>
+                                    <input type="checkbox" id="tablets-fones">
+                                    <span>Tablets e Fones de Ouvido</span>
+                                </label>
+                                <div class="service-config">
+                                    <input type="number" value="300" min="200" max="1000" step="50">
+                                    <span>R$/kit único</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card full-width">
+                        <h3>Programas de Incentivo e Engajamento</h3>
+                        <div class="incentive-programs">
+                            <div class="service-item">
+                                <label>
+                                    <input type="checkbox" id="bolsas-cursos">
+                                    <span>Bolsas para Cursos Avançados</span>
+                                </label>
+                                <div class="service-config">
+                                    <input type="number" value="500" min="200" max="2000" step="100">
+                                    <span>R$/bolsa/mês</span>
+                                </div>
+                            </div>
+                            <div class="service-item">
+                                <label>
+                                    <input type="checkbox" id="eventos-viagens">
+                                    <span>Eventos e Viagens Educacionais</span>
+                                </label>
+                                <div class="service-config">
+                                    <input type="number" value="1000" min="500" max="5000" step="100">
+                                    <span>R$/participante/evento</span>
+                                </div>
+                            </div>
+                            <div class="service-item">
+                                <label>
+                                    <input type="checkbox" id="embaixador-programa">
+                                    <span>Programa Embaixador (Status/Distinção)</span>
+                                </label>
+                                <div class="service-config">
+                                    <input type="number" value="200" min="100" max="1000" step="50">
+                                    <span>R$/embaixador/mês</span>
+                                </div>
+                            </div>
+                            <div class="service-item">
+                                <label>
+                                    <input type="checkbox" id="job-board">
+                                    <span>Job Board - Portal de Oportunidades</span>
+                                </label>
+                                <div class="service-config">
+                                    <input type="number" value="50000" min="20000" max="200000" step="10000">
+                                    <span>R$/plataforma/mês</span>
+                                </div>
+                            </div>
+                            <div class="service-item">
+                                <label>
+                                    <input type="checkbox" id="reconhecimento">
+                                    <span>Reconhecimento e Visibilidade</span>
+                                </label>
+                                <div class="service-config">
+                                    <input type="number" value="100" min="50" max="500" step="50">
+                                    <span>R$/premiação</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção Avaliações -->
+            <section id="avaliacoes" class="content-section">
+                <h2>Sistema de Avaliação e Certificação</h2>
+                
+                <div class="assessment-grid">
+                    <div class="assessment-card">
+                        <h3>Testes de Proficiência</h3>
+                        <div class="test-items">
+                            <div class="test-item">
+                                <div class="test-header">
+                                    <h4>Inglês - Teste Alumni</h4>
+                                    <span class="certification-badge">Certificado Embaixada EUA</span>
+                                </div>
+                                <div class="test-details">
+                                    <p>Avaliação completa de proficiência reconhecida internacionalmente</p>
+                                    <div class="test-controls">
+                                        <label>
+                                            <input type="checkbox" id="test-ingles" checked>
+                                            <span>Aplicar teste anualmente</span>
+                                        </label>
+                                        <div class="test-config-row">
+                                            <div class="test-price">
+                                                <label>Custo por teste:</label>
+                                                <div class="currency-input">
+                                                    <span>R$</span>
+                                                    <input type="number" id="price-test-ingles" value="10" min="5" max="100" step="5">
+                                                </div>
+                                            </div>
+                                            <div class="test-quantity">
+                                                <label>Alunos a testar:</label>
+                                                <input type="number" id="qty-test-ingles" placeholder="Calculado automaticamente" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="test-targets">
+                                        <label>
+                                            <input type="checkbox" checked> Professores de Inglês
+                                        </label>
+                                        <label>
+                                            <input type="checkbox" checked> Alunos de Inglês
+                                        </label>
+                                        <label>
+                                            <input type="checkbox" checked> Alunos Ensino Técnico
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="test-item">
+                                <div class="test-header">
+                                    <h4>Espanhol - Teste Alumni</h4>
+                                    <span class="certification-badge">Certificado Alumni</span>
+                                </div>
+                                <div class="test-details">
+                                    <p>Avaliação de proficiência em espanhol com metodologia própria</p>
+                                    <div class="test-controls">
+                                        <label>
+                                            <input type="checkbox" id="test-espanhol">
+                                            <span>Aplicar teste anualmente</span>
+                                        </label>
+                                        <div class="test-config-row">
+                                            <div class="test-price">
+                                                <label>Custo por teste:</label>
+                                                <div class="currency-input">
+                                                    <span>R$</span>
+                                                    <input type="number" id="price-test-espanhol" value="10" min="5" max="100" step="5">
+                                                </div>
+                                            </div>
+                                            <div class="test-quantity">
+                                                <label>Alunos a testar:</label>
+                                                <input type="number" id="qty-test-espanhol" placeholder="Calculado automaticamente" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="test-targets">
+                                        <label>
+                                            <input type="checkbox"> Alunos de Espanhol
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="test-item">
+                                <div class="test-header">
+                                    <h4>Programação - TOFAS</h4>
+                                    <span class="certification-badge">Certificado Sprix</span>
+                                </div>
+                                <div class="test-details">
+                                    <p>Teste de lógica e programação reconhecido pelo mercado</p>
+                                    <div class="test-controls">
+                                        <label>
+                                            <input type="checkbox" id="test-coding" checked>
+                                            <span>Aplicar teste anualmente</span>
+                                        </label>
+                                        <div class="test-config-row">
+                                            <div class="test-price">
+                                                <label>Custo por teste:</label>
+                                                <div class="currency-input">
+                                                    <span>R$</span>
+                                                    <input type="number" id="price-test-coding" value="10" min="5" max="100" step="5">
+                                                </div>
+                                            </div>
+                                            <div class="test-quantity">
+                                                <label>Alunos a testar:</label>
+                                                <input type="number" id="qty-test-coding" placeholder="Calculado automaticamente" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="test-targets">
+                                        <label>
+                                            <input type="checkbox" checked> Alunos de Coding
+                                        </label>
+                                        <label>
+                                            <input type="checkbox"> Alunos Ensino Técnico (TI)
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="test-item">
+                                <div class="test-header">
+                                    <h4>Inteligência Artificial</h4>
+                                    <span class="certification-badge">A Definir</span>
+                                </div>
+                                <div class="test-details">
+                                    <p>Avaliação de competências em IA (certificação em definição)</p>
+                                    <div class="test-controls">
+                                        <label>
+                                            <input type="checkbox" id="test-ia" checked>
+                                            <span>Aplicar teste anualmente</span>
+                                        </label>
+                                        <div class="test-config-row">
+                                            <div class="test-price">
+                                                <label>Custo por teste:</label>
+                                                <div class="currency-input">
+                                                    <span>R$</span>
+                                                    <input type="number" id="price-test-ia" value="10" min="5" max="100" step="5">
+                                                </div>
+                                            </div>
+                                            <div class="test-quantity">
+                                                <label>Alunos a testar:</label>
+                                                <input type="number" id="qty-test-ia" placeholder="Calculado automaticamente" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="test-targets">
+                                        <label>
+                                            <input type="checkbox" checked> Todos os Professores
+                                        </label>
+                                        <label>
+                                            <input type="checkbox" checked> Alunos de IA
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="assessment-card">
+                        <h3>Cronograma de Avaliações</h3>
+                        <div class="assessment-timeline">
+                            <div class="assessment-phase">
+                                <h4>Avaliação Diagnóstica</h4>
+                                <p>Início do programa - Baseline</p>
+                                <div class="phase-config">
+                                    <label>Mês:</label>
+                                    <input type="month" value="2025-10">
+                                </div>
+                            </div>
+                            <div class="assessment-phase">
+                                <h4>1ª Avaliação Anual</h4>
+                                <p>Medição de progresso</p>
+                                <div class="phase-config">
+                                    <label>Mês:</label>
+                                    <input type="month" value="2026-10">
+                                </div>
+                            </div>
+                            <div class="assessment-phase">
+                                <h4>2ª Avaliação Anual</h4>
+                                <p>Certificação intermediária</p>
+                                <div class="phase-config">
+                                    <label>Mês:</label>
+                                    <input type="month" value="2027-10">
+                                </div>
+                            </div>
+                            <div class="assessment-phase">
+                                <h4>Avaliação Final</h4>
+                                <p>Certificação completa</p>
+                                <div class="phase-config">
+                                    <label>Mês:</label>
+                                    <input type="month" value="2028-10">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="assessment-card full-width">
+                        <h3>Resumo de Custos com Avaliações</h3>
+                        <div class="assessment-summary">
+                            <div class="summary-row">
+                                <span class="summary-label">Total de Testes por Ano:</span>
+                                <span class="summary-value" id="total-tests">0</span>
+                            </div>
+                            <div class="summary-row">
+                                <span class="summary-label">Custo Médio por Teste:</span>
+                                <span class="summary-value" id="avg-test-cost">R$ 10</span>
+                            </div>
+                            <div class="summary-row highlight">
+                                <span class="summary-label">Investimento Anual em Avaliações:</span>
+                                <span class="summary-value" id="annual-test-cost">R$ 0</span>
+                            </div>
+                        </div>
+                        
+                        <div class="test-distribution">
+                            <h4>Distribuição de Testes por Categoria</h4>
+                            <div class="distribution-bars">
+                                <div class="dist-bar">
+                                    <div class="dist-label">Inglês</div>
+                                    <div class="dist-progress">
+                                        <div class="dist-fill ingles" style="width: 40%;"></div>
+                                        <span class="dist-value" id="dist-ingles">0</span>
+                                    </div>
+                                </div>
+                                <div class="dist-bar">
+                                    <div class="dist-label">Espanhol</div>
+                                    <div class="dist-progress">
+                                        <div class="dist-fill espanhol" style="width: 10%;"></div>
+                                        <span class="dist-value" id="dist-espanhol">0</span>
+                                    </div>
+                                </div>
+                                <div class="dist-bar">
+                                    <div class="dist-label">Coding</div>
+                                    <div class="dist-progress">
+                                        <div class="dist-fill coding" style="width: 25%;"></div>
+                                        <span class="dist-value" id="dist-coding">0</span>
+                                    </div>
+                                </div>
+                                <div class="dist-bar">
+                                    <div class="dist-label">IA</div>
+                                    <div class="dist-progress">
+                                        <div class="dist-fill ia" style="width: 25%;"></div>
+                                        <span class="dist-value" id="dist-ia">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção KPIs -->
+            <section id="kpis" class="content-section">
+                <h2>KPIs e Resultados Esperados</h2>
+                
+                <div class="kpi-dashboard">
+                    <div class="kpi-card">
+                        <h3>Desempenho Acadêmico</h3>
+                        <div class="kpi-item">
+                            <label>Melhoria no IDEB</label>
+                            <div class="kpi-control">
+                                <input type="range" id="ideb-improvement" min="0" max="20" value="15" step="1">
+                                <span class="kpi-value">+15%</span>
+                            </div>
+                        </div>
+                        <div class="kpi-item">
+                            <label>Taxa de Aprovação</label>
+                            <div class="kpi-control">
+                                <input type="range" id="approval-rate" min="70" max="100" value="92" step="1">
+                                <span class="kpi-value">92%</span>
+                            </div>
+                        </div>
+                        <div class="simple-chart">
+                            <div class="metric-display">
+                                <div class="metric-item">
+                                    <span class="metric-label">IDEB Atual</span>
+                                    <div class="progress-circle">
+                                        <div class="progress-text">10º</div>
+                                    </div>
+                                </div>
+                                <div class="arrow">→</div>
+                                <div class="metric-item">
+                                    <span class="metric-label">IDEB Meta</span>
+                                    <div class="progress-circle success">
+                                        <div class="progress-text">5º</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card">
+                        <h3>Proficiência em Idiomas</h3>
+                        <div class="kpi-item">
+                            <label>Alunos com Certificação (Inglês)</label>
+                            <div class="kpi-control">
+                                <input type="range" id="english-cert" min="0" max="100" value="75" step="5">
+                                <span class="kpi-value">75%</span>
+                            </div>
+                        </div>
+                        <div class="kpi-item">
+                            <label>Professores Fluentes</label>
+                            <div class="kpi-control">
+                                <input type="range" id="teacher-fluency" min="0" max="100" value="85" step="5">
+                                <span class="kpi-value">85%</span>
+                            </div>
+                        </div>
+                        <div class="proficiency-levels">
+                            <div class="level-bar">
+                                <span>A1-A2</span>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 10%;"></div>
+                                </div>
+                                <span>10%</span>
+                            </div>
+                            <div class="level-bar">
+                                <span>B1-B2</span>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 60%;"></div>
+                                </div>
+                                <span>60%</span>
+                            </div>
+                            <div class="level-bar">
+                                <span>C1-C2</span>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 30%;"></div>
+                                </div>
+                                <span>30%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card">
+                        <h3>Empregabilidade e Mercado</h3>
+                        <div class="kpi-item">
+                            <label>Inserção no Mercado (Técnico)</label>
+                            <div class="kpi-control">
+                                <input type="range" id="job-placement" min="0" max="100" value="82" step="1">
+                                <span class="kpi-value">82%</span>
+                            </div>
+                        </div>
+                        <div class="kpi-item">
+                            <label>Aumento Salarial Médio</label>
+                            <div class="kpi-control">
+                                <input type="range" id="salary-increase" min="0" max="50" value="35" step="5">
+                                <span class="kpi-value">+35%</span>
+                            </div>
+                        </div>
+                        <div class="employment-visual">
+                            <div class="employment-circle">
+                                <div class="employment-fill" style="--percentage: 82"></div>
+                                <div class="employment-text">
+                                    <span class="percentage">82%</span>
+                                    <span class="label">Empregados</span>
+                                </div>
+                            </div>
+                            <div class="employment-stats">
+                                <div class="stat">
+                                    <span class="value">+35%</span>
+                                    <span class="desc">Aumento Salarial</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="value">30k</span>
+                                    <span class="desc">Alunos Técnicos</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card">
+                        <h3>Adoção de IA na Educação</h3>
+                        <div class="kpi-item">
+                            <label>Professores usando IA diariamente</label>
+                            <div class="kpi-control">
+                                <input type="range" id="teacher-ai-usage" min="0" max="100" value="70" step="5">
+                                <span class="kpi-value">70%</span>
+                            </div>
+                        </div>
+                        <div class="kpi-item">
+                            <label>Alunos com ferramentas IA</label>
+                            <div class="kpi-control">
+                                <input type="range" id="student-ai-tools" min="0" max="100" value="85" step="5">
+                                <span class="kpi-value">85%</span>
+                            </div>
+                        </div>
+                        <div class="kpi-item">
+                            <label>Aulas com integração IA</label>
+                            <div class="kpi-control">
+                                <input type="range" id="ai-integrated-classes" min="0" max="100" value="60" step="5">
+                                <span class="kpi-value">60%</span>
+                            </div>
+                        </div>
+                        <div class="ai-metrics">
+                            <h4>Métricas de Evolução IA</h4>
+                            <div class="metric-cards">
+                                <div class="metric-card">
+                                    <span class="metric-icon">🤖</span>
+                                    <span class="metric-value">95%</span>
+                                    <span class="metric-label">Professores Certificados IA</span>
+                                </div>
+                                <div class="metric-card">
+                                    <span class="metric-icon">📊</span>
+                                    <span class="metric-value">3x</span>
+                                    <span class="metric-label">Produtividade Aumentada</span>
+                                </div>
+                                <div class="metric-card">
+                                    <span class="metric-icon">💡</span>
+                                    <span class="metric-value">80%</span>
+                                    <span class="metric-label">Projetos com IA</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card full-width">
+                        <h3>Impacto da Formação Continuada</h3>
+                        <div class="training-impact">
+                            <div class="impact-metric">
+                                <h4>Velocidade de Aprendizado</h4>
+                                <p>Com treinamento regular de professores:</p>
+                                <div class="comparison">
+                                    <div class="before">
+                                        <span>Sem formação</span>
+                                        <div class="metric-bar" style="width: 40%;"></div>
+                                        <span>40%</span>
+                                    </div>
+                                    <div class="after">
+                                        <span>Com formação</span>
+                                        <div class="metric-bar success" style="width: 85%;"></div>
+                                        <span>85%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="impact-metric">
+                                <h4>Engajamento dos Alunos</h4>
+                                <div class="engagement-controls">
+                                    <label>Horas de formação/professor:</label>
+                                    <input type="number" id="training-hours" value="40" min="10" max="100" step="10">
+                                    <span>= </span>
+                                    <span class="impact-result">+45% engajamento</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card full-width">
+                        <h3>Projeção de Resultados 2025-2029</h3>
+                        <div class="projection-timeline">
+                            <div class="timeline-year">
+                                <div class="year">2025</div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar-fill students" style="width: 20%;"></div>
+                                    <div class="progress-bar-fill teachers" style="width: 15%;"></div>
+                                </div>
+                                <div class="year-stats">
+                                    <span>50k alunos</span>
+                                    <span>10k professores</span>
+                                </div>
+                            </div>
+                            <div class="timeline-year">
+                                <div class="year">2026</div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar-fill students" style="width: 40%;"></div>
+                                    <div class="progress-bar-fill teachers" style="width: 35%;"></div>
+                                </div>
+                                <div class="year-stats">
+                                    <span>150k alunos</span>
+                                    <span>25k professores</span>
+                                </div>
+                            </div>
+                            <div class="timeline-year">
+                                <div class="year">2027</div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar-fill students" style="width: 70%;"></div>
+                                    <div class="progress-bar-fill teachers" style="width: 60%;"></div>
+                                </div>
+                                <div class="year-stats">
+                                    <span>300k alunos</span>
+                                    <span>40k professores</span>
+                                </div>
+                            </div>
+                            <div class="timeline-year">
+                                <div class="year">2028</div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar-fill students" style="width: 90%;"></div>
+                                    <div class="progress-bar-fill teachers" style="width: 85%;"></div>
+                                </div>
+                                <div class="year-stats">
+                                    <span>450k alunos</span>
+                                    <span>45k professores</span>
+                                </div>
+                            </div>
+                            <div class="timeline-year">
+                                <div class="year">2029</div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar-fill students" style="width: 100%;"></div>
+                                    <div class="progress-bar-fill teachers" style="width: 100%;"></div>
+                                </div>
+                                <div class="year-stats">
+                                    <span>520k alunos</span>
+                                    <span>51k professores</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção Apresentação -->
+            <section id="apresentacao" class="content-section">
+                <h2>Apresentação Executiva</h2>
+                
+                <div class="presentation-container">
+                    <div class="slide-controls">
+                        <button class="slide-nav prev" id="prevSlide">←</button>
+                        <span class="slide-counter">Slide <span id="currentSlide">1</span> de <span id="totalSlides">8</span></span>
+                        <button class="slide-nav next" id="nextSlide">→</button>
+                    </div>
+
+                    <div class="slides-wrapper">
+                        <!-- Slide 1: Título -->
+                        <div class="slide active">
+                            <div class="slide-header">
+                                <h1>Transformação Digital da Educação em Santa Catarina</h1>
+                                <p class="slide-subtitle">Parceria Better Tech & Alumni + Secretaria de Educação</p>
+                            </div>
+                            <div class="slide-content centered">
+                                <div class="key-numbers">
+                                    <div class="key-number">
+                                        <span class="number">520.000</span>
+                                        <span class="label">Alunos Beneficiados</span>
+                                    </div>
+                                    <div class="key-number">
+                                        <span class="number">51.000</span>
+                                        <span class="label">Professores Capacitados</span>
+                                    </div>
+                                    <div class="key-number">
+                                        <span class="number">10ª → 5ª</span>
+                                        <span class="label">Posição IDEB</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 2: Desafio -->
+                        <div class="slide">
+                            <div class="slide-header">
+                                <h2>O Desafio de Santa Catarina</h2>
+                            </div>
+                            <div class="slide-content">
+                                <div class="challenge-grid">
+                                    <div class="challenge-item">
+                                        <h3>Posição no IDEB</h3>
+                                        <p>10º lugar nacional - incompatível com o potencial do estado</p>
+                                    </div>
+                                    <div class="challenge-item">
+                                        <h3>Professores</h3>
+                                        <p>60% temporários, desmotivados e sem fluência em inglês</p>
+                                    </div>
+                                    <div class="challenge-item">
+                                        <h3>Mercado de Trabalho</h3>
+                                        <p>Demanda por profissionais qualificados em tecnologia e idiomas</p>
+                                    </div>
+                                    <div class="challenge-item">
+                                        <h3>Infraestrutura</h3>
+                                        <p>1.000+ escolas com potencial subutilizado</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 3: Solução -->
+                        <div class="slide">
+                            <div class="slide-header">
+                                <h2>Nossa Solução Integrada</h2>
+                            </div>
+                            <div class="slide-content">
+                                <div class="solution-pillars">
+                                    <div class="pillar">
+                                        <h3>1. Capacitação de Professores</h3>
+                                        <ul>
+                                            <li>Formação em IA para todos os educadores</li>
+                                            <li>Inglês fluente para professores de idiomas</li>
+                                            <li>Metodologias ativas e engajamento</li>
+                                        </ul>
+                                    </div>
+                                    <div class="pillar">
+                                        <h3>2. Formação de Alunos</h3>
+                                        <ul>
+                                            <li>Inglês geral e para carreiras</li>
+                                            <li>Programação e pensamento computacional</li>
+                                            <li>Inteligência Artificial aplicada</li>
+                                        </ul>
+                                    </div>
+                                    <div class="pillar">
+                                        <h3>3. Modalidades Flexíveis</h3>
+                                        <ul>
+                                            <li>Presencial, híbrido e online</li>
+                                            <li>Contraturno adaptável</li>
+                                            <li>Integração com currículo</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 4: Implementação -->
+                        <div class="slide">
+                            <div class="slide-header">
+                                <h2>Plano de Implementação</h2>
+                            </div>
+                            <div class="slide-content">
+                                <div class="implementation-timeline">
+                                    <div class="phase">
+                                        <h3>Fase 1: Piloto (Out/2025)</h3>
+                                        <p>50.000 alunos em contraturno</p>
+                                        <p>Regiões: Florianópolis, Joinville, Blumenau</p>
+                                    </div>
+                                    <div class="phase">
+                                        <h3>Fase 2: Expansão (Fev/2026)</h3>
+                                        <p>30% das escolas estaduais</p>
+                                        <p>Formação massiva de professores</p>
+                                    </div>
+                                    <div class="phase">
+                                        <h3>Fase 3: Consolidação (Ago/2026)</h3>
+                                        <p>100% de cobertura estadual</p>
+                                        <p>Programa integrado ao currículo</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 5: Investimento -->
+                        <div class="slide">
+                            <div class="slide-header">
+                                <h2>Investimento e Retorno</h2>
+                            </div>
+                            <div class="slide-content">
+                                <div class="investment-summary-slide">
+                                    <div class="invest-item">
+                                        <h3>Investimento Total (Ano 1)</h3>
+                                        <p class="invest-value" id="slide-total-investment">R$ 0</p>
+                                    </div>
+                                    <div class="roi-grid">
+                                        <div class="roi-item">
+                                            <h4>Retorno Social</h4>
+                                            <ul>
+                                                <li>520.000 jovens preparados para o futuro</li>
+                                                <li>Redução da evasão escolar</li>
+                                                <li>Maior engajamento estudantil</li>
+                                            </ul>
+                                        </div>
+                                        <div class="roi-item">
+                                            <h4>Retorno Econômico</h4>
+                                            <ul>
+                                                <li>82% de empregabilidade (ensino técnico)</li>
+                                                <li>35% aumento salarial médio</li>
+                                                <li>Atração de empresas de tecnologia</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 6: Resultados -->
+                        <div class="slide">
+                            <div class="slide-header">
+                                <h2>Resultados Esperados</h2>
+                            </div>
+                            <div class="slide-content">
+                                <div class="results-dashboard">
+                                    <div class="result-metric">
+                                        <span class="metric-icon">📈</span>
+                                        <h3>IDEB</h3>
+                                        <p>10º → 5º lugar</p>
+                                    </div>
+                                    <div class="result-metric">
+                                        <span class="metric-icon">🎓</span>
+                                        <h3>Certificação em Inglês</h3>
+                                        <p>75% dos alunos</p>
+                                    </div>
+                                    <div class="result-metric">
+                                        <span class="metric-icon">💼</span>
+                                        <h3>Empregabilidade</h3>
+                                        <p>82% ensino técnico</p>
+                                    </div>
+                                    <div class="result-metric">
+                                        <span class="metric-icon">🚀</span>
+                                        <h3>Inovação</h3>
+                                        <p>100% com IA</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 7: Diferenciais -->
+                        <div class="slide">
+                            <div class="slide-header">
+                                <h2>Por Que Better Tech & Alumni?</h2>
+                            </div>
+                            <div class="slide-content">
+                                <div class="differentials">
+                                    <div class="diff-item">
+                                        <h3>Centro Binacional Certificado</h3>
+                                        <p>Certificação reconhecida pela Embaixada Americana</p>
+                                    </div>
+                                    <div class="diff-item">
+                                        <h3>Metodologia Comprovada</h3>
+                                        <p>Cases de sucesso em São Paulo e outras regiões</p>
+                                    </div>
+                                    <div class="diff-item">
+                                        <h3>Tecnologia Própria</h3>
+                                        <p>LMS adaptado à realidade educacional brasileira</p>
+                                    </div>
+                                    <div class="diff-item">
+                                        <h3>Visão Integrada</h3>
+                                        <p>Formação simultânea de professores e alunos</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 8: Call to Action -->
+                        <div class="slide">
+                            <div class="slide-header">
+                                <h2>Próximos Passos</h2>
+                            </div>
+                            <div class="slide-content">
+                                <div class="next-steps">
+                                    <div class="step">
+                                        <span class="step-number">1</span>
+                                        <h3>Aprovação da Proposta</h3>
+                                        <p>Validação com Governador e Secretaria</p>
+                                    </div>
+                                    <div class="step">
+                                        <span class="step-number">2</span>
+                                        <h3>Detalhamento Técnico</h3>
+                                        <p>Definição de escolas piloto e cronograma</p>
+                                    </div>
+                                    <div class="step">
+                                        <span class="step-number">3</span>
+                                        <h3>Mobilização</h3>
+                                        <p>Engajamento de diretores e professores</p>
+                                    </div>
+                                    <div class="step">
+                                        <span class="step-number">4</span>
+                                        <h3>Início do Piloto</h3>
+                                        <p>Outubro 2025 - 50.000 alunos</p>
+                                    </div>
+                                </div>
+                                <div class="cta-section">
+                                    <h3>Transforme Santa Catarina no Estado Mais Inovador em Educação do Brasil</h3>
+                                    <button class="cta-button" onclick="window.print()">Exportar Apresentação</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
