@@ -147,6 +147,12 @@ function updateTotalStudents() {
         totalElement.textContent = total.toLocaleString('pt-BR');
         console.log('Total de alunos atualizado para:', total.toLocaleString('pt-BR'));
     }
+    
+    // Forçar atualização nas outras abas também
+    const totalElementPlanning = document.querySelector('.stat-value');
+    if (totalElementPlanning && totalElementPlanning.id === 'total-alunos') {
+        totalElementPlanning.textContent = total.toLocaleString('pt-BR');
+    }
 }
 
 // Controles de orçamento
@@ -823,6 +829,12 @@ function restoreFormValues() {
     document.getElementById('test-coding').checked = state.tests.coding.active;
     document.getElementById('test-ia').checked = state.tests.ia.active;
     
+    // Preços dos testes
+    document.getElementById('price-test-ingles').value = state.tests.ingles.price;
+    document.getElementById('price-test-espanhol').value = state.tests.espanhol.price;
+    document.getElementById('price-test-coding').value = state.tests.coding.price;
+    document.getElementById('price-test-ia').value = state.tests.ia.price;
+    
     // Restaurar alocações de alunos e professores
     document.querySelectorAll('.product-students').forEach(input => {
         const productKey = input.dataset.product;
@@ -1101,6 +1113,13 @@ function calculateTestsCosts() {
     
     // Atualizar investimento total incluindo testes
     calculateInvestment();
+    
+    // Forçar atualização do dashboard de investimento
+    if (document.getElementById('investment-year')) {
+        setTimeout(() => {
+            calculateCompiledInvestments();
+        }, 100);
+    }
 }
 
 // Atualizar visualização da distribuição de testes
