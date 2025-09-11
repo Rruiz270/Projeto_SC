@@ -1179,12 +1179,19 @@ function calculateCompiledInvestments() {
     const infrastructureInvestment = calculateInfrastructureInvestment();
     const testInvestment = calculateTestInvestment();
     
-    console.log('Investimentos base:', {
-        students: studentInvestment,
-        teachers: teacherInvestment,
-        infrastructure: infrastructureInvestment,
-        tests: testInvestment
+    console.log('=== DEBUG INVESTIMENTOS BASE ===');
+    console.log('Students:', studentInvestment);
+    console.log('Teachers:', teacherInvestment);
+    console.log('Infrastructure:', infrastructureInvestment);
+    console.log('Tests:', testInvestment);
+    console.log('Estado dos produtos para testes:', {
+        inglesGeral: state.products.inglesGeral,
+        inglesCarreiras: state.products.inglesCarreiras,
+        espanhol: state.products.espanhol,
+        coding: state.products.coding,
+        ia: state.products.ia
     });
+    console.log('Estado dos testes:', state.tests);
     
     // Calcular por ano ou total
     let yearMultiplier = 1;
@@ -1289,36 +1296,57 @@ function calculateTestInvestment() {
     // Usar dados reais dos produtos alocados (mesmo cálculo do calculateTestsCosts)
     let totalCost = 0;
     
+    console.log('=== calculateTestInvestment DEBUG ===');
+    
     if (state.tests.ingles.active) {
         const englishGeneralStudents = state.products.inglesGeral.students || 0;
         const englishCareerStudents = state.products.inglesCarreiras.students || 0;
         const englishGeneralTeachers = state.products.inglesGeral.teachers || 0;
         const englishCareerTeachers = state.products.inglesCarreiras.teachers || 0;
         const englishTotal = (englishGeneralStudents + englishCareerStudents + englishGeneralTeachers + englishCareerTeachers) * state.tests.ingles.price;
+        console.log('Inglês:', {
+            students: englishGeneralStudents + englishCareerStudents,
+            teachers: englishGeneralTeachers + englishCareerTeachers,
+            total: englishGeneralStudents + englishCareerStudents + englishGeneralTeachers + englishCareerTeachers,
+            price: state.tests.ingles.price,
+            cost: englishTotal
+        });
         totalCost += englishTotal;
+    } else {
+        console.log('Inglês: INATIVO');
     }
     
     if (state.tests.espanhol.active) {
         const spanishStudents = state.products.espanhol.students || 0;
         const spanishTeachers = state.products.espanhol.teachers || 0;
         const spanishTotal = (spanishStudents + spanishTeachers) * state.tests.espanhol.price;
+        console.log('Espanhol:', spanishStudents + spanishTeachers, '× R$', state.tests.espanhol.price, '= R$', spanishTotal);
         totalCost += spanishTotal;
+    } else {
+        console.log('Espanhol: INATIVO');
     }
     
     if (state.tests.coding.active) {
         const codingStudents = state.products.coding.students || 0;
         const codingTeachers = state.products.coding.teachers || 0;
         const codingTotal = (codingStudents + codingTeachers) * state.tests.coding.price;
+        console.log('Coding:', codingStudents + codingTeachers, '× R$', state.tests.coding.price, '= R$', codingTotal);
         totalCost += codingTotal;
+    } else {
+        console.log('Coding: INATIVO');
     }
     
     if (state.tests.ia.active) {
         const iaStudents = state.products.ia.students || 0;
         const iaTeachers = state.products.ia.teachers || 0;
         const iaTotal = (iaStudents + iaTeachers) * state.tests.ia.price;
+        console.log('IA:', iaStudents + iaTeachers, '× R$', state.tests.ia.price, '= R$', iaTotal);
         totalCost += iaTotal;
+    } else {
+        console.log('IA: INATIVO');
     }
     
+    console.log('TOTAL TESTES:', totalCost);
     return totalCost;
 }
 
