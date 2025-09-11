@@ -1936,6 +1936,56 @@ input[type="month"] {
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
 
+/* Tabela de Breakdown de Investimento */
+.investment-breakdown {
+    margin-top: 40px;
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.investment-breakdown h3 {
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+    color: #1e293b;
+}
+
+.investment-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.investment-table th,
+.investment-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.investment-table th {
+    background: #f8fafc;
+    font-weight: 600;
+    color: #475569;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+.investment-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+.investment-table .total-row {
+    font-weight: 700;
+    background: #f1f5f9;
+    border-top: 2px solid #cbd5e1;
+}
+
+.investment-table .total-row td {
+    color: #1e293b;
+    font-size: 1.1rem;
+}
+
 .city-card h4 {
     color: var(--primary-color);
     margin: 0 0 15px 0;

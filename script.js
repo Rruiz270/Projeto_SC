@@ -1207,29 +1207,21 @@ function calculateCompiledInvestments() {
     
     // Atualizar grid de cidades
     updateCityInvestmentGrid(selectedYear);
+    
+    // Atualizar tabela de breakdown
+    updateInvestmentBreakdown(selectedYear);
 }
 
 function calculateStudentInvestment() {
-    // Calcular investimento total em alunos baseado em produtos ativos
+    // Calcular investimento total em alunos baseado nos valores definidos no planejamento
     let total = 0;
-    const totalStudents = state.students.fundamental + state.students.medio + state.students.tecnico;
     
-    // Calcular por produto ativo
-    if (state.products.inglesGeral.active) {
-        total += totalStudents * 0.3 * state.products.inglesGeral.price * 12;
-    }
-    if (state.products.inglesCarreiras.active) {
-        total += state.students.tecnico * state.products.inglesCarreiras.price * 12;
-    }
-    if (state.products.espanhol.active) {
-        total += totalStudents * 0.1 * state.products.espanhol.price * 12;
-    }
-    if (state.products.ia.active) {
-        total += (state.students.medio + state.students.tecnico) * 0.5 * state.products.ia.price * 12;
-    }
-    if (state.products.coding.active) {
-        total += (state.students.medio + state.students.tecnico) * 0.3 * state.products.coding.price * 12;
-    }
+    // Usar os valores de orçamento definidos por segmento
+    const fundamentalTotal = state.students.fundamental * state.budget.fundamental * 12;
+    const medioTotal = state.students.medio * state.budget.medio * 12;
+    const tecnicoTotal = state.students.tecnico * state.budget.tecnico * 12;
+    
+    total = fundamentalTotal + medioTotal + tecnicoTotal;
     
     // Aplicar modificador de modalidade
     return total * state.modalityCostModifier;
@@ -1237,22 +1229,42 @@ function calculateStudentInvestment() {
 
 function calculateTeacherInvestment() {
     // Investimento em capacitação de professores
-    const baseInvestment = state.teachers * (state.budget.teacherAI + state.budget.teacherEnglish);
+    let total = 0;
     
-    // Adicionar custos de certificação e treinamento contínuo
-    const certificationCost = state.teachers * 500; // R$ 500 por certificação
-    const continuousTraining = state.teachers * 100 * 12; // R$ 100/mês por professor
+    // Curso de IA para professores (one-time)
+    if (state.products.ia.active) {
+        const aiTeachers = Math.round(state.teachers * (state.budget.teacherAI / 100));
+        total += aiTeachers * 300; // R$ 300 por professor (curso único)
+    }
     
-    return baseInvestment + certificationCost + continuousTraining;
+    // Curso de Inglês para professores (mensal)
+    if (state.products.inglesGeral.active || state.products.inglesCarreiras.active) {
+        const englishTeachers = Math.round(state.teachers * (state.budget.teacherEnglish / 100));
+        total += englishTeachers * 50 * 12; // R$ 50/mês por professor
+    }
+    
+    // Adicionar custos de certificação
+    const certificationCost = state.teachers * 0.2 * 500; // 20% dos professores por ano, R$ 500 cada
+    
+    return total + certificationCost;
 }
 
 function calculateInfrastructureInvestment() {
-    // Estimar investimento em infraestrutura
-    const schools = 1000; // Aproximadamente 1000 escolas estaduais
-    const techLabCost = 50000; // R$ 50k por laboratório
-    const connectivityCost = 2000 * 12; // R$ 2k/mês por escola
+    // Investimento em infraestrutura baseado na modalidade
+    let infrastructure = 0;
     
-    return (schools * techLabCost * 0.2) + (schools * connectivityCost); // 20% das escolas por ano
+    if (state.modality === 'hybrid' || state.modality === 'presential') {
+        // Infraestrutura física necessária
+        const schools = Math.ceil((state.students.fundamental + state.students.medio + state.students.tecnico) / 500);
+        const labCost = 30000; // R$ 30k por laboratório
+        infrastructure += schools * labCost * 0.2; // 20% das escolas por ano
+    }
+    
+    // Plataforma digital e conectividade (todas modalidades)
+    const platformCost = 500000; // R$ 500k/ano para plataforma
+    const connectivityCost = 1000 * 12 * 100; // R$ 1k/mês para 100 pontos de acesso
+    
+    return infrastructure + platformCost + connectivityCost;
 }
 
 function calculateTestInvestment() {
