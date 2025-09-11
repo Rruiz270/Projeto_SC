@@ -130,7 +130,10 @@ function updateInvestmentBreakdown(selectedYear) {
     
     // Testes - Inglês
     if (state.tests.ingles.active) {
-        const englishTestTakers = Math.round((state.teachers * 0.2 + (state.students.fundamental + state.students.medio) * 0.3 + state.students.tecnico) * yearMultiplier);
+        const englishTeachers = Math.round(state.teachers * 0.2 * yearMultiplier);
+        const englishStudents = Math.round((state.students.fundamental + state.students.medio) * 0.3 * yearMultiplier);
+        const technicalStudents = Math.round(state.students.tecnico * yearMultiplier);
+        const englishTestTakers = englishTeachers + englishStudents + technicalStudents;
         const englishTestTotal = englishTestTakers * state.tests.ingles.price;
         tbody.innerHTML += `
             <tr>
@@ -144,9 +147,43 @@ function updateInvestmentBreakdown(selectedYear) {
         grandTotal += englishTestTotal;
     }
     
+    // Testes - Espanhol
+    if (state.tests.espanhol.active) {
+        const spanishStudents = Math.round((state.students.fundamental + state.students.medio) * 0.1 * yearMultiplier);
+        const spanishTestTotal = spanishStudents * state.tests.espanhol.price;
+        tbody.innerHTML += `
+            <tr>
+                <td>Avaliações</td>
+                <td>Certificação de Espanhol</td>
+                <td>${spanishStudents.toLocaleString('pt-BR')}</td>
+                <td>R$ ${state.tests.espanhol.price.toFixed(2)}</td>
+                <td>R$ ${spanishTestTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+            </tr>
+        `;
+        grandTotal += spanishTestTotal;
+    }
+    
+    // Testes - Coding
+    if (state.tests.coding.active) {
+        const codingStudents = Math.round((state.students.medio + state.students.tecnico) * 0.2 * yearMultiplier);
+        const codingTestTotal = codingStudents * state.tests.coding.price;
+        tbody.innerHTML += `
+            <tr>
+                <td>Avaliações</td>
+                <td>Certificação de Programação</td>
+                <td>${codingStudents.toLocaleString('pt-BR')}</td>
+                <td>R$ ${state.tests.coding.price.toFixed(2)}</td>
+                <td>R$ ${codingTestTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+            </tr>
+        `;
+        grandTotal += codingTestTotal;
+    }
+    
     // Testes - IA
     if (state.tests.ia.active) {
-        const iaTestTakers = Math.round((state.teachers + (state.students.medio + state.students.tecnico) * 0.15) * yearMultiplier);
+        const iaTeachers = Math.round(state.teachers * yearMultiplier);
+        const iaStudents = Math.round((state.students.medio + state.students.tecnico) * 0.15 * yearMultiplier);
+        const iaTestTakers = iaTeachers + iaStudents;
         const iaTestTotal = iaTestTakers * state.tests.ia.price;
         tbody.innerHTML += `
             <tr>

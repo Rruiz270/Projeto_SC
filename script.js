@@ -817,6 +817,12 @@ function restoreFormValues() {
     document.getElementById('ia').checked = state.products.ia.active;
     document.getElementById('coding').checked = state.products.coding.active;
     
+    // Testes
+    document.getElementById('test-ingles').checked = state.tests.ingles.active;
+    document.getElementById('test-espanhol').checked = state.tests.espanhol.active;
+    document.getElementById('test-coding').checked = state.tests.coding.active;
+    document.getElementById('test-ia').checked = state.tests.ia.active;
+    
     // Restaurar alocações de alunos e professores
     document.querySelectorAll('.product-students').forEach(input => {
         const productKey = input.dataset.product;
@@ -1275,22 +1281,26 @@ function calculateTestInvestment() {
         const englishTeachers = Math.round(state.teachers * 0.2);
         const englishStudents = Math.round((state.students.fundamental + state.students.medio) * 0.3);
         const technicalStudents = state.students.tecnico;
-        totalCost += (englishTeachers + englishStudents + technicalStudents) * state.tests.ingles.price;
+        const englishTotal = (englishTeachers + englishStudents + technicalStudents) * state.tests.ingles.price;
+        totalCost += englishTotal;
     }
     
     if (state.tests.espanhol.active) {
         const spanishStudents = Math.round((state.students.fundamental + state.students.medio) * 0.1);
-        totalCost += spanishStudents * state.tests.espanhol.price;
+        const spanishTotal = spanishStudents * state.tests.espanhol.price;
+        totalCost += spanishTotal;
     }
     
     if (state.tests.coding.active) {
         const codingStudents = Math.round((state.students.medio + state.students.tecnico) * 0.2);
-        totalCost += codingStudents * state.tests.coding.price;
+        const codingTotal = codingStudents * state.tests.coding.price;
+        totalCost += codingTotal;
     }
     
     if (state.tests.ia.active) {
         const iaStudents = Math.round((state.students.medio + state.students.tecnico) * 0.15);
-        totalCost += (state.teachers + iaStudents) * state.tests.ia.price;
+        const iaTotal = (state.teachers + iaStudents) * state.tests.ia.price;
+        totalCost += iaTotal;
     }
     
     return totalCost;
