@@ -1256,21 +1256,9 @@ function calculateTeacherInvestment() {
 }
 
 function calculateInfrastructureInvestment() {
-    // Investimento em infraestrutura baseado na modalidade
-    let infrastructure = 0;
-    
-    if (state.modality === 'hybrid' || state.modality === 'presential') {
-        // Infraestrutura física necessária
-        const schools = Math.ceil((state.students.fundamental + state.students.medio + state.students.tecnico) / 500);
-        const labCost = 30000; // R$ 30k por laboratório
-        infrastructure += schools * labCost * 0.2; // 20% das escolas por ano
-    }
-    
-    // Plataforma digital e conectividade (todas modalidades)
-    const platformCost = 500000; // R$ 500k/ano para plataforma
-    const connectivityCost = 1000 * 12 * 100; // R$ 1k/mês para 100 pontos de acesso
-    
-    return infrastructure + platformCost + connectivityCost;
+    // Infraestrutura não é considerada neste cálculo de investimento
+    // O estado irá fornecer a infraestrutura necessária
+    return 0;
 }
 
 function calculateTestInvestment() {

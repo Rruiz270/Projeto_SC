@@ -98,35 +98,8 @@ function updateInvestmentBreakdown(selectedYear) {
         grandTotal += englishTeachersTotal;
     }
     
-    // Infraestrutura
-    if (state.modality === 'hybrid' || state.modality === 'presential') {
-        const schools = Math.ceil((state.students.fundamental + state.students.medio + state.students.tecnico) / 500);
-        const labsThisYear = Math.round(schools * 0.2 * yearMultiplier);
-        const labsTotal = labsThisYear * 30000;
-        tbody.innerHTML += `
-            <tr>
-                <td>Infraestrutura</td>
-                <td>Laboratórios de Tecnologia</td>
-                <td>${labsThisYear}</td>
-                <td>R$ 30.000,00</td>
-                <td>R$ ${labsTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-            </tr>
-        `;
-        grandTotal += labsTotal;
-    }
-    
-    // Plataforma Digital
-    const platformTotal = 500000 * yearMultiplier;
-    tbody.innerHTML += `
-        <tr>
-            <td>Infraestrutura</td>
-            <td>Plataforma Digital e Manutenção</td>
-            <td>1</td>
-            <td>R$ 500.000,00/ano</td>
-            <td>R$ ${platformTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-        </tr>
-    `;
-    grandTotal += platformTotal;
+    // Infraestrutura não é considerada - fornecida pelo estado
+    // (removido os custos de laboratórios e plataforma digital)
     
     // Testes - Inglês
     if (state.tests.ingles.active) {
