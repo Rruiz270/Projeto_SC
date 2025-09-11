@@ -1060,41 +1060,46 @@ function calculateTestsCosts() {
     
     // Calcular testes de Inglês
     if (state.tests.ingles.active) {
-        // Professores de inglês (estimativa 20% dos 51k)
-        const englishTeachers = Math.round(state.teachers * 0.2);
-        // Alunos no curso de inglês (estimativa)
-        const englishStudents = Math.round((state.students.fundamental + state.students.medio) * 0.3);
-        // Todos os alunos técnicos
-        const technicalStudents = state.students.tecnico;
+        // Usar dados reais alocados nos produtos
+        const englishGeneralStudents = state.products.inglesGeral.students || 0;
+        const englishCareerStudents = state.products.inglesCarreiras.students || 0;
+        const englishGeneralTeachers = state.products.inglesGeral.teachers || 0;
+        const englishCareerTeachers = state.products.inglesCarreiras.teachers || 0;
         
-        testsByType.ingles = englishTeachers + englishStudents + technicalStudents;
+        testsByType.ingles = englishGeneralStudents + englishCareerStudents + englishGeneralTeachers + englishCareerTeachers;
         totalTests += testsByType.ingles;
         totalCost += testsByType.ingles * state.tests.ingles.price;
     }
     
     // Calcular testes de Espanhol
     if (state.tests.espanhol.active) {
-        // Estimativa de alunos de espanhol
-        const spanishStudents = Math.round((state.students.fundamental + state.students.medio) * 0.1);
-        testsByType.espanhol = spanishStudents;
+        // Usar dados reais alocados no produto Espanhol
+        const spanishStudents = state.products.espanhol.students || 0;
+        const spanishTeachers = state.products.espanhol.teachers || 0;
+        
+        testsByType.espanhol = spanishStudents + spanishTeachers;
         totalTests += testsByType.espanhol;
         totalCost += testsByType.espanhol * state.tests.espanhol.price;
     }
     
     // Calcular testes de Coding
     if (state.tests.coding.active) {
-        // Alunos no curso de coding
-        const codingStudents = Math.round((state.students.medio + state.students.tecnico) * 0.2);
-        testsByType.coding = codingStudents;
+        // Usar dados reais alocados no produto Coding
+        const codingStudents = state.products.coding.students || 0;
+        const codingTeachers = state.products.coding.teachers || 0;
+        
+        testsByType.coding = codingStudents + codingTeachers;
         totalTests += testsByType.coding;
         totalCost += testsByType.coding * state.tests.coding.price;
     }
     
     // Calcular testes de IA
     if (state.tests.ia.active) {
-        // Todos os professores + alunos de IA
-        const iaStudents = Math.round((state.students.medio + state.students.tecnico) * 0.15);
-        testsByType.ia = state.teachers + iaStudents;
+        // Usar dados reais alocados no produto IA
+        const iaStudents = state.products.ia.students || 0;
+        const iaTeachers = state.products.ia.teachers || 0;
+        
+        testsByType.ia = iaStudents + iaTeachers;
         totalTests += testsByType.ia;
         totalCost += testsByType.ia * state.tests.ia.price;
     }
@@ -1281,32 +1286,36 @@ function calculateInfrastructureInvestment() {
 }
 
 function calculateTestInvestment() {
-    // Usar cálculo existente de testes
+    // Usar dados reais dos produtos alocados (mesmo cálculo do calculateTestsCosts)
     let totalCost = 0;
     
     if (state.tests.ingles.active) {
-        const englishTeachers = Math.round(state.teachers * 0.2);
-        const englishStudents = Math.round((state.students.fundamental + state.students.medio) * 0.3);
-        const technicalStudents = state.students.tecnico;
-        const englishTotal = (englishTeachers + englishStudents + technicalStudents) * state.tests.ingles.price;
+        const englishGeneralStudents = state.products.inglesGeral.students || 0;
+        const englishCareerStudents = state.products.inglesCarreiras.students || 0;
+        const englishGeneralTeachers = state.products.inglesGeral.teachers || 0;
+        const englishCareerTeachers = state.products.inglesCarreiras.teachers || 0;
+        const englishTotal = (englishGeneralStudents + englishCareerStudents + englishGeneralTeachers + englishCareerTeachers) * state.tests.ingles.price;
         totalCost += englishTotal;
     }
     
     if (state.tests.espanhol.active) {
-        const spanishStudents = Math.round((state.students.fundamental + state.students.medio) * 0.1);
-        const spanishTotal = spanishStudents * state.tests.espanhol.price;
+        const spanishStudents = state.products.espanhol.students || 0;
+        const spanishTeachers = state.products.espanhol.teachers || 0;
+        const spanishTotal = (spanishStudents + spanishTeachers) * state.tests.espanhol.price;
         totalCost += spanishTotal;
     }
     
     if (state.tests.coding.active) {
-        const codingStudents = Math.round((state.students.medio + state.students.tecnico) * 0.2);
-        const codingTotal = codingStudents * state.tests.coding.price;
+        const codingStudents = state.products.coding.students || 0;
+        const codingTeachers = state.products.coding.teachers || 0;
+        const codingTotal = (codingStudents + codingTeachers) * state.tests.coding.price;
         totalCost += codingTotal;
     }
     
     if (state.tests.ia.active) {
-        const iaStudents = Math.round((state.students.medio + state.students.tecnico) * 0.15);
-        const iaTotal = (state.teachers + iaStudents) * state.tests.ia.price;
+        const iaStudents = state.products.ia.students || 0;
+        const iaTeachers = state.products.ia.teachers || 0;
+        const iaTotal = (iaStudents + iaTeachers) * state.tests.ia.price;
         totalCost += iaTotal;
     }
     

@@ -103,71 +103,88 @@ function updateInvestmentBreakdown(selectedYear) {
     
     // Testes - Inglês
     if (state.tests.ingles.active) {
-        const englishTeachers = Math.round(state.teachers * 0.2 * yearMultiplier);
-        const englishStudents = Math.round((state.students.fundamental + state.students.medio) * 0.3 * yearMultiplier);
-        const technicalStudents = Math.round(state.students.tecnico * yearMultiplier);
-        const englishTestTakers = englishTeachers + englishStudents + technicalStudents;
+        const englishGeneralStudents = Math.round((state.products.inglesGeral.students || 0) * yearMultiplier);
+        const englishCareerStudents = Math.round((state.products.inglesCarreiras.students || 0) * yearMultiplier);
+        const englishGeneralTeachers = Math.round((state.products.inglesGeral.teachers || 0) * yearMultiplier);
+        const englishCareerTeachers = Math.round((state.products.inglesCarreiras.teachers || 0) * yearMultiplier);
+        const englishTestTakers = englishGeneralStudents + englishCareerStudents + englishGeneralTeachers + englishCareerTeachers;
         const englishTestTotal = englishTestTakers * state.tests.ingles.price;
-        tbody.innerHTML += `
-            <tr>
-                <td>Avaliações</td>
-                <td>Certificação Internacional de Inglês</td>
-                <td>${englishTestTakers.toLocaleString('pt-BR')}</td>
-                <td>R$ ${state.tests.ingles.price.toFixed(2)}</td>
-                <td>R$ ${englishTestTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-            </tr>
-        `;
-        grandTotal += englishTestTotal;
+        
+        if (englishTestTakers > 0) {
+            tbody.innerHTML += `
+                <tr>
+                    <td>Avaliações</td>
+                    <td>Certificação Internacional de Inglês</td>
+                    <td>${englishTestTakers.toLocaleString('pt-BR')}</td>
+                    <td>R$ ${state.tests.ingles.price.toFixed(2)}</td>
+                    <td>R$ ${englishTestTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                </tr>
+            `;
+            grandTotal += englishTestTotal;
+        }
     }
     
     // Testes - Espanhol
     if (state.tests.espanhol.active) {
-        const spanishStudents = Math.round((state.students.fundamental + state.students.medio) * 0.1 * yearMultiplier);
-        const spanishTestTotal = spanishStudents * state.tests.espanhol.price;
-        tbody.innerHTML += `
-            <tr>
-                <td>Avaliações</td>
-                <td>Certificação de Espanhol</td>
-                <td>${spanishStudents.toLocaleString('pt-BR')}</td>
-                <td>R$ ${state.tests.espanhol.price.toFixed(2)}</td>
-                <td>R$ ${spanishTestTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-            </tr>
-        `;
-        grandTotal += spanishTestTotal;
+        const spanishStudents = Math.round((state.products.espanhol.students || 0) * yearMultiplier);
+        const spanishTeachers = Math.round((state.products.espanhol.teachers || 0) * yearMultiplier);
+        const spanishTestTakers = spanishStudents + spanishTeachers;
+        const spanishTestTotal = spanishTestTakers * state.tests.espanhol.price;
+        
+        if (spanishTestTakers > 0) {
+            tbody.innerHTML += `
+                <tr>
+                    <td>Avaliações</td>
+                    <td>Certificação de Espanhol</td>
+                    <td>${spanishTestTakers.toLocaleString('pt-BR')}</td>
+                    <td>R$ ${state.tests.espanhol.price.toFixed(2)}</td>
+                    <td>R$ ${spanishTestTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                </tr>
+            `;
+            grandTotal += spanishTestTotal;
+        }
     }
     
     // Testes - Coding
     if (state.tests.coding.active) {
-        const codingStudents = Math.round((state.students.medio + state.students.tecnico) * 0.2 * yearMultiplier);
-        const codingTestTotal = codingStudents * state.tests.coding.price;
-        tbody.innerHTML += `
-            <tr>
-                <td>Avaliações</td>
-                <td>Certificação de Programação</td>
-                <td>${codingStudents.toLocaleString('pt-BR')}</td>
-                <td>R$ ${state.tests.coding.price.toFixed(2)}</td>
-                <td>R$ ${codingTestTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-            </tr>
-        `;
-        grandTotal += codingTestTotal;
+        const codingStudents = Math.round((state.products.coding.students || 0) * yearMultiplier);
+        const codingTeachers = Math.round((state.products.coding.teachers || 0) * yearMultiplier);
+        const codingTestTakers = codingStudents + codingTeachers;
+        const codingTestTotal = codingTestTakers * state.tests.coding.price;
+        
+        if (codingTestTakers > 0) {
+            tbody.innerHTML += `
+                <tr>
+                    <td>Avaliações</td>
+                    <td>Certificação de Programação</td>
+                    <td>${codingTestTakers.toLocaleString('pt-BR')}</td>
+                    <td>R$ ${state.tests.coding.price.toFixed(2)}</td>
+                    <td>R$ ${codingTestTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                </tr>
+            `;
+            grandTotal += codingTestTotal;
+        }
     }
     
     // Testes - IA
     if (state.tests.ia.active) {
-        const iaTeachers = Math.round(state.teachers * yearMultiplier);
-        const iaStudents = Math.round((state.students.medio + state.students.tecnico) * 0.15 * yearMultiplier);
-        const iaTestTakers = iaTeachers + iaStudents;
+        const iaStudents = Math.round((state.products.ia.students || 0) * yearMultiplier);
+        const iaTeachers = Math.round((state.products.ia.teachers || 0) * yearMultiplier);
+        const iaTestTakers = iaStudents + iaTeachers;
         const iaTestTotal = iaTestTakers * state.tests.ia.price;
-        tbody.innerHTML += `
-            <tr>
-                <td>Avaliações</td>
-                <td>Certificação em IA</td>
-                <td>${iaTestTakers.toLocaleString('pt-BR')}</td>
-                <td>R$ ${state.tests.ia.price.toFixed(2)}</td>
-                <td>R$ ${iaTestTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-            </tr>
-        `;
-        grandTotal += iaTestTotal;
+        
+        if (iaTestTakers > 0) {
+            tbody.innerHTML += `
+                <tr>
+                    <td>Avaliações</td>
+                    <td>Certificação em IA</td>
+                    <td>${iaTestTakers.toLocaleString('pt-BR')}</td>
+                    <td>R$ ${state.tests.ia.price.toFixed(2)}</td>
+                    <td>R$ ${iaTestTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                </tr>
+            `;
+            grandTotal += iaTestTotal;
+        }
     }
     
     // Atualizar total
