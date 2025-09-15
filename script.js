@@ -1,16 +1,19 @@
 // Estado padrão
 const defaultState = {
     students: {
-        fundamental: 280000,
-        medio: 240000,
-        tecnico: 30000
+        fundamental1: 140000,    // 1º ao 5º ano (Anos Iniciais)
+        fundamental2: 140000,    // 6º ao 9º ano (Anos Finais)
+        medio: 120000,           // 1º ao 3º ano Ensino Médio
+        medioTecnico: 120000     // Ensino Médio Técnico
     },
     budget: {
-        fundamental: 150,
-        medio: 180,
-        tecnico: 250,
+        fundamental1: 120,       // R$/aluno/mês Fund 1 (1º-5º ano)
+        fundamental2: 150,       // R$/aluno/mês Fund 2 (6º-9º ano)
+        medio: 180,              // R$/aluno/mês Médio
+        medioTecnico: 250,       // R$/aluno/mês Médio Técnico
         teacherAI: 800,
-        teacherEnglish: 1200
+        teacherEnglish: 1200,
+        teacherSoftSkills: 300   // Novo: valorização professor lifeskills
     },
     teachers: 51000,
     pilotStudents: 50000,
@@ -37,38 +40,54 @@ const defaultState = {
         coding: { active: true, price: 10, students: 0 },
         ia: { active: true, price: 10, students: 0 }
     },
-    cities: {
-        florianopolis: { 
-            schools: 85, 
-            segment: 'todos', 
+    // Regiões especializadas por vocação econômica
+    regions: {
+        itajai_portos: { 
+            name: 'Itajaí - Portos e Logística',
+            schools: 120, 
+            focus: 'logistica',
             yearData: {
-                2025: { students: 8000, teachers: 400 },
-                2026: { students: 10000, teachers: 800 },
-                2027: { students: 12000, teachers: 1000 },
-                2028: { students: 16000, teachers: 1300 },
-                2029: { students: 20000, teachers: 1600 }
+                2025: { students: 15000, teachers: 750, fundamental1: 6000, fundamental2: 4000, medio: 3000, medioTecnico: 2000 },
+                2026: { students: 25000, teachers: 1250, fundamental1: 10000, fundamental2: 7000, medio: 5000, medioTecnico: 3000 },
+                2027: { students: 35000, teachers: 1750, fundamental1: 14000, fundamental2: 10000, medio: 7000, medioTecnico: 4000 },
+                2028: { students: 45000, teachers: 2250, fundamental1: 18000, fundamental2: 13000, medio: 9000, medioTecnico: 5000 },
+                2029: { students: 55000, teachers: 2750, fundamental1: 22000, fundamental2: 16000, medio: 11000, medioTecnico: 6000 }
             }
         },
-        joinville: { 
+        floripa_turismo: { 
+            name: 'Florianópolis - Turismo e Tecnologia',
             schools: 95, 
-            segment: 'todos',
+            focus: 'tecnologia_turismo',
             yearData: {
-                2025: { students: 9000, teachers: 450 },
-                2026: { students: 12000, teachers: 900 },
-                2027: { students: 15000, teachers: 1200 },
-                2028: { students: 18000, teachers: 1500 },
-                2029: { students: 22000, teachers: 1800 }
+                2025: { students: 12000, teachers: 600, fundamental1: 5000, fundamental2: 3000, medio: 2500, medioTecnico: 1500 },
+                2026: { students: 20000, teachers: 1000, fundamental1: 8000, fundamental2: 6000, medio: 4000, medioTecnico: 2000 },
+                2027: { students: 28000, teachers: 1400, fundamental1: 11000, fundamental2: 8000, medio: 6000, medioTecnico: 3000 },
+                2028: { students: 36000, teachers: 1800, fundamental1: 14000, fundamental2: 11000, medio: 7500, medioTecnico: 3500 },
+                2029: { students: 44000, teachers: 2200, fundamental1: 17000, fundamental2: 13000, medio: 9000, medioTecnico: 5000 }
             }
         },
-        outras: { 
-            schools: 825, 
-            segment: 'todos',
+        jaragua_industria: { 
+            name: 'Jaraguá do Sul - Indústria WEG',
+            schools: 85, 
+            focus: 'industria',
             yearData: {
-                2025: { students: 8000, teachers: 400 },
-                2026: { students: 80000, teachers: 6000 },
-                2027: { students: 150000, teachers: 12000 },
-                2028: { students: 200000, teachers: 16000 },
-                2029: { students: 250000, teachers: 20000 }
+                2025: { students: 10000, teachers: 500, fundamental1: 4000, fundamental2: 2500, medio: 2000, medioTecnico: 1500 },
+                2026: { students: 18000, teachers: 900, fundamental1: 7000, fundamental2: 5000, medio: 4000, medioTecnico: 2000 },
+                2027: { students: 25000, teachers: 1250, fundamental1: 10000, fundamental2: 7000, medio: 5000, medioTecnico: 3000 },
+                2028: { students: 32000, teachers: 1600, fundamental1: 13000, fundamental2: 9000, medio: 6500, medioTecnico: 3500 },
+                2029: { students: 40000, teachers: 2000, fundamental1: 16000, fundamental2: 11000, medio: 8000, medioTecnico: 5000 }
+            }
+        },
+        outras_regioes: { 
+            name: 'Outras Regiões de SC',
+            schools: 700, 
+            focus: 'geral',
+            yearData: {
+                2025: { students: 263000, teachers: 13150, fundamental1: 105000, fundamental2: 70000, medio: 52000, medioTecnico: 36000 },
+                2026: { students: 350000, teachers: 17500, fundamental1: 140000, fundamental2: 95000, medio: 70000, medioTecnico: 45000 },
+                2027: { students: 432000, teachers: 21600, fundamental1: 173000, fundamental2: 117000, medio: 86000, medioTecnico: 56000 },
+                2028: { students: 487000, teachers: 24350, fundamental1: 195000, fundamental2: 132000, medio: 97000, medioTecnico: 63000 },
+                2029: { students: 521000, teachers: 26050, fundamental1: 208000, fundamental2: 142000, meio: 104000, medioTecnico: 67000 }
             }
         }
     },
