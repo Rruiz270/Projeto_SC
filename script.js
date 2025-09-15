@@ -40,6 +40,53 @@ const defaultState = {
         coding: { active: true, price: 10, students: 0 },
         ia: { active: true, price: 10, students: 0 }
     },
+    // Dados dos segmentos educacionais
+    segments: {
+        fund1: {
+            name: 'FUND1 - Anos Iniciais',
+            schools: 300,
+            yearData: {
+                2025: { students: 28000, teachers: 1400 },
+                2026: { students: 35000, teachers: 1750 },
+                2027: { students: 42000, teachers: 2100 },
+                2028: { students: 49000, teachers: 2450 },
+                2029: { students: 56000, teachers: 2800 }
+            }
+        },
+        fund2: {
+            name: 'FUND2 - Anos Finais',
+            schools: 250,
+            yearData: {
+                2025: { students: 30000, teachers: 1500 },
+                2026: { students: 38000, teachers: 1900 },
+                2027: { students: 46000, teachers: 2300 },
+                2028: { students: 54000, teachers: 2700 },
+                2029: { students: 62000, teachers: 3100 }
+            }
+        },
+        medio: {
+            name: 'Ensino Médio',
+            schools: 200,
+            yearData: {
+                2025: { students: 25000, teachers: 1250 },
+                2026: { students: 32000, teachers: 1600 },
+                2027: { students: 39000, teachers: 1950 },
+                2028: { students: 46000, teachers: 2300 },
+                2029: { students: 53000, teachers: 2650 }
+            }
+        },
+        tecnico: {
+            name: 'Médio Técnico',
+            schools: 150,
+            yearData: {
+                2025: { students: 30000, teachers: 1500 },
+                2026: { students: 40000, teachers: 2000 },
+                2027: { students: 50000, teachers: 2500 },
+                2028: { students: 60000, teachers: 3000 },
+                2029: { students: 70000, teachers: 3500 }
+            }
+        }
+    },
     // Regiões especializadas por vocação econômica
     regions: {
         itajai_portos: { 
@@ -1851,54 +1898,58 @@ function handleTeacherAllocation(event) {
 }
 
 function getTotalAvailableStudents() {
-    // Usar dados das cidades em vez do cálculo antigo
+    // Usar dados dos segmentos
     let totalStudents = 0;
     
-    if (state.currentYear === 'total') {
-        // Somar todos os anos de todas as cidades
-        Object.values(state.cities).forEach(city => {
-            if (city.yearData) {
-                Object.values(city.yearData).forEach(yearData => {
+    const selectedYear = document.getElementById('year-selector')?.value || '2025';
+    
+    if (selectedYear === 'total') {
+        // Somar todos os anos de todos os segmentos
+        Object.values(state.segments).forEach(segment => {
+            if (segment.yearData) {
+                Object.values(segment.yearData).forEach(yearData => {
                     totalStudents += yearData.students || 0;
                 });
             }
         });
     } else {
-        // Somar apenas o ano específico
-        Object.values(state.cities).forEach(city => {
-            if (city.yearData && city.yearData[state.currentYear]) {
-                totalStudents += city.yearData[state.currentYear].students || 0;
+        // Somar apenas o ano específico de todos os segmentos
+        Object.values(state.segments).forEach(segment => {
+            if (segment.yearData && segment.yearData[selectedYear]) {
+                totalStudents += segment.yearData[selectedYear].students || 0;
             }
         });
     }
     
-    console.log('Total de alunos disponíveis para', state.currentYear, ':', totalStudents);
+    console.log('Total de alunos disponíveis para', selectedYear, ':', totalStudents);
     return totalStudents;
 }
 
 function getTotalAvailableTeachers() {
-    // Usar dados das cidades em vez do cálculo antigo
+    // Usar dados dos segmentos
     let totalTeachers = 0;
     
-    if (state.currentYear === 'total') {
-        // Somar todos os anos de todas as cidades
-        Object.values(state.cities).forEach(city => {
-            if (city.yearData) {
-                Object.values(city.yearData).forEach(yearData => {
+    const selectedYear = document.getElementById('year-selector')?.value || '2025';
+    
+    if (selectedYear === 'total') {
+        // Somar todos os anos de todos os segmentos
+        Object.values(state.segments).forEach(segment => {
+            if (segment.yearData) {
+                Object.values(segment.yearData).forEach(yearData => {
                     totalTeachers += yearData.teachers || 0;
                 });
             }
         });
     } else {
-        // Somar apenas o ano específico
-        Object.values(state.cities).forEach(city => {
-            if (city.yearData && city.yearData[state.currentYear]) {
-                totalTeachers += city.yearData[state.currentYear].teachers || 0;
+        // Somar apenas o ano específico de todos os segmentos
+        Object.values(state.segments).forEach(segment => {
+            if (segment.yearData && segment.yearData[selectedYear]) {
+                totalTeachers += segment.yearData[selectedYear].teachers || 0;
             }
         });
     }
     
-    console.log('Total de professores disponíveis para', state.currentYear, ':', totalTeachers);
+    console.log('Total de professores disponíveis para', selectedYear, ':', totalTeachers);
     return totalTeachers;
 }
 
