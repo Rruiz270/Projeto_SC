@@ -398,33 +398,45 @@ function updateSimpleChart() {
 
 // Controle de produtos
 function setupProductControls() {
+    // Sync initial checkbox states with product state
+    document.getElementById('ingles-geral').checked = state.products.inglesGeral.active;
+    document.getElementById('ingles-carreiras').checked = state.products.inglesCarreiras.active;
+    document.getElementById('espanhol').checked = state.products.espanhol.active;
+    document.getElementById('ia').checked = state.products.ia.active;
+    document.getElementById('coding').checked = state.products.coding.active;
+
     // Checkboxes de produtos
     document.getElementById('ingles-geral').addEventListener('change', function() {
         state.products.inglesGeral.active = this.checked;
+        console.log('Inglês Geral checkbox changed:', this.checked);
         calculateProductsCost();
         updateAvailableTotals(getTotalAvailableStudents(), getTotalAvailableTeachers());
     });
     
     document.getElementById('ingles-carreiras').addEventListener('change', function() {
         state.products.inglesCarreiras.active = this.checked;
+        console.log('Inglês Carreiras checkbox changed:', this.checked);
         calculateProductsCost();
         updateAvailableTotals(getTotalAvailableStudents(), getTotalAvailableTeachers());
     });
     
     document.getElementById('espanhol').addEventListener('change', function() {
         state.products.espanhol.active = this.checked;
+        console.log('Espanhol checkbox changed:', this.checked);
         calculateProductsCost();
         updateAvailableTotals(getTotalAvailableStudents(), getTotalAvailableTeachers());
     });
     
     document.getElementById('ia').addEventListener('change', function() {
         state.products.ia.active = this.checked;
+        console.log('IA checkbox changed:', this.checked);
         calculateProductsCost();
         updateAvailableTotals(getTotalAvailableStudents(), getTotalAvailableTeachers());
     });
     
     document.getElementById('coding').addEventListener('change', function() {
         state.products.coding.active = this.checked;
+        console.log('Coding checkbox changed:', this.checked);
         calculateProductsCost();
         updateAvailableTotals(getTotalAvailableStudents(), getTotalAvailableTeachers());
     });
@@ -1617,6 +1629,9 @@ function updateAvailableTotals(availableStudents, availableTeachers) {
             allocatedTeachers += product.teachers || 0;
         }
     });
+    
+    console.log(`Total allocated - Students: ${allocatedStudents}, Teachers: ${allocatedTeachers}`);
+    console.log(`Available - Students: ${availableStudents}, Teachers: ${availableTeachers}`);
     
     // Calcular restantes e porcentagens
     const remainingStudents = Math.max(0, availableStudents - allocatedStudents);
