@@ -1913,9 +1913,12 @@ function handleTeacherAllocation(event) {
     const productKey = input.dataset.product;
     const newValue = parseInt(input.value) || 0;
     
+    console.log('Teacher allocation changed for', productKey, ':', newValue);
+    
     // Atualizar estado
     if (state.products[productKey]) {
         state.products[productKey].teachers = newValue;
+        console.log('Updated state for', productKey, 'teachers:', state.products[productKey].teachers);
     }
     
     // Atualizar totais

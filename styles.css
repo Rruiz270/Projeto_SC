@@ -4116,65 +4116,138 @@ input[type="month"] {
     }
 }
 
+/* Improved Product Layout */
+.allocation-summary {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding: 12px;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.summary-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.summary-item label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #475569;
+    margin-bottom: 4px;
+}
+
+.summary-item input {
+    padding: 8px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.summary-item input:focus {
+    border-color: #3b82f6;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.price-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.price-input {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.price-input input {
+    flex: 1;
+    min-width: 0;
+}
+
+.price-input span {
+    font-size: 11px;
+    color: #6b7280;
+    white-space: nowrap;
+}
+
 /* Segment Breakdown Styles */
 .segment-breakdown {
-    margin: 8px 0;
-    padding: 8px;
-    background: #f0f8ff;
-    border-radius: 4px;
-    border: 1px solid #d1e7ff;
+    margin: 0;
+    padding: 16px;
+    background: #f0f9ff;
+    border-radius: 8px;
+    border: 1px solid #bae6fd;
 }
 
 .segment-breakdown h6 {
-    margin: 0 0 6px 0;
-    color: #0066cc;
-    font-size: 11px;
+    margin: 0 0 12px 0;
+    color: #0369a1;
+    font-size: 13px;
     font-weight: 600;
 }
 
-.segment-grid {
+.segment-allocations {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4px;
+    gap: 8px;
 }
 
-.segment-item {
-    display: flex;
+.segment-row {
+    display: grid;
+    grid-template-columns: 1fr 120px;
     align-items: center;
-    gap: 4px;
-    font-size: 10px;
+    gap: 12px;
+    padding: 8px 0;
 }
 
-.segment-item span {
-    min-width: 45px;
+.segment-label {
+    font-size: 13px;
     font-weight: 500;
-    color: #444;
-    font-size: 10px;
+    color: #374151;
 }
 
 .segment-allocation {
-    flex: 1;
-    padding: 2px 4px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    font-size: 10px;
+    padding: 8px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 13px;
     text-align: center;
-    width: 45px;
-    max-width: 50px;
+    transition: all 0.2s ease;
 }
 
 .segment-allocation:focus {
-    border-color: #007bff;
+    border-color: #3b82f6;
     outline: none;
-    box-shadow: 0 0 0 1px rgba(0, 123, 255, 0.25);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.segment-allocation:hover {
+    border-color: #9ca3af;
 }
 
 @media (max-width: 768px) {
-    .segment-grid {
+    .allocation-summary {
         grid-template-columns: 1fr;
+        gap: 8px;
     }
     
-    .segment-item span {
-        min-width: 60px;
+    .segment-row {
+        grid-template-columns: 1fr 100px;
+        gap: 8px;
+    }
+    
+    .segment-label {
+        font-size: 12px;
+    }
+    
+    .segment-allocation {
+        padding: 6px;
+        font-size: 12px;
     }
 }
