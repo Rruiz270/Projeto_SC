@@ -1710,10 +1710,69 @@ input[type="month"] {
 
 .product-details {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
+    flex-direction: column;
+    gap: 8px;
     margin-top: 10px;
+}
+
+.product-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.main-controls {
+    display: flex;
+    gap: 12px;
+    flex: 1;
+}
+
+.control-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: fit-content;
+}
+
+.control-item label {
+    font-size: 0.85rem;
+    color: #6b7280;
+    white-space: nowrap;
+    min-width: 60px;
+}
+
+.control-item input {
+    width: 80px;
+    padding: 4px 8px;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.segments-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.segment-mini {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.segment-mini span {
+    font-size: 0.8rem;
+    min-width: 40px;
+    font-weight: 500;
+}
+
+.segment-mini input {
+    width: 60px;
+    padding: 3px 6px;
+    border: 1px solid #e5e7eb;
+    border-radius: 3px;
+    font-size: 0.85rem;
 }
 
 .allocation-controls {
