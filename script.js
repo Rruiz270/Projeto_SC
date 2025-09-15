@@ -2279,31 +2279,37 @@ function updateCitiesTotals() {
 
 function syncPlanningToProducts() {
     console.log('=== SINCRONIZANDO PLANEJAMENTO → PRODUTOS ===');
-    console.log('Ano atual:', state.currentYear);
-    console.log('Cities data:', state.cities);
+    
+    // Obter ano selecionado do dropdown
+    const selectedYear = document.getElementById('year-view')?.value || '2025';
+    console.log('Ano selecionado:', selectedYear);
+    console.log('Segments data:', state.segments);
     
     // Sincronizar dados do planejamento para produtos baseado no ano selecionado
     let totalStudents = 0;
     let totalTeachers = 0;
 
-    // Calcular totais para o ano atual
-    if (state.cities) {
-        Object.keys(state.cities).forEach(cityKey => {
-            const city = state.cities[cityKey];
-            console.log(`Processando cidade ${cityKey}:`, city);
+    // Calcular totais para o ano atual usando segments
+    if (state.segments) {
+        Object.keys(state.segments).forEach(segmentKey => {
+            const segment = state.segments[segmentKey];
+            console.log(`Processando segmento ${segmentKey}:`, segment);
             
-            if (city.yearData && city.yearData[state.currentYear]) {
-                const yearData = city.yearData[state.currentYear];
+            if (segment.yearData && segment.yearData[selectedYear]) {
+                const yearData = segment.yearData[selectedYear];
                 totalStudents += yearData.students || 0;
                 totalTeachers += yearData.teachers || 0;
-                console.log(`${cityKey} ${state.currentYear}: ${yearData.students} alunos, ${yearData.teachers} professores`);
+                console.log(`${segmentKey} ${selectedYear}: ${yearData.students} alunos, ${yearData.teachers} professores`);
             } else {
-                console.log(`${cityKey}: Sem dados para ${state.currentYear}`);
+                console.log(`${segmentKey}: Sem dados para ${selectedYear}`);
             }
         });
     }
 
     console.log(`TOTAIS CALCULADOS: ${totalStudents} alunos, ${totalTeachers} professores`);
+
+    // Atualizar displays usando a função updateAvailableTotals
+    updateAvailableTotals(totalStudents, totalTeachers);
 
     // Atualizar displays no tab produtos
     const productsStudentsEl = document.getElementById('products-total-students');
