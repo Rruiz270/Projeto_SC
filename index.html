@@ -48,6 +48,7 @@
             <button class="nav-btn active" data-section="planejamento">Planejamento</button>
             <button class="nav-btn" data-section="produtos">Produtos & Serviços</button>
             <button class="nav-btn" data-section="avaliacoes">Avaliações & Testes</button>
+            <button class="nav-btn" data-section="valorizacao-professor">Valorização Professor</button>
             <button class="nav-btn" data-section="investimento">Investimento</button>
             <button class="nav-btn" data-section="kpis">KPIs & Resultados</button>
             <button class="nav-btn" data-section="apresentacao">Apresentação Executiva</button>
@@ -88,18 +89,18 @@
 
                 </div>
 
-                <!-- Breakdown por Cidades -->
+                <!-- Breakdown por Segmentos Educacionais -->
                 <div class="planning-card full-width">
-                    <h3>Planejamento por Cidades/Regiões</h3>
+                    <h3>📊 Planejamento por Segmentos Educacionais</h3>
                     <div class="cities-container">
                         <div class="cities-grid">
-                            <!-- Florianópolis -->
+                            <!-- FUND1 -->
                             <div class="city-card">
-                                <h4>Florianópolis</h4>
+                                <h4>👶 FUND1</h4>
                                 <div class="city-controls">
                                     <div class="control-row">
                                         <label>Escolas:</label>
-                                        <input type="number" class="city-schools" data-city="florianopolis" min="0" value="85" step="1">
+                                        <input type="number" class="city-schools" data-segment="fund1" min="0" value="300" step="1">
                                     </div>
                                     <div class="year-planning">
                                         <h5>📅 Planejamento por Ano</h5>
@@ -107,60 +108,50 @@
                                             <div class="year-row">
                                                 <span class="year-label">2025:</span>
                                                 <div class="year-inputs">
-                                                    <input type="number" class="city-students-year" data-city="florianopolis" data-year="2025" min="0" max="10000" value="8000" step="100" placeholder="Alunos">
-                                                    <input type="number" class="city-teachers-year" data-city="florianopolis" data-year="2025" min="0" max="5000" value="400" step="10" placeholder="Professores">
+                                                    <input type="number" class="city-students-year" data-segment="fund1" data-year="2025" min="0" value="28000" step="1000" placeholder="Alunos">
+                                                    <input type="number" class="city-teachers-year" data-segment="fund1" data-year="2025" min="0" value="1400" step="50" placeholder="Professores">
                                                 </div>
                                             </div>
                                             <div class="year-row">
                                                 <span class="year-label">2026:</span>
                                                 <div class="year-inputs">
-                                                    <input type="number" class="city-students-year" data-city="florianopolis" data-year="2026" min="0" value="10000" step="100" placeholder="Alunos">
-                                                    <input type="number" class="city-teachers-year" data-city="florianopolis" data-year="2026" min="0" value="800" step="10" placeholder="Professores">
+                                                    <input type="number" class="city-students-year" data-segment="fund1" data-year="2026" min="0" value="35000" step="1000" placeholder="Alunos">
+                                                    <input type="number" class="city-teachers-year" data-segment="fund1" data-year="2026" min="0" value="1750" step="50" placeholder="Professores">
                                                 </div>
                                             </div>
                                             <div class="year-row">
                                                 <span class="year-label">2027:</span>
                                                 <div class="year-inputs">
-                                                    <input type="number" class="city-students-year" data-city="florianopolis" data-year="2027" min="0" value="12000" step="100" placeholder="Alunos">
-                                                    <input type="number" class="city-teachers-year" data-city="florianopolis" data-year="2027" min="0" value="1000" step="10" placeholder="Professores">
+                                                    <input type="number" class="city-students-year" data-segment="fund1" data-year="2027" min="0" value="42000" step="1000" placeholder="Alunos">
+                                                    <input type="number" class="city-teachers-year" data-segment="fund1" data-year="2027" min="0" value="2100" step="50" placeholder="Professores">
                                                 </div>
                                             </div>
                                             <div class="year-row">
                                                 <span class="year-label">2028:</span>
                                                 <div class="year-inputs">
-                                                    <input type="number" class="city-students-year" data-city="florianopolis" data-year="2028" min="0" value="16000" step="100" placeholder="Alunos">
-                                                    <input type="number" class="city-teachers-year" data-city="florianopolis" data-year="2028" min="0" value="1300" step="10" placeholder="Professores">
+                                                    <input type="number" class="city-students-year" data-segment="fund1" data-year="2028" min="0" value="49000" step="1000" placeholder="Alunos">
+                                                    <input type="number" class="city-teachers-year" data-segment="fund1" data-year="2028" min="0" value="2450" step="50" placeholder="Professores">
                                                 </div>
                                             </div>
                                             <div class="year-row">
                                                 <span class="year-label">2029:</span>
                                                 <div class="year-inputs">
-                                                    <input type="number" class="city-students-year" data-city="florianopolis" data-year="2029" min="0" value="20000" step="100" placeholder="Alunos">
-                                                    <input type="number" class="city-teachers-year" data-city="florianopolis" data-year="2029" min="0" value="1600" step="10" placeholder="Professores">
+                                                    <input type="number" class="city-students-year" data-segment="fund1" data-year="2029" min="0" value="56000" step="1000" placeholder="Alunos">
+                                                    <input type="number" class="city-teachers-year" data-segment="fund1" data-year="2029" min="0" value="2800" step="50" placeholder="Professores">
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="control-row">
-                                        <label>Segmento:</label>
-                                        <select class="city-segment" data-city="florianopolis">
-                                            <option value="todos">Todos</option>
-                                            <option value="fundamental1">Fundamental 1</option>
-                                            <option value="fundamental2">Fundamental 2</option>
-                                            <option value="medio">Ensino Médio</option>
-                                            <option value="tecnico">Ensino Técnico</option>
-                                        </select>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Joinville -->
+                            <!-- FUND2 -->
                             <div class="city-card">
-                                <h4>Joinville</h4>
+                                <h4>🎓 FUND2</h4>
                                 <div class="city-controls">
                                     <div class="control-row">
                                         <label>Escolas:</label>
-                                        <input type="number" class="city-schools" data-city="joinville" min="0" value="95" step="1">
+                                        <input type="number" class="city-schools" data-segment="fund2" min="0" value="250" step="1">
                                     </div>
                                     <div class="year-planning">
                                         <h5>📅 Planejamento por Ano</h5>
@@ -168,61 +159,51 @@
                                             <div class="year-row">
                                                 <span class="year-label">2025:</span>
                                                 <div class="year-inputs">
-                                                    <input type="number" class="city-students-year" data-city="joinville" data-year="2025" min="0" max="10000" value="9000" step="100" placeholder="Alunos">
-                                                    <input type="number" class="city-teachers-year" data-city="joinville" data-year="2025" min="0" max="5000" value="450" step="10" placeholder="Professores">
+                                                    <input type="number" class="city-students-year" data-segment="fund2" data-year="2025" min="0" value="30000" step="1000" placeholder="Alunos">
+                                                    <input type="number" class="city-teachers-year" data-segment="fund2" data-year="2025" min="0" value="1500" step="50" placeholder="Professores">
                                                 </div>
                                             </div>
                                             <div class="year-row">
                                                 <span class="year-label">2026:</span>
                                                 <div class="year-inputs">
-                                                    <input type="number" class="city-students-year" data-city="joinville" data-year="2026" min="0" value="12000" step="100" placeholder="Alunos">
-                                                    <input type="number" class="city-teachers-year" data-city="joinville" data-year="2026" min="0" value="900" step="10" placeholder="Professores">
+                                                    <input type="number" class="city-students-year" data-segment="fund2" data-year="2026" min="0" value="38000" step="1000" placeholder="Alunos">
+                                                    <input type="number" class="city-teachers-year" data-segment="fund2" data-year="2026" min="0" value="1900" step="50" placeholder="Professores">
                                                 </div>
                                             </div>
                                             <div class="year-row">
                                                 <span class="year-label">2027:</span>
                                                 <div class="year-inputs">
-                                                    <input type="number" class="city-students-year" data-city="joinville" data-year="2027" min="0" value="15000" step="100" placeholder="Alunos">
-                                                    <input type="number" class="city-teachers-year" data-city="joinville" data-year="2027" min="0" value="1200" step="10" placeholder="Professores">
+                                                    <input type="number" class="city-students-year" data-segment="fund2" data-year="2027" min="0" value="46000" step="1000" placeholder="Alunos">
+                                                    <input type="number" class="city-teachers-year" data-segment="fund2" data-year="2027" min="0" value="2300" step="50" placeholder="Professores">
                                                 </div>
                                             </div>
                                             <div class="year-row">
                                                 <span class="year-label">2028:</span>
                                                 <div class="year-inputs">
-                                                    <input type="number" class="city-students-year" data-city="joinville" data-year="2028" min="0" value="18000" step="100" placeholder="Alunos">
-                                                    <input type="number" class="city-teachers-year" data-city="joinville" data-year="2028" min="0" value="1500" step="10" placeholder="Professores">
+                                                    <input type="number" class="city-students-year" data-segment="fund2" data-year="2028" min="0" value="54000" step="1000" placeholder="Alunos">
+                                                    <input type="number" class="city-teachers-year" data-segment="fund2" data-year="2028" min="0" value="2700" step="50" placeholder="Professores">
                                                 </div>
                                             </div>
                                             <div class="year-row">
                                                 <span class="year-label">2029:</span>
                                                 <div class="year-inputs">
-                                                    <input type="number" class="city-students-year" data-city="joinville" data-year="2029" min="0" value="22000" step="100" placeholder="Alunos">
-                                                    <input type="number" class="city-teachers-year" data-city="joinville" data-year="2029" min="0" value="1800" step="10" placeholder="Professores">
+                                                    <input type="number" class="city-students-year" data-segment="fund2" data-year="2029" min="0" value="62000" step="1000" placeholder="Alunos">
+                                                    <input type="number" class="city-teachers-year" data-segment="fund2" data-year="2029" min="0" value="3100" step="50" placeholder="Professores">
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="control-row">
-                                        <label>Segmento:</label>
-                                        <select class="city-segment" data-city="joinville">
-                                            <option value="todos">Todos</option>
-                                            <option value="fundamental1">Fundamental 1</option>
-                                            <option value="fundamental2">Fundamental 2</option>
-                                            <option value="medio">Ensino Médio</option>
-                                            <option value="tecnico">Ensino Técnico</option>
-                                        </select>
                                     </div>
                                 </div>
                             </div>
 
 
-                            <!-- Outras Regiões -->
+                            <!-- Médio -->
                             <div class="city-card">
-                                <h4>Outras Regiões</h4>
+                                <h4>📚 Médio</h4>
                                 <div class="city-controls">
                                     <div class="control-row">
                                         <label>Escolas:</label>
-                                        <input type="number" class="city-schools" data-city="outras" min="0" value="825" step="1">
+                                        <input type="number" class="city-schools" data-segment="medio" min="0" value="200" step="1">
                                     </div>
                                     <div class="year-planning">
                                         <h5>📅 Planejamento por Ano</h5>
@@ -230,56 +211,97 @@
                                             <div class="year-row">
                                                 <span class="year-label">2025:</span>
                                                 <div class="year-inputs">
-                                                    <input type="number" class="city-students-year" data-city="outras" data-year="2025" min="0" max="10000" value="8000" step="100" placeholder="Alunos">
-                                                    <input type="number" class="city-teachers-year" data-city="outras" data-year="2025" min="0" max="5000" value="400" step="10" placeholder="Professores">
+                                                    <input type="number" class="city-students-year" data-segment="medio" data-year="2025" min="0" value="25000" step="1000" placeholder="Alunos">
+                                                    <input type="number" class="city-teachers-year" data-segment="medio" data-year="2025" min="0" value="1250" step="50" placeholder="Professores">
                                                 </div>
                                             </div>
                                             <div class="year-row">
                                                 <span class="year-label">2026:</span>
                                                 <div class="year-inputs">
-                                                    <input type="number" class="city-students-year" data-city="outras" data-year="2026" min="0" value="80000" step="100" placeholder="Alunos">
-                                                    <input type="number" class="city-teachers-year" data-city="outras" data-year="2026" min="0" value="6000" step="10" placeholder="Professores">
+                                                    <input type="number" class="city-students-year" data-segment="medio" data-year="2026" min="0" value="32000" step="1000" placeholder="Alunos">
+                                                    <input type="number" class="city-teachers-year" data-segment="medio" data-year="2026" min="0" value="1600" step="50" placeholder="Professores">
                                                 </div>
                                             </div>
                                             <div class="year-row">
                                                 <span class="year-label">2027:</span>
                                                 <div class="year-inputs">
-                                                    <input type="number" class="city-students-year" data-city="outras" data-year="2027" min="0" value="150000" step="100" placeholder="Alunos">
-                                                    <input type="number" class="city-teachers-year" data-city="outras" data-year="2027" min="0" value="12000" step="10" placeholder="Professores">
+                                                    <input type="number" class="city-students-year" data-segment="medio" data-year="2027" min="0" value="39000" step="1000" placeholder="Alunos">
+                                                    <input type="number" class="city-teachers-year" data-segment="medio" data-year="2027" min="0" value="1950" step="50" placeholder="Professores">
                                                 </div>
                                             </div>
                                             <div class="year-row">
                                                 <span class="year-label">2028:</span>
                                                 <div class="year-inputs">
-                                                    <input type="number" class="city-students-year" data-city="outras" data-year="2028" min="0" value="200000" step="100" placeholder="Alunos">
-                                                    <input type="number" class="city-teachers-year" data-city="outras" data-year="2028" min="0" value="16000" step="10" placeholder="Professores">
+                                                    <input type="number" class="city-students-year" data-segment="medio" data-year="2028" min="0" value="46000" step="1000" placeholder="Alunos">
+                                                    <input type="number" class="city-teachers-year" data-segment="medio" data-year="2028" min="0" value="2300" step="50" placeholder="Professores">
                                                 </div>
                                             </div>
                                             <div class="year-row">
                                                 <span class="year-label">2029:</span>
                                                 <div class="year-inputs">
-                                                    <input type="number" class="city-students-year" data-city="outras" data-year="2029" min="0" value="250000" step="100" placeholder="Alunos">
-                                                    <input type="number" class="city-teachers-year" data-city="outras" data-year="2029" min="0" value="20000" step="10" placeholder="Professores">
+                                                    <input type="number" class="city-students-year" data-segment="medio" data-year="2029" min="0" value="53000" step="1000" placeholder="Alunos">
+                                                    <input type="number" class="city-teachers-year" data-segment="medio" data-year="2029" min="0" value="2650" step="50" placeholder="Professores">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+
+                            <!-- Médio Técnico -->
+                            <div class="city-card">
+                                <h4>🔧 Médio Técnico</h4>
+                                <div class="city-controls">
                                     <div class="control-row">
-                                        <label>Segmento:</label>
-                                        <select class="city-segment" data-city="outras">
-                                            <option value="todos">Todos</option>
-                                            <option value="fundamental1">Fundamental 1</option>
-                                            <option value="fundamental2">Fundamental 2</option>
-                                            <option value="medio">Ensino Médio</option>
-                                            <option value="tecnico">Ensino Técnico</option>
-                                        </select>
+                                        <label>Escolas:</label>
+                                        <input type="number" class="city-schools" data-segment="tecnico" min="0" value="150" step="1">
+                                    </div>
+                                    <div class="year-planning">
+                                        <h5>📅 Planejamento por Ano</h5>
+                                        <div class="year-controls">
+                                            <div class="year-row">
+                                                <span class="year-label">2025:</span>
+                                                <div class="year-inputs">
+                                                    <input type="number" class="city-students-year" data-segment="tecnico" data-year="2025" min="0" value="30000" step="1000" placeholder="Alunos">
+                                                    <input type="number" class="city-teachers-year" data-segment="tecnico" data-year="2025" min="0" value="1500" step="50" placeholder="Professores">
+                                                </div>
+                                            </div>
+                                            <div class="year-row">
+                                                <span class="year-label">2026:</span>
+                                                <div class="year-inputs">
+                                                    <input type="number" class="city-students-year" data-segment="tecnico" data-year="2026" min="0" value="40000" step="1000" placeholder="Alunos">
+                                                    <input type="number" class="city-teachers-year" data-segment="tecnico" data-year="2026" min="0" value="2000" step="50" placeholder="Professores">
+                                                </div>
+                                            </div>
+                                            <div class="year-row">
+                                                <span class="year-label">2027:</span>
+                                                <div class="year-inputs">
+                                                    <input type="number" class="city-students-year" data-segment="tecnico" data-year="2027" min="0" value="50000" step="1000" placeholder="Alunos">
+                                                    <input type="number" class="city-teachers-year" data-segment="tecnico" data-year="2027" min="0" value="2500" step="50" placeholder="Professores">
+                                                </div>
+                                            </div>
+                                            <div class="year-row">
+                                                <span class="year-label">2028:</span>
+                                                <div class="year-inputs">
+                                                    <input type="number" class="city-students-year" data-segment="tecnico" data-year="2028" min="0" value="60000" step="1000" placeholder="Alunos">
+                                                    <input type="number" class="city-teachers-year" data-segment="tecnico" data-year="2028" min="0" value="3000" step="50" placeholder="Professores">
+                                                </div>
+                                            </div>
+                                            <div class="year-row">
+                                                <span class="year-label">2029:</span>
+                                                <div class="year-inputs">
+                                                    <input type="number" class="city-students-year" data-segment="tecnico" data-year="2029" min="0" value="70000" step="1000" placeholder="Alunos">
+                                                    <input type="number" class="city-teachers-year" data-segment="tecnico" data-year="2029" min="0" value="3500" step="50" placeholder="Professores">
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <div class="cities-summary">
-                            <h4>Resumo Geral das Cidades</h4>
+                            <h4>Resumo Geral dos Segmentos</h4>
                             <div class="summary-stats">
                                 <div class="stat">
                                     <span class="stat-label">Total de Escolas:</span>
