@@ -775,6 +775,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setupProductControls();
     setupKPIControls();
     setupPresentationControls();
+    initializeSegmentControls();
     initializeCityControls();
     setupTimelineControls();
     setupRegionalControls();
@@ -795,6 +796,11 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Garantir que a apresentação esteja atualizada
     updatePresentationData();
+    
+    // Sincronizar dados do planejamento para produtos
+    setTimeout(() => {
+        syncPlanningToProducts();
+    }, 100);
     
     // Garantir sincronização inicial de cidades para produtos
     console.log('Fazendo sincronização inicial na inicialização...');
@@ -1034,6 +1040,11 @@ function loadState() {
             if (!parsed.cities) {
                 console.log('Cidades não encontradas no estado salvo, usando padrão');
                 parsed.cities = defaultState.cities;
+            }
+            
+            if (!parsed.segments) {
+                console.log('Segmentos não encontrados no estado salvo, usando padrão');
+                parsed.segments = defaultState.segments;
             }
             
             return parsed;
@@ -1901,7 +1912,7 @@ function getTotalAvailableStudents() {
     // Usar dados dos segmentos
     let totalStudents = 0;
     
-    const selectedYear = document.getElementById('year-selector')?.value || '2025';
+    const selectedYear = document.getElementById('year-view')?.value || '2025';
     
     if (selectedYear === 'total') {
         // Somar todos os anos de todos os segmentos
@@ -1929,7 +1940,7 @@ function getTotalAvailableTeachers() {
     // Usar dados dos segmentos
     let totalTeachers = 0;
     
-    const selectedYear = document.getElementById('year-selector')?.value || '2025';
+    const selectedYear = document.getElementById('year-view')?.value || '2025';
     
     if (selectedYear === 'total') {
         // Somar todos os anos de todos os segmentos
@@ -2033,9 +2044,58 @@ function updateAllSections() {
 }
 
 // Funções para gerenciar cidades
+function initializeSegmentControls() {
+    // Event listeners para escolas dos segmentos
+    document.querySelectorAll('.city-schools[data-segment]').forEach(input => {
+        input.addEventListener('input', function() {
+            const segment = this.dataset.segment;
+            if (state.segments[segment]) {
+                state.segments[segment].schools = parseInt(this.value) || 0;
+                syncPlanningToProducts();
+                saveState();
+            }
+        });
+    });
+
+    // Event listeners para dados por ano dos segmentos
+    document.querySelectorAll('.city-students-year[data-segment], .city-teachers-year[data-segment]').forEach(input => {
+        console.log('Adding listener to segment input:', input.dataset.segment, input.dataset.year);
+        
+        input.addEventListener('input', function() {
+            const segment = this.dataset.segment;
+            const year = this.dataset.year;
+            const field = this.classList.contains('city-students-year') ? 'students' : 'teachers';
+            const value = parseInt(this.value) || 0;
+            
+            console.log('Segment input changed:', segment, year, field, value);
+            
+            if (!state.segments[segment]) {
+                console.log('Creating segment data for:', segment);
+                state.segments[segment] = { name: segment, schools: 0, yearData: {} };
+            }
+            
+            if (!state.segments[segment].yearData) {
+                state.segments[segment].yearData = {};
+            }
+            
+            if (!state.segments[segment].yearData[year]) {
+                state.segments[segment].yearData[year] = { students: 0, teachers: 0 };
+            }
+            
+            state.segments[segment].yearData[year][field] = value;
+            
+            console.log('Segment data updated:', state.segments[segment].yearData[year]);
+            
+            // Atualizar displays
+            syncPlanningToProducts();
+            saveState();
+        });
+    });
+}
+
 function initializeCityControls() {
     // Event listeners para escolas
-    document.querySelectorAll('.city-schools').forEach(input => {
+    document.querySelectorAll('.city-schools[data-city]').forEach(input => {
         input.addEventListener('input', function() {
             const city = this.dataset.city;
             state.cities[city].schools = parseInt(this.value) || 0;
