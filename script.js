@@ -1847,9 +1847,28 @@ function setupAllocationControls() {
         input.value = savedValue;
         console.log('Valor restaurado para professor', productKey, ':', savedValue);
         
-        // Adicionar listener
+        // Adicionar listener direto com função inline (como nos students)
         input.removeEventListener('input', handleTeacherAllocation); // Evitar duplicatas
-        input.addEventListener('input', handleTeacherAllocation);
+        input.addEventListener('input', function(e) {
+            const productKey = e.target.dataset.product;
+            const newValue = parseInt(e.target.value) || 0;
+            
+            console.log('TEACHER ALLOCATION EVENT! Product:', productKey, 'Value:', newValue);
+            
+            // Update state immediately
+            if (state.products[productKey]) {
+                state.products[productKey].teachers = newValue;
+                console.log('Updated teacher state for', productKey, ':', state.products[productKey].teachers);
+            }
+            
+            // Force update of available totals
+            updateAvailableTotals(
+                getTotalAvailableStudents(),
+                getTotalAvailableTeachers()
+            );
+            
+            saveState();
+        });
         
         // Adicionar múltiplos eventos para debug
         input.addEventListener('focus', function() {

@@ -4120,11 +4120,11 @@ input[type="month"] {
 .allocation-summary {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 16px;
-    padding: 12px;
+    gap: 8px;
+    margin-bottom: 12px;
+    padding: 10px;
     background: #f8fafc;
-    border-radius: 8px;
+    border-radius: 6px;
     border: 1px solid #e2e8f0;
 }
 
@@ -4142,10 +4142,10 @@ input[type="month"] {
 }
 
 .summary-item input {
-    padding: 8px;
+    padding: 6px;
     border: 1px solid #d1d5db;
-    border-radius: 6px;
-    font-size: 14px;
+    border-radius: 4px;
+    font-size: 13px;
     text-align: center;
 }
 
@@ -4180,9 +4180,9 @@ input[type="month"] {
 /* Segment Breakdown Styles */
 .segment-breakdown {
     margin: 0;
-    padding: 16px;
+    padding: 12px;
     background: #f0f9ff;
-    border-radius: 8px;
+    border-radius: 6px;
     border: 1px solid #bae6fd;
 }
 
@@ -4200,10 +4200,10 @@ input[type="month"] {
 
 .segment-row {
     display: grid;
-    grid-template-columns: 1fr 120px;
+    grid-template-columns: 1fr 100px;
     align-items: center;
-    gap: 12px;
-    padding: 8px 0;
+    gap: 8px;
+    padding: 4px 0;
 }
 
 .segment-label {
@@ -4213,10 +4213,10 @@ input[type="month"] {
 }
 
 .segment-allocation {
-    padding: 8px;
+    padding: 6px;
     border: 1px solid #d1d5db;
-    border-radius: 6px;
-    font-size: 13px;
+    border-radius: 4px;
+    font-size: 12px;
     text-align: center;
     transition: all 0.2s ease;
 }
