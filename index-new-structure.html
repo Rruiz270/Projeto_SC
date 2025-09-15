@@ -85,123 +85,183 @@
                     </div>
                 </div>
 
-                <!-- Breakdown por Regiões Especializadas -->
+                <!-- Breakdown por Segmentos Educacionais -->
                 <div class="planning-card full-width">
-                    <h3>🎯 Planejamento por Regiões Especializadas</h3>
-                    <p class="region-subtitle">Recorte regional baseado em vocação econômica, iniciando pelo ensino técnico</p>
+                    <h3>📊 Planejamento por Segmentos Educacionais</h3>
+                    <p class="region-subtitle">Distribuição de recursos por nível de ensino com crescimento anual projetado</p>
                     
                     <div class="regions-container">
                         <div class="regions-grid">
-                            <!-- Itajaí - Portos e Logística -->
-                            <div class="region-card logistics">
+                            <!-- FUND1 -->
+                            <div class="region-card fund1">
                                 <div class="region-header">
-                                    <h4>🚢 Itajaí - Portos e Logística</h4>
-                                    <div class="region-focus">Foco: Comércio Exterior & Supply Chain</div>
+                                    <h4>👶 FUND1</h4>
+                                    <div class="region-focus">1º ao 5º ano - Anos Iniciais</div>
                                 </div>
                                 <div class="region-controls">
                                     <div class="control-row">
                                         <label>Escolas:</label>
-                                        <input type="number" class="region-schools" data-region="itajai_portos" min="0" value="120" step="1">
+                                        <input type="number" class="region-schools" data-segment="fund1" min="0" value="300" step="1">
                                     </div>
                                     <div class="year-planning">
-                                        <h5>📅 Crescimento Anual Projetado</h5>
-                                        <div class="year-summary">
-                                            <div class="year-item">
+                                        <h5>📅 Planejamento por Ano</h5>
+                                        <div class="year-inputs">
+                                            <div class="year-row">
                                                 <span class="year">2025:</span>
-                                                <span class="students">15.000 alunos</span>
-                                                <span class="teachers">750 professores</span>
+                                                <input type="number" class="year-students" data-segment="fund1" data-year="2025" value="28000" step="1000">
+                                                <input type="number" class="year-teachers" data-segment="fund1" data-year="2025" value="1400" step="50">
                                             </div>
-                                            <div class="year-item">
+                                            <div class="year-row">
+                                                <span class="year">2026:</span>
+                                                <input type="number" class="year-students" data-segment="fund1" data-year="2026" value="35000" step="1000">
+                                                <input type="number" class="year-teachers" data-segment="fund1" data-year="2026" value="1750" step="50">
+                                            </div>
+                                            <div class="year-row">
+                                                <span class="year">2027:</span>
+                                                <input type="number" class="year-students" data-segment="fund1" data-year="2027" value="42000" step="1000">
+                                                <input type="number" class="year-teachers" data-segment="fund1" data-year="2027" value="2100" step="50">
+                                            </div>
+                                            <div class="year-row">
+                                                <span class="year">2028:</span>
+                                                <input type="number" class="year-students" data-segment="fund1" data-year="2028" value="49000" step="1000">
+                                                <input type="number" class="year-teachers" data-segment="fund1" data-year="2028" value="2450" step="50">
+                                            </div>
+                                            <div class="year-row">
                                                 <span class="year">2029:</span>
-                                                <span class="students">55.000 alunos</span>
-                                                <span class="teachers">2.750 professores</span>
+                                                <input type="number" class="year-students" data-segment="fund1" data-year="2029" value="56000" step="1000">
+                                                <input type="number" class="year-teachers" data-segment="fund1" data-year="2029" value="2800" step="50">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Florianópolis - Turismo e Tecnologia -->
-                            <div class="region-card tech">
+                            <!-- FUND2 -->
+                            <div class="region-card fund2">
                                 <div class="region-header">
-                                    <h4>💻 Florianópolis - Turismo e Tecnologia</h4>
-                                    <div class="region-focus">Foco: TI, Startups & Hospitalidade</div>
+                                    <h4>🎓 FUND2</h4>
+                                    <div class="region-focus">6º ao 9º ano - Anos Finais</div>
                                 </div>
                                 <div class="region-controls">
                                     <div class="control-row">
                                         <label>Escolas:</label>
-                                        <input type="number" class="region-schools" data-region="floripa_turismo" min="0" value="95" step="1">
+                                        <input type="number" class="region-schools" data-segment="fund2" min="0" value="250" step="1">
                                     </div>
                                     <div class="year-planning">
-                                        <h5>📅 Crescimento Anual Projetado</h5>
-                                        <div class="year-summary">
-                                            <div class="year-item">
+                                        <h5>📅 Planejamento por Ano</h5>
+                                        <div class="year-inputs">
+                                            <div class="year-row">
                                                 <span class="year">2025:</span>
-                                                <span class="students">12.000 alunos</span>
-                                                <span class="teachers">600 professores</span>
+                                                <input type="number" class="year-students" data-segment="fund2" data-year="2025" value="30000" step="1000">
+                                                <input type="number" class="year-teachers" data-segment="fund2" data-year="2025" value="1500" step="50">
                                             </div>
-                                            <div class="year-item">
+                                            <div class="year-row">
+                                                <span class="year">2026:</span>
+                                                <input type="number" class="year-students" data-segment="fund2" data-year="2026" value="38000" step="1000">
+                                                <input type="number" class="year-teachers" data-segment="fund2" data-year="2026" value="1900" step="50">
+                                            </div>
+                                            <div class="year-row">
+                                                <span class="year">2027:</span>
+                                                <input type="number" class="year-students" data-segment="fund2" data-year="2027" value="46000" step="1000">
+                                                <input type="number" class="year-teachers" data-segment="fund2" data-year="2027" value="2300" step="50">
+                                            </div>
+                                            <div class="year-row">
+                                                <span class="year">2028:</span>
+                                                <input type="number" class="year-students" data-segment="fund2" data-year="2028" value="54000" step="1000">
+                                                <input type="number" class="year-teachers" data-segment="fund2" data-year="2028" value="2700" step="50">
+                                            </div>
+                                            <div class="year-row">
                                                 <span class="year">2029:</span>
-                                                <span class="students">44.000 alunos</span>
-                                                <span class="teachers">2.200 professores</span>
+                                                <input type="number" class="year-students" data-segment="fund2" data-year="2029" value="62000" step="1000">
+                                                <input type="number" class="year-teachers" data-segment="fund2" data-year="2029" value="3100" step="50">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Jaraguá do Sul - Indústria WEG -->
-                            <div class="region-card industry">
+                            <!-- Médio -->
+                            <div class="region-card medio">
                                 <div class="region-header">
-                                    <h4>⚙️ Jaraguá do Sul - Indústria WEG</h4>
-                                    <div class="region-focus">Foco: Engenharia & Manufatura Avançada</div>
+                                    <h4>📚 Médio</h4>
+                                    <div class="region-focus">1º ao 3º ano - Ensino Médio</div>
                                 </div>
                                 <div class="region-controls">
                                     <div class="control-row">
                                         <label>Escolas:</label>
-                                        <input type="number" class="region-schools" data-region="jaragua_industria" min="0" value="85" step="1">
+                                        <input type="number" class="region-schools" data-segment="medio" min="0" value="200" step="1">
                                     </div>
                                     <div class="year-planning">
-                                        <h5>📅 Crescimento Anual Projetado</h5>
-                                        <div class="year-summary">
-                                            <div class="year-item">
+                                        <h5>📅 Planejamento por Ano</h5>
+                                        <div class="year-inputs">
+                                            <div class="year-row">
                                                 <span class="year">2025:</span>
-                                                <span class="students">10.000 alunos</span>
-                                                <span class="teachers">500 professores</span>
+                                                <input type="number" class="year-students" data-segment="medio" data-year="2025" value="25000" step="1000">
+                                                <input type="number" class="year-teachers" data-segment="medio" data-year="2025" value="1250" step="50">
                                             </div>
-                                            <div class="year-item">
+                                            <div class="year-row">
+                                                <span class="year">2026:</span>
+                                                <input type="number" class="year-students" data-segment="medio" data-year="2026" value="32000" step="1000">
+                                                <input type="number" class="year-teachers" data-segment="medio" data-year="2026" value="1600" step="50">
+                                            </div>
+                                            <div class="year-row">
+                                                <span class="year">2027:</span>
+                                                <input type="number" class="year-students" data-segment="medio" data-year="2027" value="39000" step="1000">
+                                                <input type="number" class="year-teachers" data-segment="medio" data-year="2027" value="1950" step="50">
+                                            </div>
+                                            <div class="year-row">
+                                                <span class="year">2028:</span>
+                                                <input type="number" class="year-students" data-segment="medio" data-year="2028" value="46000" step="1000">
+                                                <input type="number" class="year-teachers" data-segment="medio" data-year="2028" value="2300" step="50">
+                                            </div>
+                                            <div class="year-row">
                                                 <span class="year">2029:</span>
-                                                <span class="students">40.000 alunos</span>
-                                                <span class="teachers">2.000 professores</span>
+                                                <input type="number" class="year-students" data-segment="medio" data-year="2029" value="53000" step="1000">
+                                                <input type="number" class="year-teachers" data-segment="medio" data-year="2029" value="2650" step="50">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Outras Regiões -->
-                            <div class="region-card general">
+                            <!-- Médio Técnico -->
+                            <div class="region-card tecnico">
                                 <div class="region-header">
-                                    <h4>🌐 Outras Regiões de SC</h4>
-                                    <div class="region-focus">Foco: Educação Geral Abrangente</div>
+                                    <h4>🔧 Médio Técnico</h4>
+                                    <div class="region-focus">Ensino Médio Técnico Profissionalizante</div>
                                 </div>
                                 <div class="region-controls">
                                     <div class="control-row">
                                         <label>Escolas:</label>
-                                        <input type="number" class="region-schools" data-region="outras_regioes" min="0" value="700" step="1">
+                                        <input type="number" class="region-schools" data-segment="tecnico" min="0" value="150" step="1">
                                     </div>
                                     <div class="year-planning">
-                                        <h5>📅 Crescimento Anual Projetado</h5>
-                                        <div class="year-summary">
-                                            <div class="year-item">
+                                        <h5>📅 Planejamento por Ano</h5>
+                                        <div class="year-inputs">
+                                            <div class="year-row">
                                                 <span class="year">2025:</span>
-                                                <span class="students">263.000 alunos</span>
-                                                <span class="teachers">13.150 professores</span>
+                                                <input type="number" class="year-students" data-segment="tecnico" data-year="2025" value="30000" step="1000">
+                                                <input type="number" class="year-teachers" data-segment="tecnico" data-year="2025" value="1500" step="50">
                                             </div>
-                                            <div class="year-item">
+                                            <div class="year-row">
+                                                <span class="year">2026:</span>
+                                                <input type="number" class="year-students" data-segment="tecnico" data-year="2026" value="40000" step="1000">
+                                                <input type="number" class="year-teachers" data-segment="tecnico" data-year="2026" value="2000" step="50">
+                                            </div>
+                                            <div class="year-row">
+                                                <span class="year">2027:</span>
+                                                <input type="number" class="year-students" data-segment="tecnico" data-year="2027" value="50000" step="1000">
+                                                <input type="number" class="year-teachers" data-segment="tecnico" data-year="2027" value="2500" step="50">
+                                            </div>
+                                            <div class="year-row">
+                                                <span class="year">2028:</span>
+                                                <input type="number" class="year-students" data-segment="tecnico" data-year="2028" value="60000" step="1000">
+                                                <input type="number" class="year-teachers" data-segment="tecnico" data-year="2028" value="3000" step="50">
+                                            </div>
+                                            <div class="year-row">
                                                 <span class="year">2029:</span>
-                                                <span class="students">521.000 alunos</span>
-                                                <span class="teachers">26.050 professores</span>
+                                                <input type="number" class="year-students" data-segment="tecnico" data-year="2029" value="70000" step="1000">
+                                                <input type="number" class="year-teachers" data-segment="tecnico" data-year="2029" value="3500" step="50">
                                             </div>
                                         </div>
                                     </div>

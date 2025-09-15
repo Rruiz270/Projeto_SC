@@ -1,60 +1,64 @@
 // Estado global com nova estrutura segmentada
 const state = {
     students: {
-        fundamental1: 140000,    // 1º ao 5º ano (Anos Iniciais)
-        fundamental2: 140000,    // 6º ao 9º ano (Anos Finais)
-        medio: 120000,           // 1º ao 3º ano Ensino Médio
-        medioTecnico: 120000     // Ensino Médio Técnico
+        fundamental1: 140000,    // 1º ao 5º ano (Anos Iniciais) - TOTAL
+        fundamental2: 140000,    // 6º ao 9º ano (Anos Finais) - TOTAL  
+        medio: 120000,           // 1º ao 3º ano Ensino Médio - TOTAL
+        medioTecnico: 120000     // Ensino Médio Técnico - TOTAL
     },
-    regions: {
-        itajai_portos: { 
-            name: 'Itajaí - Portos e Logística',
-            schools: 120, 
-            focus: 'logistica',
+    segments: {
+        fund1: { 
+            name: 'FUND1 - Anos Iniciais',
+            schools: 300, 
             yearData: {
-                2025: { students: 15000, teachers: 750 },
-                2026: { students: 25000, teachers: 1250 },
-                2027: { students: 35000, teachers: 1750 },
-                2028: { students: 45000, teachers: 2250 },
-                2029: { students: 55000, teachers: 2750 }
+                2025: { students: 28000, teachers: 1400, available: 28000 },
+                2026: { students: 35000, teachers: 1750, available: 35000 },
+                2027: { students: 42000, teachers: 2100, available: 42000 },
+                2028: { students: 49000, teachers: 2450, available: 49000 },
+                2029: { students: 56000, teachers: 2800, available: 56000 }
             }
         },
-        floripa_turismo: { 
-            name: 'Florianópolis - Turismo e Tecnologia',
-            schools: 95, 
-            focus: 'tecnologia',
+        fund2: { 
+            name: 'FUND2 - Anos Finais',
+            schools: 250,
             yearData: {
-                2025: { students: 12000, teachers: 600 },
-                2026: { students: 20000, teachers: 1000 },
-                2027: { students: 28000, teachers: 1400 },
-                2028: { students: 36000, teachers: 1800 },
-                2029: { students: 44000, teachers: 2200 }
+                2025: { students: 30000, teachers: 1500, available: 30000 },
+                2026: { students: 38000, teachers: 1900, available: 38000 },
+                2027: { students: 46000, teachers: 2300, available: 46000 },
+                2028: { students: 54000, teachers: 2700, available: 54000 },
+                2029: { students: 62000, teachers: 3100, available: 62000 }
             }
         },
-        jaragua_industria: { 
-            name: 'Jaraguá do Sul - Indústria WEG',
-            schools: 85, 
-            focus: 'industria',
+        medio: { 
+            name: 'Ensino Médio',
+            schools: 200,
             yearData: {
-                2025: { students: 10000, teachers: 500 },
-                2026: { students: 18000, teachers: 900 },
-                2027: { students: 26000, teachers: 1300 },
-                2028: { students: 33000, teachers: 1650 },
-                2029: { students: 40000, teachers: 2000 }
+                2025: { students: 25000, teachers: 1250, available: 25000 },
+                2026: { students: 32000, teachers: 1600, available: 32000 },
+                2027: { students: 39000, teachers: 1950, available: 39000 },
+                2028: { students: 46000, teachers: 2300, available: 46000 },
+                2029: { students: 53000, teachers: 2650, available: 53000 }
             }
         },
-        outras_regioes: { 
-            name: 'Outras Regiões de SC',
-            schools: 700, 
-            focus: 'geral',
+        tecnico: { 
+            name: 'Médio Técnico',
+            schools: 150,
             yearData: {
-                2025: { students: 263000, teachers: 13150 },
-                2026: { students: 337000, teachers: 16850 },
-                2027: { students: 411000, teachers: 20550 },
-                2028: { students: 466000, teachers: 23300 },
-                2029: { students: 521000, teachers: 26050 }
+                2025: { students: 30000, teachers: 1500, available: 30000 },
+                2026: { students: 40000, teachers: 2000, available: 40000 },
+                2027: { students: 50000, teachers: 2500, available: 50000 },
+                2028: { students: 60000, teachers: 3000, available: 60000 },
+                2029: { students: 70000, teachers: 3500, available: 70000 }
             }
         }
+    },
+    allocations: {
+        // Track what's been allocated to products by year and segment
+        2025: { fund1: 0, fund2: 0, medio: 0, tecnico: 0 },
+        2026: { fund1: 0, fund2: 0, medio: 0, tecnico: 0 },
+        2027: { fund1: 0, fund2: 0, medio: 0, tecnico: 0 },
+        2028: { fund1: 0, fund2: 0, medio: 0, tecnico: 0 },
+        2029: { fund1: 0, fund2: 0, medio: 0, tecnico: 0 }
     },
     products: {
         ia: { active: true, students: 0, teachers: 0 },
@@ -128,13 +132,43 @@ function initializeEventListeners() {
         }
     });
 
-    // Controles de regiões
+    // Controles de segmentos (escolas)
     document.querySelectorAll('.region-schools').forEach(input => {
         input.addEventListener('change', function() {
-            const region = this.dataset.region;
+            const segment = this.dataset.segment;
             const value = parseInt(this.value);
-            if (state.regions[region]) {
-                state.regions[region].schools = value;
+            if (state.segments[segment]) {
+                state.segments[segment].schools = value;
+                updateAllCalculations();
+                saveState();
+            }
+        });
+    });
+
+    // Controles de estudantes por ano
+    document.querySelectorAll('.year-students').forEach(input => {
+        input.addEventListener('change', function() {
+            const segment = this.dataset.segment;
+            const year = this.dataset.year;
+            const value = parseInt(this.value);
+            if (state.segments[segment] && state.segments[segment].yearData[year]) {
+                state.segments[segment].yearData[year].students = value;
+                state.segments[segment].yearData[year].available = value - (state.allocations[year][segment] || 0);
+                updateAllCalculations();
+                updateAvailabilityDisplay();
+                saveState();
+            }
+        });
+    });
+
+    // Controles de professores por ano
+    document.querySelectorAll('.year-teachers').forEach(input => {
+        input.addEventListener('change', function() {
+            const segment = this.dataset.segment;
+            const year = this.dataset.year;
+            const value = parseInt(this.value);
+            if (state.segments[segment] && state.segments[segment].yearData[year]) {
+                state.segments[segment].yearData[year].teachers = value;
                 updateAllCalculations();
                 saveState();
             }
@@ -192,12 +226,18 @@ function updateTotalTeachers() {
 }
 
 function updateTotalSchools() {
-    const totalSchools = Object.values(state.regions).reduce((sum, region) => sum + region.schools, 0);
+    const totalSchools = Object.values(state.segments).reduce((sum, segment) => sum + segment.schools, 0);
     
     const summaryElement = document.getElementById('summary-total-schools');
     if (summaryElement) {
         summaryElement.textContent = totalSchools.toLocaleString('pt-BR');
     }
+}
+
+function updateAvailabilityDisplay() {
+    // This function will update the second tab "Público-Alvo do Programa" 
+    // showing available students and teachers for allocation
+    console.log('Updating availability display with current allocations:', state.allocations);
 }
 
 function updateProductAllocations() {
