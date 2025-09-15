@@ -4116,138 +4116,139 @@ input[type="month"] {
     }
 }
 
-/* Improved Product Layout */
-.allocation-summary {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 8px;
+/* Streamlined Product Layout */
+.main-inputs {
+    display: flex;
+    gap: 16px;
     margin-bottom: 12px;
-    padding: 10px;
-    background: #f8fafc;
-    border-radius: 6px;
+    padding: 12px;
+    background: #f1f5f9;
+    border-radius: 8px;
     border: 1px solid #e2e8f0;
 }
 
-.summary-item {
+.input-group {
     display: flex;
     flex-direction: column;
     gap: 4px;
+    flex: 1;
 }
 
-.summary-item label {
+.input-group label {
     font-size: 12px;
     font-weight: 600;
     color: #475569;
-    margin-bottom: 4px;
 }
 
-.summary-item input {
-    padding: 6px;
+.input-group input {
+    padding: 8px;
     border: 1px solid #d1d5db;
-    border-radius: 4px;
-    font-size: 13px;
+    border-radius: 6px;
+    font-size: 14px;
     text-align: center;
+    transition: all 0.2s ease;
 }
 
-.summary-item input:focus {
+.input-group input:focus {
     border-color: #3b82f6;
     outline: none;
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
-.price-item {
-    display: flex;
-    flex-direction: column;
-}
-
-.price-input {
+.price-wrapper {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
 }
 
-.price-input input {
+.price-wrapper input {
     flex: 1;
-    min-width: 0;
 }
 
-.price-input span {
+.price-wrapper span {
     font-size: 11px;
     color: #6b7280;
     white-space: nowrap;
 }
 
-/* Segment Breakdown Styles */
-.segment-breakdown {
-    margin: 0;
-    padding: 12px;
+/* Horizontal Segments Layout */
+.segments {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
     background: #f0f9ff;
-    border-radius: 6px;
+    border-radius: 8px;
     border: 1px solid #bae6fd;
 }
 
-.segment-breakdown h6 {
-    margin: 0 0 12px 0;
-    color: #0369a1;
-    font-size: 13px;
+.segments-title {
+    font-size: 12px;
     font-weight: 600;
+    color: #0369a1;
+    white-space: nowrap;
 }
 
-.segment-allocations {
-    display: grid;
+.segments-grid {
+    display: flex;
     gap: 8px;
+    flex: 1;
 }
 
-.segment-row {
-    display: grid;
-    grid-template-columns: 1fr 100px;
+.seg-item {
+    display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 4px 0;
+    gap: 4px;
+    flex: 1;
 }
 
-.segment-label {
-    font-size: 13px;
+.seg-item span {
+    font-size: 11px;
     font-weight: 500;
     color: #374151;
+    white-space: nowrap;
 }
 
 .segment-allocation {
-    padding: 6px;
-    border: 1px solid #d1d5db;
+    flex: 1;
+    padding: 6px 4px;
+    border: 1px solid #cbd5e1;
     border-radius: 4px;
     font-size: 12px;
     text-align: center;
     transition: all 0.2s ease;
+    min-width: 50px;
 }
 
 .segment-allocation:focus {
     border-color: #3b82f6;
     outline: none;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
 }
 
 .segment-allocation:hover {
-    border-color: #9ca3af;
+    border-color: #94a3b8;
 }
 
 @media (max-width: 768px) {
-    .allocation-summary {
-        grid-template-columns: 1fr;
+    .main-inputs {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .segments {
+        flex-direction: column;
+        align-items: stretch;
         gap: 8px;
     }
     
-    .segment-row {
-        grid-template-columns: 1fr 100px;
+    .segments-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
         gap: 8px;
     }
     
-    .segment-label {
-        font-size: 12px;
-    }
-    
-    .segment-allocation {
-        padding: 6px;
-        font-size: 12px;
+    .seg-item {
+        justify-content: space-between;
     }
 }
