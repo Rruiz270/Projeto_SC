@@ -4115,3 +4115,64 @@ input[type="month"] {
         font-size: 1.5rem;
     }
 }
+
+/* Segment Breakdown Styles */
+.segment-breakdown {
+    margin: 15px 0;
+    padding: 12px;
+    background: #e8f4fd;
+    border-radius: 6px;
+    border: 1px solid #b3d7f2;
+}
+
+.segment-breakdown h6 {
+    margin: 0 0 10px 0;
+    color: #0066cc;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.segment-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.segment-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+}
+
+.segment-item span {
+    min-width: 70px;
+    font-weight: 500;
+    color: #444;
+}
+
+.segment-allocation {
+    flex: 1;
+    padding: 4px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 12px;
+    text-align: center;
+    width: 60px;
+}
+
+.segment-allocation:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+@media (max-width: 768px) {
+    .segment-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .segment-item span {
+        min-width: 60px;
+    }
+}

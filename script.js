@@ -18,11 +18,11 @@ const defaultState = {
     teachers: 51000,
     pilotStudents: 50000,
     products: {
-        inglesGeral: { active: true, price: 120, students: 0, teachers: 0 },
-        inglesCarreiras: { active: true, price: 150, students: 0, teachers: 0 },
-        espanhol: { active: false, price: 100, students: 0, teachers: 0 },
-        ia: { active: true, price: 180, students: 0, teachers: 0 },
-        coding: { active: true, price: 200, students: 0, teachers: 0 }
+        inglesGeral: { active: true, price: 120, students: 0, teachers: 0, segmentAllocations: {} },
+        inglesCarreiras: { active: true, price: 150, students: 0, teachers: 0, segmentAllocations: {} },
+        espanhol: { active: false, price: 100, students: 0, teachers: 0, segmentAllocations: {} },
+        ia: { active: true, price: 180, students: 0, teachers: 0, segmentAllocations: {} },
+        coding: { active: true, price: 200, students: 0, teachers: 0, segmentAllocations: {} }
     },
     modality: 'hibrido',
     modalityCostModifier: 1,
@@ -402,26 +402,31 @@ function setupProductControls() {
     document.getElementById('ingles-geral').addEventListener('change', function() {
         state.products.inglesGeral.active = this.checked;
         calculateProductsCost();
+        updateAvailableTotals(getTotalAvailableStudents(), getTotalAvailableTeachers());
     });
     
     document.getElementById('ingles-carreiras').addEventListener('change', function() {
         state.products.inglesCarreiras.active = this.checked;
         calculateProductsCost();
+        updateAvailableTotals(getTotalAvailableStudents(), getTotalAvailableTeachers());
     });
     
     document.getElementById('espanhol').addEventListener('change', function() {
         state.products.espanhol.active = this.checked;
         calculateProductsCost();
+        updateAvailableTotals(getTotalAvailableStudents(), getTotalAvailableTeachers());
     });
     
     document.getElementById('ia').addEventListener('change', function() {
         state.products.ia.active = this.checked;
         calculateProductsCost();
+        updateAvailableTotals(getTotalAvailableStudents(), getTotalAvailableTeachers());
     });
     
     document.getElementById('coding').addEventListener('change', function() {
         state.products.coding.active = this.checked;
         calculateProductsCost();
+        updateAvailableTotals(getTotalAvailableStudents(), getTotalAvailableTeachers());
     });
     
     // Preços dos produtos
@@ -2088,6 +2093,39 @@ function initializeSegmentControls() {
             
             // Atualizar displays
             syncPlanningToProducts();
+            saveState();
+        });
+    });
+
+    // Event listeners para alocação de segmentos nos produtos
+    document.querySelectorAll('.segment-allocation').forEach(input => {
+        input.addEventListener('input', function() {
+            const productKey = this.dataset.product;
+            const segment = this.dataset.segment;
+            const value = parseInt(this.value) || 0;
+            
+            console.log('Segment allocation changed:', productKey, segment, value);
+            
+            // Initialize product segment allocations if not exists
+            if (!state.products[productKey].segmentAllocations) {
+                state.products[productKey].segmentAllocations = {};
+            }
+            
+            state.products[productKey].segmentAllocations[segment] = value;
+            
+            // Update total students for the product (sum of all segments)
+            const totalSegmentStudents = Object.values(state.products[productKey].segmentAllocations || {})
+                .reduce((sum, val) => sum + (val || 0), 0);
+            
+            // Update the main students input
+            const mainStudentsInput = document.querySelector(`.product-students[data-product="${productKey}"]`);
+            if (mainStudentsInput) {
+                mainStudentsInput.value = totalSegmentStudents;
+                state.products[productKey].students = totalSegmentStudents;
+            }
+            
+            // Update available totals
+            updateAvailableTotals(getTotalAvailableStudents(), getTotalAvailableTeachers());
             saveState();
         });
     });
