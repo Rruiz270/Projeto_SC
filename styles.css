@@ -4119,11 +4119,11 @@ input[type="month"] {
 /* Streamlined Product Layout */
 .main-inputs {
     display: flex;
-    gap: 16px;
-    margin-bottom: 12px;
-    padding: 12px;
+    gap: 12px;
+    margin-bottom: 8px;
+    padding: 10px;
     background: #f1f5f9;
-    border-radius: 8px;
+    border-radius: 6px;
     border: 1px solid #e2e8f0;
 }
 
@@ -4141,10 +4141,10 @@ input[type="month"] {
 }
 
 .input-group input {
-    padding: 8px;
+    padding: 6px;
     border: 1px solid #d1d5db;
-    border-radius: 6px;
-    font-size: 14px;
+    border-radius: 4px;
+    font-size: 13px;
     text-align: center;
     transition: all 0.2s ease;
 }
@@ -4174,50 +4174,56 @@ input[type="month"] {
 /* Horizontal Segments Layout */
 .segments {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 12px;
-    padding: 10px;
+    gap: 6px;
+    padding: 8px;
     background: #f0f9ff;
-    border-radius: 8px;
+    border-radius: 6px;
     border: 1px solid #bae6fd;
 }
 
 .segments-title {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 600;
     color: #0369a1;
     white-space: nowrap;
+    margin-right: 4px;
 }
 
 .segments-grid {
     display: flex;
-    gap: 8px;
+    gap: 4px;
     flex: 1;
+    min-width: 0;
 }
 
 .seg-item {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 2px;
     flex: 1;
+    min-width: 60px;
 }
 
 .seg-item span {
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 500;
     color: #374151;
     white-space: nowrap;
+    width: 20px;
 }
 
 .segment-allocation {
     flex: 1;
-    padding: 6px 4px;
+    padding: 4px 2px;
     border: 1px solid #cbd5e1;
-    border-radius: 4px;
-    font-size: 12px;
+    border-radius: 3px;
+    font-size: 11px;
     text-align: center;
     transition: all 0.2s ease;
-    min-width: 50px;
+    min-width: 40px;
+    max-width: 60px;
 }
 
 .segment-allocation:focus {
