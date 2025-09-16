@@ -44,46 +44,46 @@ const defaultState = {
     segments: {
         fund1: {
             name: 'FUND1 - Anos Iniciais',
-            schools: 300,
+            schools: 0,
             yearData: {
-                2025: { students: 28000, teachers: 1400 },
-                2026: { students: 35000, teachers: 1750 },
-                2027: { students: 42000, teachers: 2100 },
-                2028: { students: 49000, teachers: 2450 },
-                2029: { students: 56000, teachers: 2800 }
+                2025: { students: 0, teachers: 0 },
+                2026: { students: 0, teachers: 0 },
+                2027: { students: 0, teachers: 0 },
+                2028: { students: 0, teachers: 0 },
+                2029: { students: 0, teachers: 0 }
             }
         },
         fund2: {
             name: 'FUND2 - Anos Finais',
-            schools: 250,
+            schools: 0,
             yearData: {
-                2025: { students: 30000, teachers: 1500 },
-                2026: { students: 38000, teachers: 1900 },
-                2027: { students: 46000, teachers: 2300 },
-                2028: { students: 54000, teachers: 2700 },
-                2029: { students: 62000, teachers: 3100 }
+                2025: { students: 0, teachers: 0 },
+                2026: { students: 0, teachers: 0 },
+                2027: { students: 0, teachers: 0 },
+                2028: { students: 0, teachers: 0 },
+                2029: { students: 0, teachers: 0 }
             }
         },
         medio: {
             name: 'Ensino Médio',
-            schools: 200,
+            schools: 0,
             yearData: {
-                2025: { students: 25000, teachers: 1250 },
-                2026: { students: 32000, teachers: 1600 },
-                2027: { students: 39000, teachers: 1950 },
-                2028: { students: 46000, teachers: 2300 },
-                2029: { students: 53000, teachers: 2650 }
+                2025: { students: 0, teachers: 0 },
+                2026: { students: 0, teachers: 0 },
+                2027: { students: 0, teachers: 0 },
+                2028: { students: 0, teachers: 0 },
+                2029: { students: 0, teachers: 0 }
             }
         },
         tecnico: {
             name: 'Médio Técnico',
-            schools: 150,
+            schools: 0,
             yearData: {
-                2025: { students: 30000, teachers: 1500 },
-                2026: { students: 40000, teachers: 2000 },
-                2027: { students: 50000, teachers: 2500 },
-                2028: { students: 60000, teachers: 3000 },
-                2029: { students: 70000, teachers: 3500 }
+                2025: { students: 0, teachers: 0 },
+                2026: { students: 0, teachers: 0 },
+                2027: { students: 0, teachers: 0 },
+                2028: { students: 0, teachers: 0 },
+                2029: { students: 0, teachers: 0 }
             }
         }
     },
@@ -2113,6 +2113,50 @@ function updateTestQuantities() {
     console.log('=== FIM ATUALIZAÇÃO TESTES ===');
 }
 
+// Função para distribuir alocações de produtos entre segmentos
+function distributeProductToSegments(productKey) {
+    const product = state.products[productKey];
+    if (!product || !product.active) return;
+    
+    const totalStudents = product.students || 0;
+    
+    // Se não há alocações de segmento, distribuir proporcionalmente
+    if (!product.segmentAllocations || Object.keys(product.segmentAllocations).length === 0) {
+        const selectedYear = document.getElementById('year-view')?.value || '2025';
+        let segmentTotals = {};
+        let grandTotal = 0;
+        
+        // Calcular totais por segmento para o ano atual
+        Object.keys(state.segments).forEach(segmentKey => {
+            const segment = state.segments[segmentKey];
+            if (segment.yearData && segment.yearData[selectedYear]) {
+                segmentTotals[segmentKey] = segment.yearData[selectedYear].students || 0;
+                grandTotal += segmentTotals[segmentKey];
+            }
+        });
+        
+        // Distribuir proporcionalmente
+        if (grandTotal > 0) {
+            Object.keys(segmentTotals).forEach(segmentKey => {
+                const proportion = segmentTotals[segmentKey] / grandTotal;
+                const allocation = Math.round(totalStudents * proportion);
+                
+                // Atualizar input do segmento
+                const segmentInput = document.querySelector(`.segment-allocation[data-product="${productKey}"][data-segment="${segmentKey}"]`);
+                if (segmentInput) {
+                    segmentInput.value = allocation;
+                }
+                
+                // Salvar no estado
+                if (!product.segmentAllocations) {
+                    product.segmentAllocations = {};
+                }
+                product.segmentAllocations[segmentKey] = allocation;
+            });
+        }
+    }
+}
+
 // Função para atualizar KPIs baseado nos totais de planejamento
 function updateKPIs() {
     console.log('Atualizando KPIs...');
@@ -2256,6 +2300,13 @@ function initializeSegmentControls() {
             
             // Atualizar displays
             syncPlanningToProducts();
+            
+            // Atualizar todos os cálculos dependentes
+            updateAllSections();
+            
+            // Atualizar KPIs
+            updateKPIs();
+            
             saveState();
         });
     });
@@ -2556,3 +2607,69 @@ window.testSync = function() {
     if (studentsEl) console.log('Valor atual alunos:', studentsEl.textContent);
     if (teachersEl) console.log('Valor atual professores:', teachersEl.textContent);
 };
+
+// Função de teste para verificar todo o fluxo de dados
+function testDataFlow() {
+    console.log("=== TESTE DO FLUXO DE DADOS ===");
+    
+    // 1. Verificar totais de planejamento
+    console.log("\n1. TOTAIS DE PLANEJAMENTO:");
+    const totalStudents = getTotalAvailableStudents();
+    const totalTeachers = getTotalAvailableTeachers();
+    console.log("Total de alunos disponíveis:", totalStudents);
+    console.log("Total de professores disponíveis:", totalTeachers);
+    
+    // 2. Verificar alocações de produtos
+    console.log("\n2. ALOCAÇÕES DE PRODUTOS:");
+    let totalAllocatedStudents = 0;
+    let totalAllocatedTeachers = 0;
+    
+    Object.keys(state.products).forEach(productKey => {
+        const product = state.products[productKey];
+        if (product.active) {
+            console.log(`${productKey}: ${product.students} alunos, ${product.teachers} professores`);
+            totalAllocatedStudents += product.students || 0;
+            totalAllocatedTeachers += product.teachers || 0;
+        }
+    });
+    
+    console.log("Total alocado - Alunos:", totalAllocatedStudents, "Professores:", totalAllocatedTeachers);
+    console.log("Restante - Alunos:", totalStudents - totalAllocatedStudents, "Professores:", totalTeachers - totalAllocatedTeachers);
+    
+    // 3. Verificar quantidades de testes
+    console.log("\n3. QUANTIDADES DE TESTES:");
+    ["qty-test-ingles", "qty-test-espanhol", "qty-test-coding", "qty-test-ia"].forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+            console.log(`${id}: ${element.value}`);
+        } else {
+            console.log(`${id}: Elemento não encontrado`);
+        }
+    });
+    
+    // 4. Verificar alocações por segmento
+    console.log("\n4. ALOCAÇÕES POR SEGMENTO:");
+    Object.keys(state.products).forEach(productKey => {
+        const product = state.products[productKey];
+        if (product.active && product.segmentAllocations) {
+            console.log(`${productKey} por segmento:`, product.segmentAllocations);
+        }
+    });
+    
+    console.log("\n=== FIM DO TESTE ===");
+}
+
+// Expor função de teste globalmente
+window.testDataFlow = testDataFlow;
+
+
+
+// Função para limpar o estado salvo e começar do zero
+function clearSavedState() {
+    localStorage.removeItem("estadoEducacaoSC");
+    console.log("Estado salvo foi limpo. Recarregue a página para começar do zero.");
+}
+
+// Expor função globalmente
+window.clearSavedState = clearSavedState;
+
