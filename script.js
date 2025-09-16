@@ -1621,14 +1621,21 @@ function updateAvailableTotals(availableStudents, availableTeachers) {
     let allocatedStudents = 0;
     let allocatedTeachers = 0;
     
+    // Para professores, pegar o maior valor alocado (pois um professor pode ensinar múltiplas matérias)
+    let maxTeachersAllocated = 0;
+    
     Object.keys(state.products).forEach(productKey => {
         const product = state.products[productKey];
         console.log(`Produto ${productKey}: active=${product.active}, students=${product.students}, teachers=${product.teachers}`);
         if (product.active) {
             allocatedStudents += product.students || 0;
-            allocatedTeachers += product.teachers || 0;
+            // Para professores, pegar o maior valor, não somar
+            maxTeachersAllocated = Math.max(maxTeachersAllocated, product.teachers || 0);
         }
     });
+    
+    // Usar o maior valor de professores alocados
+    allocatedTeachers = maxTeachersAllocated;
     
     console.log(`Total allocated - Students: ${allocatedStudents}, Teachers: ${allocatedTeachers}`);
     console.log(`Available - Students: ${availableStudents}, Teachers: ${availableTeachers}`);
@@ -1867,6 +1874,9 @@ function setupAllocationControls() {
                 getTotalAvailableTeachers()
             );
             
+            // Update test quantities
+            updateTestQuantities();
+            
             saveState();
         });
         
@@ -1923,6 +1933,9 @@ function handleStudentAllocation(event) {
     // Atualizar totais
     updateAvailableTotals(totalAvailable, totalTeachers);
     
+    // Update test quantities
+    updateTestQuantities();
+    
     // Auto-save
     saveState();
 }
@@ -1945,6 +1958,9 @@ function handleTeacherAllocation(event) {
         getTotalAvailableStudents(),
         getTotalAvailableTeachers()
     );
+    
+    // Update test quantities
+    updateTestQuantities();
     
     // Auto-save
     saveState();
@@ -2029,6 +2045,81 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 100);
 });
 
+// Função para atualizar as quantidades dos testes baseado nos produtos alocados
+function updateTestQuantities() {
+    console.log('Atualizando quantidades dos testes...');
+    
+    // Teste de Inglês - soma de alunos e professores de inglês geral e carreiras
+    const englishStudents = (state.products.inglesGeral.students || 0) + (state.products.inglesCarreiras.students || 0);
+    const englishTeachers = Math.max(state.products.inglesGeral.teachers || 0, state.products.inglesCarreiras.teachers || 0);
+    const englishTotal = englishStudents + englishTeachers;
+    
+    const englishQtyEl = document.getElementById('qty-test-ingles');
+    if (englishQtyEl) {
+        englishQtyEl.value = englishTotal;
+        console.log('Teste de Inglês atualizado:', englishTotal);
+    }
+    
+    // Teste de Espanhol
+    const spanishTotal = (state.products.espanhol.students || 0) + (state.products.espanhol.teachers || 0);
+    const spanishQtyEl = document.getElementById('qty-test-espanhol');
+    if (spanishQtyEl) {
+        spanishQtyEl.value = spanishTotal;
+        console.log('Teste de Espanhol atualizado:', spanishTotal);
+    }
+    
+    // Teste de Programação
+    const codingTotal = (state.products.coding.students || 0) + (state.products.coding.teachers || 0);
+    const codingQtyEl = document.getElementById('qty-test-coding');
+    if (codingQtyEl) {
+        codingQtyEl.value = codingTotal;
+        console.log('Teste de Coding atualizado:', codingTotal);
+    }
+    
+    // Teste de IA
+    const iaTotal = (state.products.ia.students || 0) + (state.products.ia.teachers || 0);
+    const iaQtyEl = document.getElementById('qty-test-ia');
+    if (iaQtyEl) {
+        iaQtyEl.value = iaTotal;
+        console.log('Teste de IA atualizado:', iaTotal);
+    }
+}
+
+// Função para atualizar KPIs baseado nos totais de planejamento
+function updateKPIs() {
+    console.log('Atualizando KPIs...');
+    
+    // Calcular totais dos segmentos
+    const totalStudents = getTotalAvailableStudents();
+    const totalTeachers = getTotalAvailableTeachers();
+    const totalSchools = Object.values(state.segments).reduce((sum, segment) => sum + (segment.schools || 0), 0);
+    
+    // Atualizar KPIs principais
+    const studentsKPI = document.querySelector('.hero-metric .metric-value'); // Primeiro
+    if (studentsKPI) {
+        studentsKPI.textContent = totalStudents.toLocaleString('pt-BR');
+    }
+    
+    const teachersKPIs = document.querySelectorAll('.hero-metric .metric-value')[2]; // Terceiro
+    if (teachersKPIs) {
+        teachersKPIs.textContent = totalTeachers.toLocaleString('pt-BR');
+    }
+    
+    const schoolsKPI = document.querySelectorAll('.hero-metric .metric-value')[3]; // Quarto
+    if (schoolsKPI) {
+        schoolsKPI.textContent = totalSchools.toLocaleString('pt-BR') + '+';
+    }
+    
+    // Atualizar estatísticas de habilidades baseadas nas alocações de produtos
+    const englishStudents = (state.products.inglesGeral.students || 0) + (state.products.inglesCarreiras.students || 0);
+    const englishStatsEl = document.querySelector('.skill-stats .value');
+    if (englishStatsEl) {
+        englishStatsEl.textContent = englishStudents.toLocaleString('pt-BR');
+    }
+    
+    console.log('KPIs atualizados - Alunos:', totalStudents, 'Professores:', totalTeachers, 'Escolas:', totalSchools);
+}
+
 // Sistema de auto-save
 function setupAutoSave() {
     // Salvar automaticamente a cada mudança importante
@@ -2062,11 +2153,18 @@ function updateAllSections() {
     // Atualizar totais de alunos
     updateTotalStudents();
     
+    // Atualizar quantidades dos testes
+    updateTestQuantities();
+    
     // Recalcular investimentos
     calculateInvestment();
+    calculateCompiledInvestments();
     
     // Atualizar KPIs visuais
     updateEmploymentVisual();
+    
+    // Atualizar KPIs com dados atuais
+    updateKPIs();
     
     // Recalcular testes
     calculateTestsCosts();
