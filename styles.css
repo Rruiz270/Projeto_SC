@@ -383,12 +383,17 @@ input[type="month"] {
 }
 
 .product-item {
+    margin-bottom: 15px;
+}
+
+.product-item > label {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 12px;
+    gap: 8px;
+    padding: 10px;
     background-color: var(--light-color);
     border-radius: 6px;
+    cursor: pointer;
 }
 
 .product-item label {
@@ -1709,70 +1714,87 @@ input[type="month"] {
 }
 
 .product-details {
+    margin-top: 12px;
+    padding: 12px;
+    background: #f9fafb;
+    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+}
+
+.product-inputs {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 12px;
+}
+
+.input-col {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    margin-top: 10px;
-}
-
-.product-row {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-}
-
-.main-controls {
-    display: flex;
-    gap: 12px;
-    flex: 1;
-}
-
-.control-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    min-width: fit-content;
-}
-
-.control-item label {
-    font-size: 0.85rem;
-    color: #6b7280;
-    white-space: nowrap;
-    min-width: 60px;
-}
-
-.control-item input {
-    width: 80px;
-    padding: 4px 8px;
-    border: 1px solid #e5e7eb;
-    border-radius: 4px;
-    font-size: 0.9rem;
-}
-
-.segments-row {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-}
-
-.segment-mini {
-    display: flex;
-    align-items: center;
     gap: 4px;
 }
 
-.segment-mini span {
-    font-size: 0.8rem;
-    min-width: 40px;
+.input-col label {
+    font-size: 0.75rem;
+    color: #6b7280;
     font-weight: 500;
 }
 
-.segment-mini input {
-    width: 60px;
-    padding: 3px 6px;
-    border: 1px solid #e5e7eb;
+.input-col input {
+    width: 80px;
+    padding: 6px 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    background: white;
+}
+
+.price-unit {
+    font-size: 0.7rem;
+    color: #9ca3af;
+    margin-top: 2px;
+}
+
+.segment-breakdown {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.segment-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #4b5563;
+}
+
+.segment-inputs {
+    display: flex;
+    gap: 10px;
+    flex: 1;
+}
+
+.seg-input {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    flex: 1;
+}
+
+.seg-input label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-align: center;
+}
+
+.seg-input input {
+    width: 100%;
+    padding: 4px 6px;
+    border: 1px solid #d1d5db;
     border-radius: 3px;
     font-size: 0.85rem;
+    text-align: center;
+    background: white;
 }
 
 .allocation-controls {
