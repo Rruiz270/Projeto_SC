@@ -1614,6 +1614,9 @@ function updateProductsByYear() {
     if (document.querySelector('.product-students')) {
         setupAllocationControls();
     }
+    
+    // Atualizar quantidades dos testes na inicialização
+    updateTestQuantities();
 }
 
 function updateAvailableTotals(availableStudents, availableTeachers) {
@@ -1621,21 +1624,15 @@ function updateAvailableTotals(availableStudents, availableTeachers) {
     let allocatedStudents = 0;
     let allocatedTeachers = 0;
     
-    // Para professores, pegar o maior valor alocado (pois um professor pode ensinar múltiplas matérias)
-    let maxTeachersAllocated = 0;
-    
     Object.keys(state.products).forEach(productKey => {
         const product = state.products[productKey];
         console.log(`Produto ${productKey}: active=${product.active}, students=${product.students}, teachers=${product.teachers}`);
         if (product.active) {
             allocatedStudents += product.students || 0;
-            // Para professores, pegar o maior valor, não somar
-            maxTeachersAllocated = Math.max(maxTeachersAllocated, product.teachers || 0);
+            // Para professores, somar normalmente pois cada produto pode precisar de professores específicos
+            allocatedTeachers += product.teachers || 0;
         }
     });
-    
-    // Usar o maior valor de professores alocados
-    allocatedTeachers = maxTeachersAllocated;
     
     console.log(`Total allocated - Students: ${allocatedStudents}, Teachers: ${allocatedTeachers}`);
     console.log(`Available - Students: ${availableStudents}, Teachers: ${availableTeachers}`);
@@ -1860,24 +1857,36 @@ function setupAllocationControls() {
             const productKey = e.target.dataset.product;
             const newValue = parseInt(e.target.value) || 0;
             
-            console.log('TEACHER ALLOCATION EVENT! Product:', productKey, 'Value:', newValue);
+            console.log('=== TEACHER ALLOCATION EVENT TRIGGERED ===');
+            console.log('Product:', productKey, 'New Value:', newValue);
+            console.log('Input element:', e.target);
+            console.log('Dataset product:', e.target.dataset.product);
             
             // Update state immediately
             if (state.products[productKey]) {
+                const oldValue = state.products[productKey].teachers;
                 state.products[productKey].teachers = newValue;
-                console.log('Updated teacher state for', productKey, ':', state.products[productKey].teachers);
+                console.log('Updated teacher state for', productKey, '- From:', oldValue, 'To:', newValue);
+                console.log('Current state.products[' + productKey + ']:', state.products[productKey]);
+            } else {
+                console.error('Product not found in state:', productKey);
+                console.log('Available products:', Object.keys(state.products));
             }
             
             // Force update of available totals
+            console.log('Calling updateAvailableTotals...');
             updateAvailableTotals(
                 getTotalAvailableStudents(),
                 getTotalAvailableTeachers()
             );
             
             // Update test quantities
+            console.log('Calling updateTestQuantities...');
             updateTestQuantities();
             
+            console.log('Saving state...');
             saveState();
+            console.log('=== END TEACHER ALLOCATION EVENT ===');
         });
         
         // Adicionar múltiplos eventos para debug
@@ -2047,42 +2056,61 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Função para atualizar as quantidades dos testes baseado nos produtos alocados
 function updateTestQuantities() {
-    console.log('Atualizando quantidades dos testes...');
+    console.log('=== ATUALIZANDO QUANTIDADES DOS TESTES ===');
+    console.log('Estado dos produtos:', state.products);
     
     // Teste de Inglês - soma de alunos e professores de inglês geral e carreiras
     const englishStudents = (state.products.inglesGeral.students || 0) + (state.products.inglesCarreiras.students || 0);
     const englishTeachers = Math.max(state.products.inglesGeral.teachers || 0, state.products.inglesCarreiras.teachers || 0);
     const englishTotal = englishStudents + englishTeachers;
     
+    console.log('Inglês - Alunos:', englishStudents, 'Professores:', englishTeachers, 'Total:', englishTotal);
+    
     const englishQtyEl = document.getElementById('qty-test-ingles');
     if (englishQtyEl) {
         englishQtyEl.value = englishTotal;
-        console.log('Teste de Inglês atualizado:', englishTotal);
+        console.log('Teste de Inglês atualizado no input:', englishTotal);
+    } else {
+        console.error('Elemento qty-test-ingles não encontrado!');
     }
     
     // Teste de Espanhol
     const spanishTotal = (state.products.espanhol.students || 0) + (state.products.espanhol.teachers || 0);
+    console.log('Espanhol - Total:', spanishTotal);
+    
     const spanishQtyEl = document.getElementById('qty-test-espanhol');
     if (spanishQtyEl) {
         spanishQtyEl.value = spanishTotal;
-        console.log('Teste de Espanhol atualizado:', spanishTotal);
+        console.log('Teste de Espanhol atualizado no input:', spanishTotal);
+    } else {
+        console.error('Elemento qty-test-espanhol não encontrado!');
     }
     
     // Teste de Programação
     const codingTotal = (state.products.coding.students || 0) + (state.products.coding.teachers || 0);
+    console.log('Coding - Total:', codingTotal);
+    
     const codingQtyEl = document.getElementById('qty-test-coding');
     if (codingQtyEl) {
         codingQtyEl.value = codingTotal;
-        console.log('Teste de Coding atualizado:', codingTotal);
+        console.log('Teste de Coding atualizado no input:', codingTotal);
+    } else {
+        console.error('Elemento qty-test-coding não encontrado!');
     }
     
     // Teste de IA
     const iaTotal = (state.products.ia.students || 0) + (state.products.ia.teachers || 0);
+    console.log('IA - Total:', iaTotal);
+    
     const iaQtyEl = document.getElementById('qty-test-ia');
     if (iaQtyEl) {
         iaQtyEl.value = iaTotal;
-        console.log('Teste de IA atualizado:', iaTotal);
+        console.log('Teste de IA atualizado no input:', iaTotal);
+    } else {
+        console.error('Elemento qty-test-ia não encontrado!');
     }
+    
+    console.log('=== FIM ATUALIZAÇÃO TESTES ===');
 }
 
 // Função para atualizar KPIs baseado nos totais de planejamento
