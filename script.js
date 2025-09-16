@@ -803,6 +803,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Restaurar valores salvos se existirem
     if (loadState()) {
         restoreFormValues();
+    } else {
+        // Se não há estado salvo, limpar dados de planejamento
+        setTimeout(() => {
+            clearPlanningData();
+        }, 100);
     }
     
     // Calcular valores iniciais
@@ -1884,6 +1889,11 @@ function setupAllocationControls() {
             console.log('Calling updateTestQuantities...');
             updateTestQuantities();
             
+            // Update investment calculations
+            console.log('Calling calculateInvestment...');
+            calculateInvestment();
+            calculateCompiledInvestments();
+            
             console.log('Saving state...');
             saveState();
             console.log('=== END TEACHER ALLOCATION EVENT ===');
@@ -1945,6 +1955,10 @@ function handleStudentAllocation(event) {
     // Update test quantities
     updateTestQuantities();
     
+    // Update investment calculations
+    calculateInvestment();
+    calculateCompiledInvestments();
+    
     // Auto-save
     saveState();
 }
@@ -1970,6 +1984,10 @@ function handleTeacherAllocation(event) {
     
     // Update test quantities
     updateTestQuantities();
+    
+    // Update investment calculations
+    calculateInvestment();
+    calculateCompiledInvestments();
     
     // Auto-save
     saveState();
@@ -2664,12 +2682,42 @@ window.testDataFlow = testDataFlow;
 
 
 
+// Função para limpar apenas os dados de planejamento
+function clearPlanningData() {
+    // Limpar dados dos segmentos
+    Object.keys(state.segments).forEach(segmentKey => {
+        state.segments[segmentKey].schools = 0;
+        Object.keys(state.segments[segmentKey].yearData).forEach(year => {
+            state.segments[segmentKey].yearData[year] = { students: 0, teachers: 0 };
+        });
+    });
+    
+    // Limpar inputs de escolas
+    document.querySelectorAll('.city-schools').forEach(input => {
+        input.value = '';
+    });
+    
+    // Limpar inputs de estudantes e professores
+    document.querySelectorAll('.city-students-year, .city-teachers-year').forEach(input => {
+        input.value = '';
+    });
+    
+    // Atualizar displays
+    syncPlanningToProducts();
+    updateAllSections();
+    saveState();
+    
+    console.log('Dados de planejamento limpos.');
+}
+
 // Função para limpar o estado salvo e começar do zero
 function clearSavedState() {
     localStorage.removeItem("estadoEducacaoSC");
+    localStorage.removeItem("projetoEducacaoSC");
     console.log("Estado salvo foi limpo. Recarregue a página para começar do zero.");
 }
 
-// Expor função globalmente
+// Expor funções globalmente
+window.clearPlanningData = clearPlanningData;
 window.clearSavedState = clearSavedState;
 
