@@ -1818,11 +1818,16 @@ function setupAllocationControls() {
                 const checkboxId = getProductCheckboxId(productKey);
                 const checkbox = document.getElementById(checkboxId);
                 if (checkbox && !checkbox.checked) {
+                    console.log('Auto-activating product:', productKey, 'checkbox:', checkboxId);
                     checkbox.checked = true;
                     state.products[productKey].active = true;
-                    console.log('Auto-activated product due to student allocation:', productKey, 'checkbox:', checkboxId);
+                    // Trigger the change event to ensure proper updates
+                    checkbox.dispatchEvent(new Event('change'));
+                    console.log('Auto-activated product and triggered change event:', productKey);
                 } else if (!checkbox) {
                     console.error('Checkbox not found for product:', productKey, 'ID:', checkboxId);
+                } else {
+                    console.log('Product already active:', productKey);
                 }
             }
             
@@ -1910,11 +1915,16 @@ function setupAllocationControls() {
                     const checkboxId = getProductCheckboxId(productKey);
                     const checkbox = document.getElementById(checkboxId);
                     if (checkbox && !checkbox.checked) {
+                        console.log('Auto-activating product:', productKey, 'checkbox:', checkboxId);
                         checkbox.checked = true;
                         state.products[productKey].active = true;
-                        console.log('Auto-activated product due to teacher allocation:', productKey, 'checkbox:', checkboxId);
+                        // Trigger the change event to ensure proper updates
+                        checkbox.dispatchEvent(new Event('change'));
+                        console.log('Auto-activated product and triggered change event:', productKey);
                     } else if (!checkbox) {
                         console.error('Checkbox not found for product:', productKey, 'ID:', checkboxId);
+                    } else {
+                        console.log('Product already active:', productKey);
                     }
                 }
                 
@@ -1925,7 +1935,7 @@ function setupAllocationControls() {
                 console.log('Available products:', Object.keys(state.products));
             }
             
-            // Force update of available totals
+            // Always force update of available totals to ensure consistency
             console.log('Calling updateAvailableTotals...');
             updateAvailableTotals(
                 getTotalAvailableStudents(),
