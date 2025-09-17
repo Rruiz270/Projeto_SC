@@ -1651,12 +1651,22 @@ function updateAvailableTotals(availableStudents, availableTeachers) {
     
     Object.keys(state.products).forEach(productKey => {
         const product = state.products[productKey];
-        console.log(`Produto ${productKey}: active=${product.active}, students=${product.students}, teachers=${product.teachers}`);
+        console.log(`=== DEBUGGING PRODUCT: ${productKey} ===`);
+        console.log(`Active: ${product.active}`);
+        console.log(`Students: ${product.students}`);
+        console.log(`Teachers: ${product.teachers}`);
+        
         if (product.active) {
-            allocatedStudents += product.students || 0;
-            // Para professores, somar normalmente pois cada produto pode precisar de professores específicos
-            allocatedTeachers += product.teachers || 0;
+            const studentContrib = product.students || 0;
+            const teacherContrib = product.teachers || 0;
+            allocatedStudents += studentContrib;
+            allocatedTeachers += teacherContrib;
+            console.log(`Adding to totals - Students: +${studentContrib}, Teachers: +${teacherContrib}`);
+            console.log(`Running totals - Students: ${allocatedStudents}, Teachers: ${allocatedTeachers}`);
+        } else {
+            console.log(`Product ${productKey} is INACTIVE - not counting allocations`);
         }
+        console.log(`=== END ${productKey} ===`);
     });
     
     console.log(`Total allocated - Students: ${allocatedStudents}, Teachers: ${allocatedTeachers}`);
@@ -1683,9 +1693,16 @@ function updateAvailableTotals(availableStudents, availableTeachers) {
     }
     
     if (totalTeachersEl) {
+        console.log(`=== UPDATING TEACHERS DISPLAY ===`);
+        console.log(`Available teachers: ${availableTeachers}`);
+        console.log(`Allocated teachers: ${allocatedTeachers}`);
+        console.log(`Remaining teachers: ${remainingTeachers}`);
+        console.log(`Teachers percent: ${teachersPercent}%`);
+        
         totalTeachersEl.textContent = remainingTeachers.toLocaleString('pt-BR');
         totalTeachersEl.style.color = remainingTeachers === 0 ? '#10b981' : remainingTeachers < availableTeachers * 0.1 ? '#f59e0b' : '';
         console.log('Total de professores atualizado para:', remainingTeachers.toLocaleString('pt-BR'));
+        console.log(`=== END TEACHERS DISPLAY UPDATE ===`);
     } else {
         console.log('Elemento products-total-teachers não encontrado (normal se não estiver na aba Produtos)');
     }
