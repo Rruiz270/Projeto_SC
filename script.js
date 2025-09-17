@@ -18,11 +18,11 @@ const defaultState = {
     teachers: 51000,
     pilotStudents: 50000,
     products: {
-        inglesGeral: { active: true, price: 120, students: 0, teachers: 0, segmentAllocations: {} },
-        inglesCarreiras: { active: true, price: 150, students: 0, teachers: 0, segmentAllocations: {} },
+        inglesGeral: { active: false, price: 120, students: 0, teachers: 0, segmentAllocations: {} },
+        inglesCarreiras: { active: false, price: 150, students: 0, teachers: 0, segmentAllocations: {} },
         espanhol: { active: false, price: 100, students: 0, teachers: 0, segmentAllocations: {} },
-        ia: { active: true, price: 180, students: 0, teachers: 0, segmentAllocations: {} },
-        coding: { active: true, price: 200, students: 0, teachers: 0, segmentAllocations: {} }
+        ia: { active: false, price: 180, students: 0, teachers: 0, segmentAllocations: {} },
+        coding: { active: false, price: 200, students: 0, teachers: 0, segmentAllocations: {} }
     },
     modality: 'hibrido',
     modalityCostModifier: 1,
@@ -800,15 +800,23 @@ document.addEventListener('DOMContentLoaded', function() {
     setupTestControls();
     setupProductYearControls();
     
-    // Restaurar valores salvos se existirem
-    if (loadState()) {
-        restoreFormValues();
-    } else {
-        // Se não há estado salvo, limpar dados de planejamento
-        setTimeout(() => {
-            clearPlanningData();
-        }, 100);
-    }
+    // Force clean state on load - no pre-filled values
+    setTimeout(() => {
+        // Clear all planning and product data
+        clearPlanningData();
+        
+        // Also ensure checkboxes start unchecked
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            if (checkbox.id.startsWith('test-') || checkbox.id.includes('ingles') || 
+                checkbox.id.includes('espanhol') || checkbox.id === 'ia' || checkbox.id === 'coding') {
+                checkbox.checked = false;
+            }
+        });
+        
+        // Force update all displays
+        syncPlanningToProducts();
+        updateAllSections();
+    }, 200);
     
     // Calcular valores iniciais
     updateTotalStudents();
@@ -2702,12 +2710,24 @@ function clearPlanningData() {
         input.value = '';
     });
     
+    // Limpar alocações de produtos
+    Object.keys(state.products).forEach(productKey => {
+        state.products[productKey].students = 0;
+        state.products[productKey].teachers = 0;
+        state.products[productKey].segmentAllocations = {};
+    });
+    
+    // Limpar inputs de produtos
+    document.querySelectorAll('.product-students, .product-teachers, .segment-allocation').forEach(input => {
+        input.value = 0;
+    });
+    
     // Atualizar displays
     syncPlanningToProducts();
     updateAllSections();
     saveState();
     
-    console.log('Dados de planejamento limpos.');
+    console.log('Dados de planejamento e produtos limpos.');
 }
 
 // Função para limpar o estado salvo e começar do zero
