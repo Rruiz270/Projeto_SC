@@ -149,6 +149,18 @@ if (!state.cities) {
     state.cities = defaultState.cities;
 }
 
+// Utility function to map product keys to checkbox IDs
+function getProductCheckboxId(productKey) {
+    const mapping = {
+        'ia': 'ia',
+        'inglesGeral': 'ingles-geral',
+        'inglesCarreiras': 'ingles-carreiras',
+        'espanhol': 'espanhol',
+        'coding': 'coding'
+    };
+    return mapping[productKey] || productKey.toLowerCase();
+}
+
 // Navegação entre seções
 document.querySelectorAll('.nav-btn').forEach(btn => {
     btn.addEventListener('click', function() {
@@ -1803,11 +1815,14 @@ function setupAllocationControls() {
             
             // If allocating students, ensure the product is active
             if (newValue > 0) {
-                const checkbox = document.getElementById(productKey.replace(/([A-Z])/g, '-$1').toLowerCase());
+                const checkboxId = getProductCheckboxId(productKey);
+                const checkbox = document.getElementById(checkboxId);
                 if (checkbox && !checkbox.checked) {
                     checkbox.checked = true;
                     state.products[productKey].active = true;
-                    console.log('Auto-activated product due to student allocation:', productKey);
+                    console.log('Auto-activated product due to student allocation:', productKey, 'checkbox:', checkboxId);
+                } else if (!checkbox) {
+                    console.error('Checkbox not found for product:', productKey, 'ID:', checkboxId);
                 }
             }
             
@@ -1892,11 +1907,14 @@ function setupAllocationControls() {
                 
                 // If allocating teachers, ensure the product is active
                 if (newValue > 0) {
-                    const checkbox = document.getElementById(productKey.replace(/([A-Z])/g, '-$1').toLowerCase());
+                    const checkboxId = getProductCheckboxId(productKey);
+                    const checkbox = document.getElementById(checkboxId);
                     if (checkbox && !checkbox.checked) {
                         checkbox.checked = true;
                         state.products[productKey].active = true;
-                        console.log('Auto-activated product due to teacher allocation:', productKey);
+                        console.log('Auto-activated product due to teacher allocation:', productKey, 'checkbox:', checkboxId);
+                    } else if (!checkbox) {
+                        console.error('Checkbox not found for product:', productKey, 'ID:', checkboxId);
                     }
                 }
                 
