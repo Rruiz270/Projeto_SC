@@ -1801,6 +1801,16 @@ function setupAllocationControls() {
             // Atualizar estado imediatamente
             state.products[productKey].students = newValue;
             
+            // If allocating students, ensure the product is active
+            if (newValue > 0) {
+                const checkbox = document.getElementById(productKey.replace(/([A-Z])/g, '-$1').toLowerCase());
+                if (checkbox && !checkbox.checked) {
+                    checkbox.checked = true;
+                    state.products[productKey].active = true;
+                    console.log('Auto-activated product due to student allocation:', productKey);
+                }
+            }
+            
             // Recalcular totais alocados
             let totalAllocated = 0;
             Object.keys(state.products).forEach(key => {
@@ -1879,6 +1889,17 @@ function setupAllocationControls() {
             if (state.products[productKey]) {
                 const oldValue = state.products[productKey].teachers;
                 state.products[productKey].teachers = newValue;
+                
+                // If allocating teachers, ensure the product is active
+                if (newValue > 0) {
+                    const checkbox = document.getElementById(productKey.replace(/([A-Z])/g, '-$1').toLowerCase());
+                    if (checkbox && !checkbox.checked) {
+                        checkbox.checked = true;
+                        state.products[productKey].active = true;
+                        console.log('Auto-activated product due to teacher allocation:', productKey);
+                    }
+                }
+                
                 console.log('Updated teacher state for', productKey, '- From:', oldValue, 'To:', newValue);
                 console.log('Current state.products[' + productKey + ']:', state.products[productKey]);
             } else {
