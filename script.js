@@ -219,17 +219,53 @@ function setupStudentControls() {
 }
 
 function updateTotalStudents() {
-    const total = state.students.fundamental + state.students.medio + state.students.tecnico;
+    // Use segments data instead of old students structure
+    let total = 0;
+    
+    // Get total from segments for current year
+    const selectedYear = document.getElementById('year-view')?.value || '2025';
+    
+    if (state.segments) {
+        if (selectedYear === 'total') {
+            // Sum all years
+            Object.values(state.segments).forEach(segment => {
+                if (segment.yearData) {
+                    Object.values(segment.yearData).forEach(yearData => {
+                        total += yearData.students || 0;
+                    });
+                }
+            });
+        } else {
+            // Sum specific year
+            Object.values(state.segments).forEach(segment => {
+                if (segment.yearData && segment.yearData[selectedYear]) {
+                    total += segment.yearData[selectedYear].students || 0;
+                }
+            });
+        }
+    }
+    
+    // Fallback to old structure if segments are empty (backwards compatibility)
+    if (total === 0 && state.students) {
+        total = (state.students.fundamental || 0) + (state.students.medio || 0) + (state.students.tecnico || 0);
+    }
+    
     const totalElement = document.getElementById('total-alunos');
     if (totalElement) {
         totalElement.textContent = total.toLocaleString('pt-BR');
         console.log('Total de alunos atualizado para:', total.toLocaleString('pt-BR'));
     }
     
-    // Forçar atualização nas outras abas também
+    // Update other tabs as well
     const totalElementPlanning = document.querySelector('.stat-value');
     if (totalElementPlanning && totalElementPlanning.id === 'total-alunos') {
         totalElementPlanning.textContent = total.toLocaleString('pt-BR');
+    }
+    
+    // Also update hero metrics
+    const heroStudents = document.querySelector('.hero-metric .metric-value');
+    if (heroStudents) {
+        heroStudents.textContent = total.toLocaleString('pt-BR');
     }
 }
 
@@ -1372,18 +1408,44 @@ function calculateCompiledInvestments() {
 }
 
 function calculateStudentInvestment() {
-    // Calcular investimento total em alunos baseado nos valores definidos no planejamento
+    // Calcular investimento total em alunos baseado nos segmentos
+    const selectedYear = document.getElementById('investment-year')?.value || '2025';
     let total = 0;
     
-    // Usar os valores de orçamento definidos por segmento
-    const fundamentalTotal = state.students.fundamental * state.budget.fundamental * 12;
-    const medioTotal = state.students.medio * state.budget.medio * 12;
-    const tecnicoTotal = state.students.tecnico * state.budget.tecnico * 12;
+    if (selectedYear === 'total') {
+        // Somar todos os anos
+        Object.values(state.segments).forEach(segment => {
+            if (segment.yearData) {
+                Object.values(segment.yearData).forEach(yearData => {
+                    const students = yearData.students || 0;
+                    // Use budget based on segment type
+                    let budgetPerStudent = 15; // Default
+                    if (segment.name && segment.name.includes('FUND1')) budgetPerStudent = state.budget.fundamental1 || 15;
+                    else if (segment.name && segment.name.includes('FUND2')) budgetPerStudent = state.budget.fundamental2 || 18;
+                    else if (segment.name && segment.name.includes('Médio')) budgetPerStudent = state.budget.medio || 22;
+                    else if (segment.name && segment.name.includes('Técnico')) budgetPerStudent = state.budget.medioTecnico || 28;
+                    
+                    total += students * budgetPerStudent * 12;
+                });
+            }
+        });
+    } else {
+        // Somar apenas ano específico
+        Object.values(state.segments).forEach(segment => {
+            if (segment.yearData && segment.yearData[selectedYear]) {
+                const students = segment.yearData[selectedYear].students || 0;
+                let budgetPerStudent = 15; // Default
+                if (segment.name && segment.name.includes('FUND1')) budgetPerStudent = state.budget.fundamental1 || 15;
+                else if (segment.name && segment.name.includes('FUND2')) budgetPerStudent = state.budget.fundamental2 || 18;
+                else if (segment.name && segment.name.includes('Médio')) budgetPerStudent = state.budget.medio || 22;
+                else if (segment.name && segment.name.includes('Técnico')) budgetPerStudent = state.budget.medioTecnico || 28;
+                
+                total += students * budgetPerStudent * 12;
+            }
+        });
+    }
     
-    total = fundamentalTotal + medioTotal + tecnicoTotal;
-    
-    // Aplicar modificador de modalidade
-    return total * state.modalityCostModifier;
+    return total * (state.modalityCostModifier || 1);
 }
 
 function calculateTeacherInvestment() {
@@ -1476,9 +1538,11 @@ function updateInvestmentCategory(elementId, value) {
     console.log('Atualizando categoria:', elementId, 'valor:', value);
     const element = document.getElementById(elementId);
     if (element) {
-        const displayValue = 'R$ ' + (value / 1000000).toFixed(1) + 'M';
+        // Ensure value is a number and not NaN
+        const safeValue = isNaN(value) || value === null || value === undefined ? 0 : value;
+        const displayValue = 'R$ ' + (safeValue / 1000000).toFixed(1) + 'M';
         element.textContent = displayValue;
-        console.log('Categoria', elementId, 'atualizada para:', displayValue);
+        console.log('Categoria', elementId, 'atualizada para:', displayValue, '(safe value:', safeValue, ')');
     } else {
         console.error('Elemento não encontrado:', elementId);
     }
@@ -2175,6 +2239,7 @@ function updateTestQuantities() {
     
     const englishQtyEl = document.getElementById('qty-test-ingles');
     if (englishQtyEl) {
+        englishQtyEl.removeAttribute('readonly'); // Remove readonly to allow updates
         englishQtyEl.value = englishTotal;
         console.log('Teste de Inglês atualizado no input:', englishTotal);
     } else {
@@ -2187,6 +2252,7 @@ function updateTestQuantities() {
     
     const spanishQtyEl = document.getElementById('qty-test-espanhol');
     if (spanishQtyEl) {
+        spanishQtyEl.removeAttribute('readonly'); // Remove readonly to allow updates
         spanishQtyEl.value = spanishTotal;
         console.log('Teste de Espanhol atualizado no input:', spanishTotal);
     } else {
@@ -2199,6 +2265,7 @@ function updateTestQuantities() {
     
     const codingQtyEl = document.getElementById('qty-test-coding');
     if (codingQtyEl) {
+        codingQtyEl.removeAttribute('readonly'); // Remove readonly to allow updates
         codingQtyEl.value = codingTotal;
         console.log('Teste de Coding atualizado no input:', codingTotal);
     } else {
@@ -2211,6 +2278,7 @@ function updateTestQuantities() {
     
     const iaQtyEl = document.getElementById('qty-test-ia');
     if (iaQtyEl) {
+        iaQtyEl.removeAttribute('readonly'); // Remove readonly to allow updates
         iaQtyEl.value = iaTotal;
         console.log('Teste de IA atualizado no input:', iaTotal);
     } else {
