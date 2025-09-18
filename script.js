@@ -812,9 +812,12 @@ document.addEventListener('DOMContentLoaded', function() {
     setupTestControls();
     setupProductYearControls();
     
-    // Force clean state on load - no pre-filled values
+    // Validate data integrity and clean state on load
     setTimeout(() => {
-        // Clear all planning and product data
+        // Validate data structure first
+        validateDataIntegrity();
+        
+        // Clear all planning and product data to start fresh
         clearPlanningData();
         
         // Also ensure checkboxes start unchecked
@@ -826,7 +829,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         // Force update all displays
-        syncPlanningToProducts();
+        forceFullUpdate();
         updateAllSections();
     }, 200);
     
@@ -2324,26 +2327,34 @@ function setupAutoSave() {
 
 // Função para atualizar todas as seções quando há mudança
 function updateAllSections() {
-    console.log('Atualizando todas as seções...');
+    console.log('=== ATUALIZANDO TODAS AS SEÇÕES ===');
+    const startTime = performance.now();
     
-    // Atualizar totais de alunos
+    // 1. Sincronizar dados do planejamento para produtos
+    syncPlanningToProducts();
+    
+    // 2. Atualizar totais gerais
     updateTotalStudents();
     
-    // Atualizar quantidades dos testes
+    // 3. Atualizar quantidades dos testes baseado em produtos ativos
     updateTestQuantities();
     
-    // Recalcular investimentos
+    // 4. Recalcular investimentos
     calculateInvestment();
     calculateCompiledInvestments();
     
-    // Atualizar KPIs visuais
+    // 5. Atualizar custos dos testes
+    calculateTestsCosts();
+    
+    // 6. Atualizar KPIs
+    updateKPIs();
     updateEmploymentVisual();
     
-    // Atualizar KPIs com dados atuais
-    updateKPIs();
+    // 7. Salvar estado
+    saveState();
     
-    // Recalcular testes
-    calculateTestsCosts();
+    const endTime = performance.now();
+    console.log(`=== ATUALIZAÇÃO COMPLETA EM ${(endTime - startTime).toFixed(2)}ms ===`);
     
     // Atualizar produtos por ano
     updateProductsByYear();
@@ -2639,52 +2650,42 @@ function syncPlanningToProducts() {
     // Obter ano selecionado do dropdown
     const selectedYear = document.getElementById('year-view')?.value || '2025';
     console.log('Ano selecionado:', selectedYear);
-    console.log('Segments data:', state.segments);
     
-    // Sincronizar dados do planejamento para produtos baseado no ano selecionado
     let totalStudents = 0;
     let totalTeachers = 0;
-
-    // Calcular totais para o ano atual usando segments
-    if (state.segments) {
-        Object.keys(state.segments).forEach(segmentKey => {
-            const segment = state.segments[segmentKey];
-            console.log(`Processando segmento ${segmentKey}:`, segment);
-            
+    
+    // Calcular totais baseado no ano selecionado
+    if (selectedYear === 'total') {
+        // Somar todos os anos de todos os segmentos
+        Object.values(state.segments).forEach(segment => {
+            if (segment.yearData) {
+                Object.values(segment.yearData).forEach(yearData => {
+                    totalStudents += yearData.students || 0;
+                    totalTeachers += yearData.teachers || 0;
+                });
+            }
+        });
+    } else {
+        // Somar apenas o ano específico de todos os segmentos
+        Object.values(state.segments).forEach(segment => {
             if (segment.yearData && segment.yearData[selectedYear]) {
-                const yearData = segment.yearData[selectedYear];
-                totalStudents += yearData.students || 0;
-                totalTeachers += yearData.teachers || 0;
-                console.log(`${segmentKey} ${selectedYear}: ${yearData.students} alunos, ${yearData.teachers} professores`);
-            } else {
-                console.log(`${segmentKey}: Sem dados para ${selectedYear}`);
+                totalStudents += segment.yearData[selectedYear].students || 0;
+                totalTeachers += segment.yearData[selectedYear].teachers || 0;
             }
         });
     }
-
-    console.log(`TOTAIS CALCULADOS: ${totalStudents} alunos, ${totalTeachers} professores`);
-
-    // Atualizar displays usando a função updateAvailableTotals
-    updateAvailableTotals(totalStudents, totalTeachers);
-
-    // Atualizar displays no tab produtos
-    const productsStudentsEl = document.getElementById('products-total-students');
-    const productsTeachersEl = document.getElementById('products-total-teachers');
-
-    if (productsStudentsEl) {
-        productsStudentsEl.textContent = totalStudents.toLocaleString('pt-BR');
-        console.log('Atualizado products-total-students para:', totalStudents.toLocaleString('pt-BR'));
-    } else {
-        console.error('Elemento products-total-students não encontrado!');
-    }
     
-    if (productsTeachersEl) {
-        productsTeachersEl.textContent = totalTeachers.toLocaleString('pt-BR');
-        console.log('Atualizado products-total-teachers para:', totalTeachers.toLocaleString('pt-BR'));
-    } else {
-        console.error('Elemento products-total-teachers não encontrado!');
-    }
-
+    console.log(`TOTAIS CALCULADOS: ${totalStudents} alunos, ${totalTeachers} professores`);
+    
+    // Atualizar displays considerando alocações já feitas
+    updateAvailableTotals(totalStudents, totalTeachers);
+    
+    // Atualizar todos os cálculos dependentes
+    updateTestQuantities();
+    calculateInvestment();
+    calculateCompiledInvestments();
+    updateKPIs();
+    
     console.log('=== FIM SINCRONIZAÇÃO ===');
 }
 
@@ -2815,7 +2816,71 @@ function clearSavedState() {
     console.log("Estado salvo foi limpo. Recarregue a página para começar do zero.");
 }
 
+// Função para validar e garantir integridade dos dados
+function validateDataIntegrity() {
+    console.log('=== VALIDANDO INTEGRIDADE DOS DADOS ===');
+    
+    // 1. Garantir que todos os segmentos existem
+    const requiredSegments = ['fund1', 'fund2', 'medio', 'tecnico'];
+    requiredSegments.forEach(segment => {
+        if (!state.segments[segment]) {
+            state.segments[segment] = {
+                name: segment,
+                schools: 0,
+                yearData: {
+                    2025: { students: 0, teachers: 0 },
+                    2026: { students: 0, teachers: 0 },
+                    2027: { students: 0, teachers: 0 },
+                    2028: { students: 0, teachers: 0 },
+                    2029: { students: 0, teachers: 0 }
+                }
+            };
+            console.warn(`Segmento ${segment} não existia, criado com valores padrão`);
+        }
+    });
+    
+    // 2. Garantir que todos os produtos existem e têm estrutura correta
+    const requiredProducts = ['ia', 'inglesGeral', 'inglesCarreiras', 'espanhol', 'coding'];
+    requiredProducts.forEach(product => {
+        if (!state.products[product]) {
+            state.products[product] = { active: false, students: 0, teachers: 0, segmentAllocations: {} };
+            console.warn(`Produto ${product} não existia, criado com valores padrão`);
+        }
+        if (!state.products[product].segmentAllocations) {
+            state.products[product].segmentAllocations = {};
+        }
+    });
+    
+    // 3. Garantir que todos os testes existem
+    const requiredTests = ['ingles', 'espanhol', 'coding', 'ia'];
+    requiredTests.forEach(test => {
+        if (!state.tests[test]) {
+            state.tests[test] = { active: false, price: 100 };
+            console.warn(`Teste ${test} não existia, criado com valores padrão`);
+        }
+    });
+    
+    console.log('=== VALIDAÇÃO COMPLETA ===');
+}
+
+// Função para forçar atualização completa de todos os displays
+function forceFullUpdate() {
+    console.log('=== FORÇANDO ATUALIZAÇÃO COMPLETA ===');
+    
+    // Validar dados primeiro
+    validateDataIntegrity();
+    
+    // Atualizar tudo na ordem correta
+    syncPlanningToProducts();
+    updateAllSections();
+    
+    console.log('=== ATUALIZAÇÃO COMPLETA FINALIZADA ===');
+}
+
 // Expor funções globalmente
 window.clearPlanningData = clearPlanningData;
 window.clearSavedState = clearSavedState;
+window.validateDataIntegrity = validateDataIntegrity;
+window.forceFullUpdate = forceFullUpdate;
+window.state = state;
 
