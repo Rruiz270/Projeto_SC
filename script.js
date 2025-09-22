@@ -459,14 +459,8 @@ function setupProductControls() {
     document.getElementById('ingles-geral').addEventListener('change', function() {
         state.products.inglesGeral.active = this.checked;
         
-        // Auto-allocate teachers when product is activated
-        if (this.checked && state.products.inglesGeral.teachers === 0) {
-            const totalTeachers = getTotalAvailableTeachers();
-            state.products.inglesGeral.teachers = Math.round(totalTeachers * 0.25); // 25% of teachers
-            // Update the input if it exists
-            const teacherInput = document.querySelector('.product-teachers[data-product="inglesGeral"]');
-            if (teacherInput) teacherInput.value = state.products.inglesGeral.teachers;
-        } else if (!this.checked) {
+        // Only reset teachers to 0 when product is deactivated
+        if (!this.checked) {
             state.products.inglesGeral.teachers = 0;
             const teacherInput = document.querySelector('.product-teachers[data-product="inglesGeral"]');
             if (teacherInput) teacherInput.value = 0;
@@ -480,13 +474,8 @@ function setupProductControls() {
     document.getElementById('ingles-carreiras').addEventListener('change', function() {
         state.products.inglesCarreiras.active = this.checked;
         
-        // Auto-allocate teachers when product is activated
-        if (this.checked && state.products.inglesCarreiras.teachers === 0) {
-            const totalTeachers = getTotalAvailableTeachers();
-            state.products.inglesCarreiras.teachers = Math.round(totalTeachers * 0.15); // 15% of teachers
-            const teacherInput = document.querySelector('.product-teachers[data-product="inglesCarreiras"]');
-            if (teacherInput) teacherInput.value = state.products.inglesCarreiras.teachers;
-        } else if (!this.checked) {
+        // Only reset teachers to 0 when product is deactivated
+        if (!this.checked) {
             state.products.inglesCarreiras.teachers = 0;
             const teacherInput = document.querySelector('.product-teachers[data-product="inglesCarreiras"]');
             if (teacherInput) teacherInput.value = 0;
@@ -500,13 +489,8 @@ function setupProductControls() {
     document.getElementById('espanhol').addEventListener('change', function() {
         state.products.espanhol.active = this.checked;
         
-        // Auto-allocate teachers when product is activated
-        if (this.checked && state.products.espanhol.teachers === 0) {
-            const totalTeachers = getTotalAvailableTeachers();
-            state.products.espanhol.teachers = Math.round(totalTeachers * 0.10); // 10% of teachers
-            const teacherInput = document.querySelector('.product-teachers[data-product="espanhol"]');
-            if (teacherInput) teacherInput.value = state.products.espanhol.teachers;
-        } else if (!this.checked) {
+        // Only reset teachers to 0 when product is deactivated
+        if (!this.checked) {
             state.products.espanhol.teachers = 0;
             const teacherInput = document.querySelector('.product-teachers[data-product="espanhol"]');
             if (teacherInput) teacherInput.value = 0;
@@ -520,13 +504,8 @@ function setupProductControls() {
     document.getElementById('ia').addEventListener('change', function() {
         state.products.ia.active = this.checked;
         
-        // Auto-allocate teachers when product is activated
-        if (this.checked && state.products.ia.teachers === 0) {
-            const totalTeachers = getTotalAvailableTeachers();
-            state.products.ia.teachers = Math.round(totalTeachers * 0.35); // 35% of teachers
-            const teacherInput = document.querySelector('.product-teachers[data-product="ia"]');
-            if (teacherInput) teacherInput.value = state.products.ia.teachers;
-        } else if (!this.checked) {
+        // Only reset teachers to 0 when product is deactivated
+        if (!this.checked) {
             state.products.ia.teachers = 0;
             const teacherInput = document.querySelector('.product-teachers[data-product="ia"]');
             if (teacherInput) teacherInput.value = 0;
@@ -540,13 +519,8 @@ function setupProductControls() {
     document.getElementById('coding').addEventListener('change', function() {
         state.products.coding.active = this.checked;
         
-        // Auto-allocate teachers when product is activated
-        if (this.checked && state.products.coding.teachers === 0) {
-            const totalTeachers = getTotalAvailableTeachers();
-            state.products.coding.teachers = Math.round(totalTeachers * 0.20); // 20% of teachers
-            const teacherInput = document.querySelector('.product-teachers[data-product="coding"]');
-            if (teacherInput) teacherInput.value = state.products.coding.teachers;
-        } else if (!this.checked) {
+        // Only reset teachers to 0 when product is deactivated
+        if (!this.checked) {
             state.products.coding.teachers = 0;
             const teacherInput = document.querySelector('.product-teachers[data-product="coding"]');
             if (teacherInput) teacherInput.value = 0;
@@ -942,6 +916,16 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Clear all planning and product data to start fresh
         clearPlanningData();
+        
+        // Clear any pre-filled teacher values from products
+        Object.keys(state.products).forEach(productKey => {
+            state.products[productKey].teachers = 0;
+        });
+        
+        // Clear teacher input fields visually
+        document.querySelectorAll('.product-teachers').forEach(input => {
+            input.value = '';
+        });
         
         // Also ensure checkboxes start unchecked
         document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
@@ -2060,10 +2044,15 @@ function setupAllocationControls() {
         input.style.backgroundColor = 'white';
         input.style.cursor = 'text';
         
-        // Restaurar valor salvo
+        // Only restore saved value if it's greater than 0 (avoid showing 0 in inputs)
         const savedValue = state.products[productKey]?.teachers || 0;
-        input.value = savedValue;
-        console.log('Valor restaurado para professor', productKey, ':', savedValue);
+        if (savedValue > 0) {
+            input.value = savedValue;
+            console.log('Valor restaurado para professor', productKey, ':', savedValue);
+        } else {
+            input.value = ''; // Keep empty to show placeholder
+            console.log('Professor input kept empty for', productKey);
+        }
         
         // Adicionar listener direto com função inline (como nos students)
         input.removeEventListener('input', handleTeacherAllocation); // Evitar duplicatas
