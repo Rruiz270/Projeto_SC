@@ -182,6 +182,8 @@ document.querySelectorAll('.nav-btn').forEach(btn => {
             console.log('Navegou para Produtos - forçando sincronização...');
             setTimeout(() => {
                 syncPlanningToProducts();
+                // Update teacher display when switching to products tab
+                initializeTeacherDisplay();
             }, 100);
         }
     });
@@ -456,35 +458,101 @@ function setupProductControls() {
     // Checkboxes de produtos
     document.getElementById('ingles-geral').addEventListener('change', function() {
         state.products.inglesGeral.active = this.checked;
-        console.log('Inglês Geral checkbox changed:', this.checked);
+        
+        // Auto-allocate teachers when product is activated
+        if (this.checked && state.products.inglesGeral.teachers === 0) {
+            const totalTeachers = getTotalAvailableTeachers();
+            state.products.inglesGeral.teachers = Math.round(totalTeachers * 0.25); // 25% of teachers
+            // Update the input if it exists
+            const teacherInput = document.querySelector('.product-teachers[data-product="inglesGeral"]');
+            if (teacherInput) teacherInput.value = state.products.inglesGeral.teachers;
+        } else if (!this.checked) {
+            state.products.inglesGeral.teachers = 0;
+            const teacherInput = document.querySelector('.product-teachers[data-product="inglesGeral"]');
+            if (teacherInput) teacherInput.value = 0;
+        }
+        
+        console.log('Inglês Geral checkbox changed:', this.checked, 'Teachers allocated:', state.products.inglesGeral.teachers);
         calculateProductsCost();
         updateAvailableTotals(getTotalAvailableStudents(), getTotalAvailableTeachers());
     });
     
     document.getElementById('ingles-carreiras').addEventListener('change', function() {
         state.products.inglesCarreiras.active = this.checked;
-        console.log('Inglês Carreiras checkbox changed:', this.checked);
+        
+        // Auto-allocate teachers when product is activated
+        if (this.checked && state.products.inglesCarreiras.teachers === 0) {
+            const totalTeachers = getTotalAvailableTeachers();
+            state.products.inglesCarreiras.teachers = Math.round(totalTeachers * 0.15); // 15% of teachers
+            const teacherInput = document.querySelector('.product-teachers[data-product="inglesCarreiras"]');
+            if (teacherInput) teacherInput.value = state.products.inglesCarreiras.teachers;
+        } else if (!this.checked) {
+            state.products.inglesCarreiras.teachers = 0;
+            const teacherInput = document.querySelector('.product-teachers[data-product="inglesCarreiras"]');
+            if (teacherInput) teacherInput.value = 0;
+        }
+        
+        console.log('Inglês Carreiras checkbox changed:', this.checked, 'Teachers allocated:', state.products.inglesCarreiras.teachers);
         calculateProductsCost();
         updateAvailableTotals(getTotalAvailableStudents(), getTotalAvailableTeachers());
     });
     
     document.getElementById('espanhol').addEventListener('change', function() {
         state.products.espanhol.active = this.checked;
-        console.log('Espanhol checkbox changed:', this.checked);
+        
+        // Auto-allocate teachers when product is activated
+        if (this.checked && state.products.espanhol.teachers === 0) {
+            const totalTeachers = getTotalAvailableTeachers();
+            state.products.espanhol.teachers = Math.round(totalTeachers * 0.10); // 10% of teachers
+            const teacherInput = document.querySelector('.product-teachers[data-product="espanhol"]');
+            if (teacherInput) teacherInput.value = state.products.espanhol.teachers;
+        } else if (!this.checked) {
+            state.products.espanhol.teachers = 0;
+            const teacherInput = document.querySelector('.product-teachers[data-product="espanhol"]');
+            if (teacherInput) teacherInput.value = 0;
+        }
+        
+        console.log('Espanhol checkbox changed:', this.checked, 'Teachers allocated:', state.products.espanhol.teachers);
         calculateProductsCost();
         updateAvailableTotals(getTotalAvailableStudents(), getTotalAvailableTeachers());
     });
     
     document.getElementById('ia').addEventListener('change', function() {
         state.products.ia.active = this.checked;
-        console.log('IA checkbox changed:', this.checked);
+        
+        // Auto-allocate teachers when product is activated
+        if (this.checked && state.products.ia.teachers === 0) {
+            const totalTeachers = getTotalAvailableTeachers();
+            state.products.ia.teachers = Math.round(totalTeachers * 0.35); // 35% of teachers
+            const teacherInput = document.querySelector('.product-teachers[data-product="ia"]');
+            if (teacherInput) teacherInput.value = state.products.ia.teachers;
+        } else if (!this.checked) {
+            state.products.ia.teachers = 0;
+            const teacherInput = document.querySelector('.product-teachers[data-product="ia"]');
+            if (teacherInput) teacherInput.value = 0;
+        }
+        
+        console.log('IA checkbox changed:', this.checked, 'Teachers allocated:', state.products.ia.teachers);
         calculateProductsCost();
         updateAvailableTotals(getTotalAvailableStudents(), getTotalAvailableTeachers());
     });
     
     document.getElementById('coding').addEventListener('change', function() {
         state.products.coding.active = this.checked;
-        console.log('Coding checkbox changed:', this.checked);
+        
+        // Auto-allocate teachers when product is activated
+        if (this.checked && state.products.coding.teachers === 0) {
+            const totalTeachers = getTotalAvailableTeachers();
+            state.products.coding.teachers = Math.round(totalTeachers * 0.20); // 20% of teachers
+            const teacherInput = document.querySelector('.product-teachers[data-product="coding"]');
+            if (teacherInput) teacherInput.value = state.products.coding.teachers;
+        } else if (!this.checked) {
+            state.products.coding.teachers = 0;
+            const teacherInput = document.querySelector('.product-teachers[data-product="coding"]');
+            if (teacherInput) teacherInput.value = 0;
+        }
+        
+        console.log('Coding checkbox changed:', this.checked, 'Teachers allocated:', state.products.coding.teachers);
         calculateProductsCost();
         updateAvailableTotals(getTotalAvailableStudents(), getTotalAvailableTeachers());
     });
@@ -832,6 +900,22 @@ function setupRegionalControls() {
 }
 
 // Inicialização
+function initializeTeacherDisplay() {
+    console.log('Initializing teacher display...');
+    
+    // Get total available teachers and update display
+    const totalTeachers = getTotalAvailableTeachers();
+    const teacherElement = document.getElementById('products-total-teachers');
+    
+    if (teacherElement) {
+        teacherElement.textContent = totalTeachers.toLocaleString('pt-BR');
+        console.log('Teacher display initialized with:', totalTeachers, 'teachers');
+    }
+    
+    // Also update the totals calculation
+    updateAvailableTotals(getTotalAvailableStudents(), getTotalAvailableTeachers());
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM loaded, initializing app...');
     
@@ -847,6 +931,9 @@ document.addEventListener('DOMContentLoaded', function() {
     setupSaveButton();
     setupTestControls();
     setupProductYearControls();
+    
+    // Initialize teacher display
+    initializeTeacherDisplay();
     
     // Validate data integrity and clean state on load
     setTimeout(() => {
@@ -2483,6 +2570,11 @@ function initializeSegmentControls() {
             
             // Atualizar displays
             syncPlanningToProducts();
+            
+            // Update teacher display whenever segment data changes
+            if (field === 'teachers') {
+                initializeTeacherDisplay();
+            }
             
             // Atualizar todos os cálculos dependentes
             updateAllSections();
