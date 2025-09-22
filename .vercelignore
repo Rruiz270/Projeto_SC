@@ -1,0 +1,9 @@
+educaia-sc/
+backup/
+*.md
+.git/
+node_modules/
+*.backup
+*-backup*
+*-new-structure*
+add-missing-slides.js
