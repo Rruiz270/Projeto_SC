@@ -2152,76 +2152,90 @@ function setupAllocationControls() {
         
         // Adicionar listener direto com função inline (como nos students)
         input.removeEventListener('input', handleTeacherAllocation); // Evitar duplicatas
-        input.addEventListener('input', function(e) {
-            const productKey = e.target.dataset.product;
-            const newValue = parseInt(e.target.value) || 0;
-            
-            console.log('=== TEACHER ALLOCATION EVENT TRIGGERED ===');
-            console.log('Product:', productKey, 'New Value:', newValue);
-            
-            // Update state immediately
-            if (state.products[productKey]) {
-                const oldValue = state.products[productKey].teachers;
-                state.products[productKey].teachers = newValue;
+        
+        // Add multiple event types to ensure we catch the input
+        ['input', 'change', 'blur'].forEach(eventType => {
+            input.addEventListener(eventType, function(e) {
+                const productKey = e.target.dataset.product;
+                const newValue = parseInt(e.target.value) || 0;
                 
-                // If allocating teachers, ensure the product is active
-                if (newValue > 0 && !state.products[productKey].active) {
-                    const checkboxId = getProductCheckboxId(productKey);
-                    const checkbox = document.getElementById(checkboxId);
-                    if (checkbox) {
-                        checkbox.checked = true;
-                        state.products[productKey].active = true;
-                        console.log('Auto-activated product:', productKey);
-                    }
-                }
+                console.log(`=== TEACHER ALLOCATION ${eventType.toUpperCase()} EVENT ===`);
+                console.log('Product:', productKey, 'New Value:', newValue);
+                console.log('Input element:', e.target);
+                console.log('Current state before update:', state.products[productKey]);
                 
-                console.log('Updated teacher state for', productKey, '- From:', oldValue, 'To:', newValue);
-                console.log('Product active?', state.products[productKey].active);
-                
-                // Force immediate UI update
-                const totalTeachers = getTotalAvailableTeachers();
-                let allocatedTeachers = 0;
-                
-                // Calculate total allocated teachers
-                Object.keys(state.products).forEach(key => {
-                    if (state.products[key].active && state.products[key].teachers) {
-                        allocatedTeachers += state.products[key].teachers;
-                        console.log(`Product ${key}: active=${state.products[key].active}, teachers=${state.products[key].teachers}`);
-                    }
-                });
-                
-                const remainingTeachers = Math.max(0, totalTeachers - allocatedTeachers);
-                console.log(`Total available: ${totalTeachers}, Allocated: ${allocatedTeachers}, Remaining: ${remainingTeachers}`);
-                
-                // Update the dashboard directly
-                const teacherElement = document.getElementById('products-total-teachers');
-                if (teacherElement) {
-                    teacherElement.textContent = remainingTeachers.toLocaleString('pt-BR');
-                    console.log('Updated dashboard teachers to:', remainingTeachers);
+                // Update state immediately
+                if (state.products[productKey]) {
+                    const oldValue = state.products[productKey].teachers;
+                    state.products[productKey].teachers = newValue;
                     
-                    // Update percentage
-                    const percent = totalTeachers > 0 ? Math.round((allocatedTeachers / totalTeachers) * 100) : 0;
-                    const percentElement = document.getElementById('teachers-progress-text');
-                    if (percentElement) {
-                        percentElement.textContent = `${percent}% alocado (${allocatedTeachers.toLocaleString('pt-BR')} de ${totalTeachers.toLocaleString('pt-BR')})`;
+                    // If allocating teachers, ensure the product is active
+                    if (newValue > 0) {
+                        const checkboxId = getProductCheckboxId(productKey);
+                        const checkbox = document.getElementById(checkboxId);
+                        if (checkbox && !checkbox.checked) {
+                            console.log('Auto-activating product:', productKey, 'checkbox:', checkboxId);
+                            checkbox.checked = true;
+                            state.products[productKey].active = true;
+                            // Trigger the checkbox change event to ensure proper activation
+                            checkbox.dispatchEvent(new Event('change'));
+                        } else if (!checkbox) {
+                            console.error('Checkbox not found for product:', productKey, 'Expected ID:', checkboxId);
+                        }
                     }
                     
-                    // Update progress bar
-                    const progressFill = document.getElementById('teachers-progress-fill');
-                    if (progressFill) {
-                        progressFill.style.width = `${percent}%`;
+                    console.log('Updated teacher state for', productKey, '- From:', oldValue, 'To:', newValue);
+                    console.log('Product active?', state.products[productKey].active);
+                    console.log('Current state after update:', state.products[productKey]);
+                    
+                    // Force immediate UI update
+                    const totalTeachers = getTotalAvailableTeachers();
+                    let allocatedTeachers = 0;
+                    
+                    // Calculate total allocated teachers
+                    Object.keys(state.products).forEach(key => {
+                        if (state.products[key].active && state.products[key].teachers) {
+                            allocatedTeachers += state.products[key].teachers;
+                            console.log(`Product ${key}: active=${state.products[key].active}, teachers=${state.products[key].teachers}`);
+                        }
+                    });
+                    
+                    const remainingTeachers = Math.max(0, totalTeachers - allocatedTeachers);
+                    console.log(`Total available: ${totalTeachers}, Allocated: ${allocatedTeachers}, Remaining: ${remainingTeachers}`);
+                    
+                    // Update the dashboard directly
+                    const teacherElement = document.getElementById('products-total-teachers');
+                    if (teacherElement) {
+                        teacherElement.textContent = remainingTeachers.toLocaleString('pt-BR');
+                        console.log('Updated dashboard teachers to:', remainingTeachers);
+                        
+                        // Update percentage
+                        const percent = totalTeachers > 0 ? Math.round((allocatedTeachers / totalTeachers) * 100) : 0;
+                        const percentElement = document.getElementById('teachers-progress-text');
+                        if (percentElement) {
+                            percentElement.textContent = `${percent}% alocado (${allocatedTeachers.toLocaleString('pt-BR')} de ${totalTeachers.toLocaleString('pt-BR')})`;
+                        }
+                        
+                        // Update progress bar
+                        const progressFill = document.getElementById('teachers-progress-fill');
+                        if (progressFill) {
+                            progressFill.style.width = `${percent}%`;
+                        }
                     }
+                    
+                    // Update the product breakdown cards
+                    updateCityInvestmentGrid();
                 }
-            }
-            
-            // Still call the other update functions
-            updateAvailableTotals(getTotalAvailableStudents(), getTotalAvailableTeachers());
-            updateTestQuantities();
-            calculateInvestment();
-            calculateCompiledInvestments();
-            saveState();
-            
-            console.log('=== END TEACHER ALLOCATION EVENT ===');
+                
+                // Still call the other update functions
+                updateAvailableTotals(getTotalAvailableStudents(), getTotalAvailableTeachers());
+                updateTestQuantities();
+                calculateInvestment();
+                calculateCompiledInvestments();
+                saveState();
+                
+                console.log(`=== END TEACHER ALLOCATION ${eventType.toUpperCase()} EVENT ===`);
+            });
         });
         
         // Adicionar múltiplos eventos para debug
