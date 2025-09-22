@@ -1591,66 +1591,41 @@ function calculateCompiledInvestments() {
 }
 
 function calculateStudentInvestment() {
-    // Calcular investimento total em alunos baseado nos segmentos
-    const selectedYear = document.getElementById('investment-year')?.value || '2025';
+    // Calculate student investment based on actual product allocations and pricing
     let total = 0;
     
-    if (selectedYear === 'total') {
-        // Somar todos os anos
-        Object.values(state.segments).forEach(segment => {
-            if (segment.yearData) {
-                Object.values(segment.yearData).forEach(yearData => {
-                    const students = yearData.students || 0;
-                    // Use budget based on segment type
-                    let budgetPerStudent = 15; // Default
-                    if (segment.name && segment.name.includes('FUND1')) budgetPerStudent = state.budget.fundamental1 || 15;
-                    else if (segment.name && segment.name.includes('FUND2')) budgetPerStudent = state.budget.fundamental2 || 18;
-                    else if (segment.name && segment.name.includes('Médio')) budgetPerStudent = state.budget.medio || 22;
-                    else if (segment.name && segment.name.includes('Técnico')) budgetPerStudent = state.budget.medioTecnico || 28;
-                    
-                    total += students * budgetPerStudent * 12;
-                });
-            }
-        });
-    } else {
-        // Somar apenas ano específico
-        Object.values(state.segments).forEach(segment => {
-            if (segment.yearData && segment.yearData[selectedYear]) {
-                const students = segment.yearData[selectedYear].students || 0;
-                let budgetPerStudent = 15; // Default
-                if (segment.name && segment.name.includes('FUND1')) budgetPerStudent = state.budget.fundamental1 || 15;
-                else if (segment.name && segment.name.includes('FUND2')) budgetPerStudent = state.budget.fundamental2 || 18;
-                else if (segment.name && segment.name.includes('Médio')) budgetPerStudent = state.budget.medio || 22;
-                else if (segment.name && segment.name.includes('Técnico')) budgetPerStudent = state.budget.medioTecnico || 28;
-                
-                total += students * budgetPerStudent * 12;
-            }
-        });
-    }
+    // Calculate investment for each active product's students
+    Object.keys(state.products).forEach(productKey => {
+        const product = state.products[productKey];
+        
+        if (product.active && product.students > 0) {
+            // Use the actual price from the product state (set in Tab 2)
+            const monthlyPrice = product.price || getDefaultProductPrice(productKey);
+            const yearlyStudentCost = monthlyPrice * 12 * product.students;
+            total += yearlyStudentCost;
+        }
+    });
     
-    return total * (state.modalityCostModifier || 1);
+    return total;
 }
 
 function calculateTeacherInvestment() {
-    // Investimento em capacitação de professores
+    // Calculate teacher investment based on actual product allocations and pricing
     let total = 0;
     
-    // Curso de IA para professores (one-time)
-    if (state.products.ia.active) {
-        const aiTeachers = Math.round(state.teachers * (state.budget.teacherAI / 100));
-        total += aiTeachers * 300; // R$ 300 por professor (curso único)
-    }
+    // Calculate investment for each active product's teachers
+    Object.keys(state.products).forEach(productKey => {
+        const product = state.products[productKey];
+        
+        if (product.active && product.teachers > 0) {
+            // Use the actual price from the product state (set in Tab 2)
+            const monthlyPrice = product.price || getDefaultProductPrice(productKey);
+            const yearlyTeacherCost = monthlyPrice * 12 * product.teachers;
+            total += yearlyTeacherCost;
+        }
+    });
     
-    // Curso de Inglês para professores (mensal)
-    if (state.products.inglesGeral.active || state.products.inglesCarreiras.active) {
-        const englishTeachers = Math.round(state.teachers * (state.budget.teacherEnglish / 100));
-        total += englishTeachers * 50 * 12; // R$ 50/mês por professor
-    }
-    
-    // Adicionar custos de certificação
-    const certificationCost = state.teachers * 0.2 * 500; // 20% dos professores por ano, R$ 500 cada
-    
-    return total + certificationCost;
+    return total;
 }
 
 function calculateInfrastructureInvestment() {
