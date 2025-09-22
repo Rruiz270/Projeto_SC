@@ -187,6 +187,11 @@ document.querySelectorAll('.nav-btn').forEach(btn => {
                 // Force a recalculation of available totals
                 updateAvailableTotals(getTotalAvailableStudents(), getTotalAvailableTeachers());
             }, 100);
+        } else if (section === 'investimento') {
+            console.log('Navegou para Investimento - calculando valores...');
+            setTimeout(() => {
+                calculateInvestment();
+            }, 100);
         }
     });
 });
@@ -326,84 +331,168 @@ function setupBudgetControls() {
 }
 
 function calculateInvestment() {
-    // Calcular investimento mensal dos alunos
-    const monthlyStudents = 
-        (state.students.fundamental * state.budget.fundamental) +
-        (state.students.medio * state.budget.medio) +
-        (state.students.tecnico * state.budget.tecnico);
+    console.log('=== Calculating Investment ===');
     
-    // Aplicar modificador de modalidade
-    const monthlyWithModality = monthlyStudents * state.modalityCostModifier;
+    let totalYearlyInvestment = 0;
+    const breakdownData = [];
     
-    // Calcular investimento anual
-    const yearlyStudents = monthlyWithModality * 12;
+    // Get selected year for investment calculation
+    const yearDropdown = document.getElementById('investment-year');
+    const selectedYear = yearDropdown ? yearDropdown.value : '2025';
     
-    // Calcular investimento em professores
-    const teacherInvestment = state.teachers * (state.budget.teacherAI + state.budget.teacherEnglish);
+    // Calculate investment for each active product
+    Object.keys(state.products).forEach(productKey => {
+        const product = state.products[productKey];
+        
+        if (product.active && (product.students > 0 || product.teachers > 0)) {
+            const productName = getProductDisplayName(productKey);
+            const monthlyPrice = product.price || getDefaultProductPrice(productKey);
+            
+            // Student costs (monthly price * 12 months * number of students)
+            if (product.students > 0) {
+                const yearlyStudentCost = monthlyPrice * 12 * product.students;
+                totalYearlyInvestment += yearlyStudentCost;
+                
+                breakdownData.push({
+                    category: 'Alunos',
+                    description: `${productName} - Licenças para alunos`,
+                    quantity: product.students,
+                    unitPrice: monthlyPrice * 12,
+                    total: yearlyStudentCost
+                });
+            }
+            
+            // Teacher costs (assuming teacher training has different pricing)
+            if (product.teachers > 0) {
+                const teacherMonthlyPrice = getTeacherPrice(productKey);
+                const yearlyTeacherCost = teacherMonthlyPrice * 12 * product.teachers;
+                totalYearlyInvestment += yearlyTeacherCost;
+                
+                breakdownData.push({
+                    category: 'Professores',
+                    description: `${productName} - Capacitação de professores`,
+                    quantity: product.teachers,
+                    unitPrice: teacherMonthlyPrice * 12,
+                    total: yearlyTeacherCost
+                });
+            }
+        }
+    });
     
-    // Calcular custo dos testes
-    let testsCost = 0;
+    // Calculate test/certification costs
     if (state.tests) {
-        // Recalcular custos dos testes se necessário
-        let totalTestsCost = 0;
-        
-        if (state.tests.ingles.active) {
-            const englishTeachers = Math.round(state.teachers * 0.2);
-            const englishStudents = Math.round((state.students.fundamental + state.students.medio) * 0.3);
-            const technicalStudents = state.students.tecnico;
-            totalTestsCost += (englishTeachers + englishStudents + technicalStudents) * state.tests.ingles.price;
-        }
-        
-        if (state.tests.espanhol.active) {
-            const spanishStudents = Math.round((state.students.fundamental + state.students.medio) * 0.1);
-            totalTestsCost += spanishStudents * state.tests.espanhol.price;
-        }
-        
-        if (state.tests.coding.active) {
-            const codingStudents = Math.round((state.students.medio + state.students.tecnico) * 0.2);
-            totalTestsCost += codingStudents * state.tests.coding.price;
-        }
-        
-        if (state.tests.ia.active) {
-            const iaStudents = Math.round((state.students.medio + state.students.tecnico) * 0.15);
-            totalTestsCost += (state.teachers + iaStudents) * state.tests.ia.price;
-        }
-        
-        testsCost = totalTestsCost;
+        Object.keys(state.tests).forEach(testKey => {
+            const test = state.tests[testKey];
+            if (test.active && test.students > 0) {
+                const testName = getTestDisplayName(testKey);
+                const testCost = test.students * test.price;
+                totalYearlyInvestment += testCost;
+                
+                breakdownData.push({
+                    category: 'Certificações',
+                    description: testName,
+                    quantity: test.students,
+                    unitPrice: test.price,
+                    total: testCost
+                });
+            }
+        });
     }
     
-    // Total do primeiro ano
-    const totalFirstYear = yearlyStudents + teacherInvestment + testsCost;
+    // Update the total investment display
+    updateInvestmentDisplay(totalYearlyInvestment, breakdownData);
     
-    // Atualizar interface - verificar se elementos existem primeiro
-    const monthlyEl = document.getElementById('monthly-investment');
-    if (monthlyEl) {
-        monthlyEl.textContent = 'R$ ' + monthlyWithModality.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    console.log('Total Yearly Investment:', totalYearlyInvestment);
+    console.log('Breakdown:', breakdownData);
+}
+
+// Format currency helper
+function formatCurrency(value) {
+    return new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }).format(value);
+}
+
+// Helper function to get product display names
+function getProductDisplayName(productKey) {
+    const names = {
+        inglesGeral: 'Inglês Geral',
+        inglesCarreiras: 'Inglês para Carreiras',
+        espanhol: 'Espanhol',
+        ia: 'Inteligência Artificial',
+        coding: 'Programação (Coding)'
+    };
+    return names[productKey] || productKey;
+}
+
+// Helper function to get default product prices
+function getDefaultProductPrice(productKey) {
+    const prices = {
+        inglesGeral: 120,
+        inglesCarreiras: 150,
+        espanhol: 100,
+        ia: 180,
+        coding: 200
+    };
+    return prices[productKey] || 100;
+}
+
+// Helper function to get teacher training prices
+function getTeacherPrice(productKey) {
+    const teacherPrices = {
+        inglesGeral: 150,
+        inglesCarreiras: 180,
+        espanhol: 120,
+        ia: 200,
+        coding: 250
+    };
+    return teacherPrices[productKey] || 150;
+}
+
+// Helper function to get test display names
+function getTestDisplayName(testKey) {
+    const names = {
+        ingles: 'Certificação de Inglês',
+        espanhol: 'Certificação de Espanhol',
+        coding: 'Certificação de Programação',
+        ia: 'Certificação de IA'
+    };
+    return names[testKey] || testKey;
+}
+
+// Function to update investment display
+function updateInvestmentDisplay(totalYearly, breakdownData) {
+    // Update total investment value
+    const totalElement = document.querySelector('.investment-total-value');
+    if (totalElement) {
+        totalElement.textContent = formatCurrency(totalYearly);
     }
     
-    const yearlyEl = document.getElementById('yearly-investment');
-    if (yearlyEl) {
-        yearlyEl.textContent = 'R$ ' + yearlyStudents.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    // Update breakdown table
+    const breakdownBody = document.getElementById('investment-breakdown-body');
+    if (breakdownBody) {
+        breakdownBody.innerHTML = '';
+        
+        breakdownData.forEach(item => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${item.category}</td>
+                <td>${item.description}</td>
+                <td>${item.quantity.toLocaleString('pt-BR')}</td>
+                <td>${formatCurrency(item.unitPrice)}</td>
+                <td>${formatCurrency(item.total)}</td>
+            `;
+            breakdownBody.appendChild(row);
+        });
     }
     
-    const teacherEl = document.getElementById('teacher-investment');
-    if (teacherEl) {
-        teacherEl.textContent = 'R$ ' + teacherInvestment.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    }
-    
-    const totalEl = document.getElementById('total-investment');
-    if (totalEl) {
-        totalEl.textContent = 'R$ ' + totalFirstYear.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    }
-    
-    updateSimpleChart();
-    
-    // Atualizar apresentação com novos dados
-    updatePresentationData();
-    
-    // Atualizar dashboard de investimento
-    if (document.getElementById('investment-year')) {
-        calculateCompiledInvestments();
+    // Update breakdown total
+    const breakdownTotal = document.getElementById('breakdown-total');
+    if (breakdownTotal) {
+        breakdownTotal.textContent = formatCurrency(totalYearly);
     }
 }
 
@@ -875,6 +964,17 @@ function setupRegionalControls() {
     });
 }
 
+function setupInvestmentControls() {
+    // Investment year dropdown
+    const investmentYear = document.getElementById('investment-year');
+    if (investmentYear) {
+        investmentYear.addEventListener('change', function() {
+            console.log('Investment year changed:', this.value);
+            calculateInvestment();
+        });
+    }
+}
+
 // Inicialização
 function initializeTeacherDisplay() {
     console.log('Initializing teacher display...');
@@ -911,6 +1011,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setupSaveButton();
     setupTestControls();
     setupProductYearControls();
+    setupInvestmentControls();
     
     // Initialize teacher display
     initializeTeacherDisplay();
