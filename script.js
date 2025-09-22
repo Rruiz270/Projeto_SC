@@ -917,15 +917,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // Clear all planning and product data to start fresh
         clearPlanningData();
         
-        // Clear any pre-filled teacher values from products
-        Object.keys(state.products).forEach(productKey => {
-            state.products[productKey].teachers = 0;
-        });
-        
-        // Clear teacher input fields visually
-        document.querySelectorAll('.product-teachers').forEach(input => {
-            input.value = '';
-        });
+        // NOTE: We don't clear teacher values here anymore to preserve manual inputs
+        // The display logic in setupProductControls will handle showing empty inputs
+        // when values are 0
         
         // Also ensure checkboxes start unchecked
         document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
