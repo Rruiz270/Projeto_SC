@@ -184,6 +184,8 @@ document.querySelectorAll('.nav-btn').forEach(btn => {
                 syncPlanningToProducts();
                 // Update teacher display when switching to products tab
                 initializeTeacherDisplay();
+                // Force a recalculation of available totals
+                updateAvailableTotals(getTotalAvailableStudents(), getTotalAvailableTeachers());
             }, 100);
         }
     });
@@ -877,17 +879,21 @@ function setupRegionalControls() {
 function initializeTeacherDisplay() {
     console.log('Initializing teacher display...');
     
-    // Get total available teachers and update display
+    // Force recalculation of total teachers
     const totalTeachers = getTotalAvailableTeachers();
     const teacherElement = document.getElementById('products-total-teachers');
     
     if (teacherElement) {
-        teacherElement.textContent = totalTeachers.toLocaleString('pt-BR');
-        console.log('Teacher display initialized with:', totalTeachers, 'teachers');
+        // If no teachers found, show at least 0
+        const displayValue = totalTeachers || 0;
+        teacherElement.textContent = displayValue.toLocaleString('pt-BR');
+        console.log('Teacher display initialized with:', displayValue, 'teachers');
+        
+        // Also update the progress bar
+        updateAvailableTotals(getTotalAvailableStudents(), totalTeachers);
+    } else {
+        console.log('Teacher element not found - might not be on products tab');
     }
-    
-    // Also update the totals calculation
-    updateAvailableTotals(getTotalAvailableStudents(), getTotalAvailableTeachers());
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -1777,6 +1783,10 @@ function updateProductsByYear() {
 }
 
 function updateAvailableTotals(availableStudents, availableTeachers) {
+    console.log('=== updateAvailableTotals called ===');
+    console.log('Available Students Input:', availableStudents);
+    console.log('Available Teachers Input:', availableTeachers);
+    
     // Calcular quantos já foram alocados
     let allocatedStudents = 0;
     let allocatedTeachers = 0;
@@ -2245,13 +2255,17 @@ function getTotalAvailableStudents() {
 }
 
 function getTotalAvailableTeachers() {
-    // Usar dados dos segmentos
+    // For teachers, we need to get the total from ALL teacher inputs in the planning grid
+    // Teachers are not segment-specific like students
     let totalTeachers = 0;
     
-    const selectedYear = document.getElementById('year-view')?.value || '2025';
+    // Get the selected year from the year dropdown if it exists
+    const yearViewElement = document.getElementById('year-view');
+    const selectedYear = yearViewElement ? yearViewElement.value : '2025';
     
+    // Sum teachers from all segments for the selected year
     if (selectedYear === 'total') {
-        // Somar todos os anos de todos os segmentos
+        // Sum all years from all segments
         Object.values(state.segments).forEach(segment => {
             if (segment.yearData) {
                 Object.values(segment.yearData).forEach(yearData => {
@@ -2260,11 +2274,21 @@ function getTotalAvailableTeachers() {
             }
         });
     } else {
-        // Somar apenas o ano específico de todos os segmentos
+        // Sum only the specific year from all segments
         Object.values(state.segments).forEach(segment => {
             if (segment.yearData && segment.yearData[selectedYear]) {
                 totalTeachers += segment.yearData[selectedYear].teachers || 0;
             }
+        });
+    }
+    
+    // If we're in the products section and no teachers found, check current inputs
+    if (totalTeachers === 0 && document.getElementById('produtos').classList.contains('active')) {
+        // Try to get teachers directly from the planning inputs for current year
+        const teacherInputs = document.querySelectorAll(`.city-teachers-year[data-year="${selectedYear}"]`);
+        teacherInputs.forEach(input => {
+            const value = parseInt(input.value) || 0;
+            totalTeachers += value;
         });
     }
     
