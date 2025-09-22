@@ -564,6 +564,7 @@ function setupProductControls() {
         console.log('Inglês Geral checkbox changed:', this.checked, 'Teachers allocated:', state.products.inglesGeral.teachers);
         calculateProductsCost();
         updateAvailableTotals(getTotalAvailableStudents(), getTotalAvailableTeachers());
+        calculateCompiledInvestments();
     });
     
     document.getElementById('ingles-carreiras').addEventListener('change', function() {
@@ -579,6 +580,7 @@ function setupProductControls() {
         console.log('Inglês Carreiras checkbox changed:', this.checked, 'Teachers allocated:', state.products.inglesCarreiras.teachers);
         calculateProductsCost();
         updateAvailableTotals(getTotalAvailableStudents(), getTotalAvailableTeachers());
+        calculateCompiledInvestments();
     });
     
     document.getElementById('espanhol').addEventListener('change', function() {
@@ -594,6 +596,7 @@ function setupProductControls() {
         console.log('Espanhol checkbox changed:', this.checked, 'Teachers allocated:', state.products.espanhol.teachers);
         calculateProductsCost();
         updateAvailableTotals(getTotalAvailableStudents(), getTotalAvailableTeachers());
+        calculateCompiledInvestments();
     });
     
     document.getElementById('ia').addEventListener('change', function() {
@@ -609,6 +612,7 @@ function setupProductControls() {
         console.log('IA checkbox changed:', this.checked, 'Teachers allocated:', state.products.ia.teachers);
         calculateProductsCost();
         updateAvailableTotals(getTotalAvailableStudents(), getTotalAvailableTeachers());
+        calculateCompiledInvestments();
     });
     
     document.getElementById('coding').addEventListener('change', function() {
@@ -624,6 +628,7 @@ function setupProductControls() {
         console.log('Coding checkbox changed:', this.checked, 'Teachers allocated:', state.products.coding.teachers);
         calculateProductsCost();
         updateAvailableTotals(getTotalAvailableStudents(), getTotalAvailableTeachers());
+        calculateCompiledInvestments();
     });
     
     // Preços dos produtos
@@ -2173,15 +2178,27 @@ function setupAllocationControls() {
                     if (newValue > 0) {
                         const checkboxId = getProductCheckboxId(productKey);
                         const checkbox = document.getElementById(checkboxId);
+                        console.log('Checking product activation for:', productKey);
+                        console.log('Checkbox found:', !!checkbox, 'ID:', checkboxId);
+                        console.log('Checkbox checked:', checkbox?.checked);
+                        console.log('Product active in state:', state.products[productKey].active);
+                        
+                        // Always ensure the product is marked as active in state
+                        state.products[productKey].active = true;
+                        
                         if (checkbox && !checkbox.checked) {
-                            console.log('Auto-activating product:', productKey, 'checkbox:', checkboxId);
+                            console.log('Auto-activating checkbox for product:', productKey);
                             checkbox.checked = true;
-                            state.products[productKey].active = true;
                             // Trigger the checkbox change event to ensure proper activation
                             checkbox.dispatchEvent(new Event('change'));
+                        } else if (checkbox && checkbox.checked) {
+                            console.log('Checkbox already checked, ensuring state is active');
+                            state.products[productKey].active = true;
                         } else if (!checkbox) {
                             console.error('Checkbox not found for product:', productKey, 'Expected ID:', checkboxId);
                         }
+                        
+                        console.log('Product active after update:', state.products[productKey].active);
                     }
                     
                     console.log('Updated teacher state for', productKey, '- From:', oldValue, 'To:', newValue);
