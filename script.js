@@ -346,7 +346,10 @@ function calculateInvestment() {
         
         if (product.active && (product.students > 0 || product.teachers > 0)) {
             const productName = getProductDisplayName(productKey);
+            // Use the actual price from the product state (set in Tab 2)
             const monthlyPrice = product.price || getDefaultProductPrice(productKey);
+            
+            console.log(`Product ${productKey}: price=${monthlyPrice}, students=${product.students}, teachers=${product.teachers}`);
             
             // Student costs (monthly price * 12 months * number of students)
             if (product.students > 0) {
@@ -362,17 +365,17 @@ function calculateInvestment() {
                 });
             }
             
-            // Teacher costs (assuming teacher training has different pricing)
+            // Teacher costs (using same pricing as students for now, can be customized)
             if (product.teachers > 0) {
-                const teacherMonthlyPrice = getTeacherPrice(productKey);
-                const yearlyTeacherCost = teacherMonthlyPrice * 12 * product.teachers;
+                // Teachers use the same product price
+                const yearlyTeacherCost = monthlyPrice * 12 * product.teachers;
                 totalYearlyInvestment += yearlyTeacherCost;
                 
                 breakdownData.push({
                     category: 'Professores',
                     description: `${productName} - Capacitação de professores`,
                     quantity: product.teachers,
-                    unitPrice: teacherMonthlyPrice * 12,
+                    unitPrice: monthlyPrice * 12,
                     total: yearlyTeacherCost
                 });
             }
@@ -624,10 +627,18 @@ function setupProductControls() {
     
     // Preços dos produtos
     document.querySelectorAll('.product-price').forEach((input, index) => {
+        const products = ['inglesGeral', 'inglesCarreiras', 'espanhol', 'ia', 'coding'];
+        
+        // Initialize price from state if available
+        if (products[index] && state.products[products[index]].price) {
+            input.value = state.products[products[index]].price;
+        }
+        
         input.addEventListener('input', function() {
-            const products = ['inglesGeral', 'inglesCarreiras', 'espanhol', 'ia', 'coding'];
             if (products[index]) {
-                state.products[products[index]].price = parseFloat(this.value);
+                const newPrice = parseFloat(this.value) || 0;
+                state.products[products[index]].price = newPrice;
+                console.log(`Price updated for ${products[index]}: ${newPrice}`);
                 calculateProductsCost();
             }
         });
@@ -2123,6 +2134,9 @@ function setupAllocationControls() {
             if (progressFillEl) {
                 progressFillEl.style.width = percentage + '%';
             }
+            
+            // Calculate investment after allocation change
+            calculateInvestment();
             
             // Salvar estado
             saveState();
