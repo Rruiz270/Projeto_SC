@@ -191,6 +191,7 @@ document.querySelectorAll('.nav-btn').forEach(btn => {
             console.log('Navegou para Investimento - calculando valores...');
             setTimeout(() => {
                 calculateInvestment();
+                calculateCompiledInvestments();
             }, 100);
         }
     });
@@ -1749,64 +1750,58 @@ function updateCityInvestmentGrid(selectedYear) {
     const grid = document.querySelector('.city-investment-grid');
     if (!grid) return;
     
-    // Lista de principais cidades de SC
-    const cities = [
-        { name: 'Florianópolis', students: 45000, schools: 80 },
-        { name: 'Joinville', students: 65000, schools: 110 },
-        { name: 'Blumenau', students: 42000, schools: 75 },
-        { name: 'São José', students: 30000, schools: 55 },
-        { name: 'Criciúma', students: 28000, schools: 50 },
-        { name: 'Chapecó', students: 35000, schools: 60 },
-        { name: 'Itajaí', students: 25000, schools: 45 },
-        { name: 'Lages', students: 22000, schools: 40 }
+    // Calculate breakdown by product instead of cities
+    const products = [
+        { key: 'inglesGeral', name: 'Inglês Geral', icon: '🇺🇸' },
+        { key: 'inglesCarreiras', name: 'Inglês Carreiras', icon: '💼' },
+        { key: 'espanhol', name: 'Espanhol', icon: '🇪🇸' },
+        { key: 'ia', name: 'Inteligência Artificial', icon: '🤖' },
+        { key: 'coding', name: 'Programação', icon: '💻' }
     ];
     
-    // Limpar grid existente
-    grid.innerHTML = '<h3>Investimento por Cidade/Região</h3><div class="city-cards"></div>';
+    // Clear existing grid
+    grid.innerHTML = '<h3>Detalhamento por Produto</h3><div class="city-cards"></div>';
     const cardsContainer = grid.querySelector('.city-cards');
     
-    // Calcular investimento proporcional por cidade
-    const totalStateStudents = state.students.fundamental + state.students.medio + state.students.tecnico;
-    
-    cities.forEach(city => {
-        const cityProportion = city.students / totalStateStudents;
-        const cityInvestment = (calculateStudentInvestment() + calculateTeacherInvestment()) * cityProportion;
-        
-        let yearlyInvestment = cityInvestment;
-        if (selectedYear !== 'total') {
-            const year = parseInt(selectedYear);
-            let multiplier;
-            switch(year) {
-                case 2025: multiplier = 0.15; break;
-                case 2026: multiplier = 0.20; break;
-                case 2027: multiplier = 0.25; break;
-                case 2028: multiplier = 0.20; break;
-                case 2029: multiplier = 0.20; break;
-            }
-            yearlyInvestment *= multiplier;
+    products.forEach(productInfo => {
+        const product = state.products[productInfo.key];
+        if (product && product.active && (product.students > 0 || product.teachers > 0)) {
+            const monthlyPrice = product.price || getDefaultProductPrice(productInfo.key);
+            const studentCost = (product.students || 0) * monthlyPrice * 12;
+            const teacherCost = (product.teachers || 0) * monthlyPrice * 12;
+            const totalCost = studentCost + teacherCost;
+            
+            const card = document.createElement('div');
+            card.className = 'city-card';
+            card.innerHTML = `
+                <h4>${productInfo.icon} ${productInfo.name}</h4>
+                <div class="city-stats">
+                    <div class="stat">
+                        <span class="label">Alunos:</span>
+                        <span class="value">${(product.students || 0).toLocaleString('pt-BR')}</span>
+                    </div>
+                    <div class="stat">
+                        <span class="label">Professores:</span>
+                        <span class="value">${(product.teachers || 0).toLocaleString('pt-BR')}</span>
+                    </div>
+                    <div class="stat">
+                        <span class="label">Preço/mês:</span>
+                        <span class="value">R$ ${monthlyPrice.toFixed(2)}</span>
+                    </div>
+                    <div class="stat investment">
+                        <span class="label">Investimento/ano:</span>
+                        <span class="value">R$ ${(totalCost / 1000000).toFixed(2)}M</span>
+                    </div>
+                </div>
+            `;
+            cardsContainer.appendChild(card);
         }
-        
-        const card = document.createElement('div');
-        card.className = 'city-card';
-        card.innerHTML = `
-            <h4>${city.name}</h4>
-            <div class="city-stats">
-                <div class="stat">
-                    <span class="label">Alunos:</span>
-                    <span class="value">${city.students.toLocaleString('pt-BR')}</span>
-                </div>
-                <div class="stat">
-                    <span class="label">Escolas:</span>
-                    <span class="value">${city.schools}</span>
-                </div>
-                <div class="stat investment">
-                    <span class="label">Investimento:</span>
-                    <span class="value">R$ ${(yearlyInvestment / 1000000).toFixed(2)}M</span>
-                </div>
-            </div>
-        `;
-        cardsContainer.appendChild(card);
     });
+    
+    // If no active products, show a message
+    if (cardsContainer.children.length === 0) {
+        cardsContainer.innerHTML = '<p style="text-align: center; color: #666; padding: 20px;">Configure produtos na aba "Produtos & Serviços" para ver o detalhamento</p>';
+    }
 }
 
 // Controle do dropdown de ano em produtos
